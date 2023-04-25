@@ -14,7 +14,7 @@
 |:-:|:-:|:-:|
 |<img src="https://avatars.githubusercontent.com/u/71700079?s=400&u=9e9338f1a22b811003f826b00c9b797a01aea381&v=4" width="100" height="100">|<img src="https://avatars.githubusercontent.com/u/80378041?v=4" width="100" height="100">|<img src="https://avatars.githubusercontent.com/u/48466069?v=4" width="100" height="100">|
 |-|Captain|-|
-|[Github](https://github.com/Jinseop-Sim)|[Github](https://github.com/Jun2-Lee)|[Github](https://github.com/leeminkyeong)|
+|[Github](https://github.com/Jinseop-Sim)|[Github](https://github.com/Jun2-Lee)|[Github](https://github.com/leemingyeong)|
 
 </div>
 
