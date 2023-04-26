@@ -19,4 +19,13 @@
 
 </div>
 
+## 개발 환경
+```
+- Device
+  - Raspberry pi 4  
+  - Python 3.9.2  
+- Server  
+  - Springboot 3.0.6  
+```
+## Git convention
 ## WIKI
