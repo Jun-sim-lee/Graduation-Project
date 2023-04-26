@@ -19,4 +19,18 @@
 
 </div>
 
+## 개발 환경
+```
+- Device
+  - Raspberry pi 4
+  - Python 3.9.2
+- Server
+  - Springboot 3.0.6
+```
+## Git convention
+- ```Feat : XXX (00%)``` : 개발한 기능을 Commit 할 때 사용합니다.
+   - 진행률은 선택사항입니다.
+- ```Fix : XXX (00%)``` : 기능이나 타 요소에 대한 수정이 진행되었을 때 사용합니다.
+   - 진행률은 선택사항입니다.
+
 ## WIKI
