@@ -26,6 +26,7 @@
   - Python 3.9.2
 - Server
   - Springboot 3.0.6
+  - Java 17
 ```
 ## Git convention
 - ```Feat : XXX (00%)``` : 개발한 기능을 Commit 할 때 사용합니다.
