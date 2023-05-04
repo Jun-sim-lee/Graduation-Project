@@ -58,6 +58,7 @@ public class MessageTestApplication {
 					mse += Math.pow(diff, 2);
 				}
 				// 이렇게 구현하면, RSS를 받아온 AP의 이름만 순회하며 계산이 가능하다.
+				// 그런데, 측정이 안되고 넘어온 AP는 과연 배제해도 될까?
 
 				System.out.println("mse = " + mse);
 				if(min_mse > mse){
