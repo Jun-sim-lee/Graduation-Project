@@ -20,7 +20,6 @@ public class MessageTestApplication {
 	}
 
 	public static void fillRSS(HashMap<String, Integer> passedRSS){
-		passedRSS.put("AA:AA:AA:AA:AA:AA", -50);
 		passedRSS.put("BB:BB:BB:BB:BB:BB", -39);
 		passedRSS.put("CC:CC:CC:CC:CC:CC", -49);
 		passedRSS.put("DD:DD:DD:DD:DD:DD", -42);
@@ -52,13 +51,13 @@ public class MessageTestApplication {
 		// MSE를 계산해서 위치를 추정하는 알고리즘 (Fingerprint)
 		for(int i = 0; i < radioMap.length; i++){
 			for(int j = 0; j < radioMap[0].length; j++){
-				double diff1 = radioMap[i][j][predefinedIndex.get("AA:AA:AA:AA:AA:AA")] - passedRSS.get("AA:AA:AA:AA:AA:AA");
-				double diff2 = radioMap[i][j][predefinedIndex.get("BB:BB:BB:BB:BB:BB")] - passedRSS.get("BB:BB:BB:BB:BB:BB");
-				double diff3 = radioMap[i][j][predefinedIndex.get("CC:CC:CC:CC:CC:CC")] - passedRSS.get("CC:CC:CC:CC:CC:CC");
-				double diff4 = radioMap[i][j][predefinedIndex.get("DD:DD:DD:DD:DD:DD")] - passedRSS.get("DD:DD:DD:DD:DD:DD");
-				double diff5 = radioMap[i][j][predefinedIndex.get("EE:EE:EE:EE:EE:EE")] - passedRSS.get("EE:EE:EE:EE:EE:EE");
+				double mse = 0;
 
-				double mse = Math.pow(diff1, 2) + Math.pow(diff2, 2) + Math.pow(diff3, 2) + Math.pow(diff4, 2) + Math.pow(diff5, 2);
+				for (Map.Entry<String, Integer> entry : passedRSS.entrySet()){
+					double diff = radioMap[i][j][predefinedIndex.get(entry.getKey())] - passedRSS.get(entry.getKey());
+					mse += Math.pow(diff, 2);
+				}
+				// 이렇게 구현하면, RSS를 받아온 AP의 이름만 순회하며 계산이 가능하다.
 
 				System.out.println("mse = " + mse);
 				if(min_mse > mse){
