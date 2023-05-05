@@ -11,7 +11,7 @@
 > :closed_lock_with_key: 사용자 인증  
 
 ## :family: Team Member
-<div>
+<div align="center">
 
 |심진섭|이준희|이민경|
 |:-:|:-:|:-:|
