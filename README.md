@@ -29,6 +29,8 @@
 - Server
   - Springboot 3.0.6
   - Java 17
+- Client
+  - Visual Studio Code
 ```
 ## Git convention
 - ```Feat : ~ (00%)``` : 개발한 기능을 Commit 할 때 사용합니다.
