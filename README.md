@@ -40,3 +40,4 @@
 - ```Docs : ~ ``` : 문서(README 등의 markdown 를 수정한 경우에 사용합니다.  
 
 ## WIKI
+|Requirements|[Wireframe](https://www.figma.com/file/4CnoFLbvaSCYSmbVMEI4f2/Junsimeee?type=design&node-id=1-7&t=aY69yVJI99IghsRi-0)|Diagram|
