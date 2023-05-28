@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to WMI!</title>
+    <style>
+        .screen{
+            position: relative;
+            width: 100%;
+            max-width: 390px;
+            height: 844px;
+            background-color: #F5F5F5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 auto;
+        }
+        .logo{
+            position: absolute;
+            width: 214px;
+            height: 108px;
+            top: 172px;
+        }
+        .otp_wrapper{
+            position: absolute;
+            top: 433px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        .otp{
+            width: 67px;
+            height: 86px;
+
+            background: rgba(211, 211, 211, 0.5);
+            border-radius: 10px;
+            border: none;
+            text-align: center;
+            font-size: 30px;
+            margin: 3px;
+        }
+        .submit_form{
+            position: absolute;
+            width: 182px;
+            height: 63px;
+            top: 588px;
+
+            background: #808080;
+            border-radius: 50px;
+            border-color: #808080;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class = "screen">
+            <img src="logo.png" class = "logo">
+            <p style = "position: absolute; top: 388px;">인증번호 4자리를 입력해주세요.</p>
+            <div class = "otp_wrapper">
+                <input class = "otp"/>
+                <input class = "otp"/>
+                <input class = "otp"/>
+                <input class = "otp"/>
+            </div>
+            <button class = "submit_form">확인</button>
+        </div>
+    </div>
+</body>
+</html>
