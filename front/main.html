@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>main page</title>
+    <style>
+        .screen{
+            position: relative;
+            width: 100%;
+            max-width: 390px;
+            height: 844px;
+            background-color: #F5F5F5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 auto;
+        }
+        .inner_screen{
+            width: 389px;
+            height: 361px;
+
+            background: url(fluke2.png);
+            background-size: cover;
+        }
+        .inner_header{
+            display: flex; 
+            flex-direction: row; 
+            justify-content: space-between; 
+            padding: 10px;
+        }
+        .profile{
+            width: 50px;
+            height: 50px;
+
+            border: 2px solid #000000;
+            border-radius: 100px;
+        }
+        .big_btn{
+            position: absolute;
+            width: 328px;
+            height: 305px;
+            left: 33px;
+            top: 280px;
+
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+
+            background: url(map_icon.png);
+            border-radius: 50px;
+            padding: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+        }
+        .small_btn{
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            
+            background: url(fluke.png);
+            background-size: cover;
+            border-radius: 50px;
+            text-align: center;
+            padding: 20px;
+            font-size: 17px;
+            font-weight: bold;
+            border: none;
+        }
+        .gear{
+            width: 24px; 
+            height: 24px;
+            margin-top: 12px;
+            background: url(gear.png);
+            background-size: cover;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class = "screen">
+        <div class = "inner_screen">
+            <div class = "inner_header">
+                <img class = "profile" src = "www.jpg"/>
+                <p style="vertical-align: middle; color: white;">XXX님 반갑습니다!</p>
+                <div style = "width: 120px;"></div>
+                <button class = "gear"></button>
+            </div>
+            <p style = "position: absolute; color: white; left: 27px; top: 130px; font-size: 30px; font-weight: bold; font-family: serif;">Where am I ?</p>
+            <p style = "position: absolute; color: white; left: 27px; top: 181px;">주변 기기를 당신의 마음대로 편하게 제어하세요<br>
+                시간은 걱정마세요, 빠른 길로 안내합니다.</p>
+        </div>
+        <div>
+            <button class = "big_btn">지도</button>
+            <button class = "small_btn" style = "left: 24px; top: 618px;">
+                전체<br> 
+                리소스
+            </button>
+            <button class = "small_btn" style = "left: 201px; top: 618px;">
+                나의<br>
+                리소스
+            </button>
+        </div>
+    </div>
+</body>
+</html>
