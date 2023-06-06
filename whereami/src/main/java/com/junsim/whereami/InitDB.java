@@ -32,10 +32,6 @@ public class InitDB {
             Ap ap1 = new Ap("우리집", -30);
             Ap ap2 = new Ap("남의집", -50);
 
-            Greed greed = new Greed(0,0,ap1,ap2);
-
-            em.persist(greed);
-
             em.persist(member);
             em.persist(member2);
             em.persist(resource);
