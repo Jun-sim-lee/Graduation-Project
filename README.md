@@ -31,6 +31,8 @@
   - Java 17
 - Client
   - Visual Studio Code
+  - node.js 18.16.0
+  - Vue 3
 ```
 ## Git convention
 - ```Feat : ~ (00%)``` : 개발한 기능을 Commit 할 때 사용합니다.
