@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class = "screen">
-            <img src="logo.png" class = "logo">
+            <img src="../assets/logo.png" class = "logo">
             <div class = "qr_wrapper">
                 <div class = "qr">2</div>
                 <div class = "qr">3</div>
