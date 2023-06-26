@@ -61,6 +61,16 @@ body{
     border-radius: 50px;
     border: none;
 }
+.input_error{
+    position: absolute;
+    width: 264px;
+    height: 39px;
+
+    background: rgba(211, 211, 211, 0.6);
+    border-radius: 50px;
+    border-color: red;
+    color: red;
+}
 .submit_form{
     position: absolute;
     width: 264px;
