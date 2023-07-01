@@ -13,7 +13,6 @@
         margin: 0 auto;
     }
 } 
-
 @media all and (min-width:768px) and (max-width:1023px) { 
     .screen{
         position: relative;
@@ -28,7 +27,6 @@
         margin: 0 auto;
     }
 } 
-
 @media all and (max-width:767px) {
     .screen{
         position: relative;
@@ -133,6 +131,12 @@ body{
 
     background: url(../assets/fluke2.png);
     background-size: cover;
+}
+.resource_header{
+    position: relative;
+    width: 389px;
+    height: 200px;
+    background-color: #537FE7;
 }
 .inner_header{
     display: flex; 
