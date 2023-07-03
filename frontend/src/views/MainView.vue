@@ -5,7 +5,7 @@
                 <img class = "profile" src="../assets/logo.png" alt="Profile"/>
                 <p style="color: white;">{{mainPageDto.username}}님 반갑습니다!</p>
                 <div style = "width: 120px;"></div>
-                <button class = "gear"></button>
+                <button class = "gear" @click="moveToOption"></button>
             </div>
             <p style = "position: absolute; color: white; left: 27px; top: 130px; font-size: 30px; font-weight: bold; font-family: serif;">Where am I ?</p>
             <p style = "position: absolute; color: white; left: 27px; top: 181px;">주변 기기를 당신의 마음대로 편하게 제어하세요<br>
@@ -47,6 +47,9 @@ function moveToMy(){
 }
 function moveToMap(){
     router.push('map')
+}
+function moveToOption(){
+    router.push('option')
 }
 </script>
 

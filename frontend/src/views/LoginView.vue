@@ -22,11 +22,7 @@ function sendRequest(){
             if(resp.data === "user")
                 router.replace('main')
             else if(resp.data === "student")
-<<<<<<< HEAD
                 router.replace('otp')
-=======
-                router.replace('qr')
->>>>>>> 1415bdb98269ef4fc39f53a24598df17b54ec6e1
             else
                 alert("없는 유저 입니다.")
          })

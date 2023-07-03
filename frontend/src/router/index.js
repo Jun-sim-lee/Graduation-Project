@@ -10,6 +10,7 @@ import MachineAuthView from '../views/MachineAuthView.vue'
 import AllResourceView from '../views/AllResourceView.vue'
 import MyResourceView from '../views/MyResourceView.vue'
 import MapView from '../views/MapView.vue'
+import OptionView from '../views/OptionView.vue'
 
 const routes = [
     { path: '/', component: InitView },
@@ -22,7 +23,8 @@ const routes = [
     { path: '/machineAuth', component: MachineAuthView },
     { path: '/allResource', component: AllResourceView },
     { path: '/myResource', component: MyResourceView },
-    { path: '/map', component: MapView }
+    { path: '/map', component: MapView },
+    { path: '/option', component: OptionView }
 ]
 
 const router = createRouter({
