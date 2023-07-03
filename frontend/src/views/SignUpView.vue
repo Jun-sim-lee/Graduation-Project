@@ -5,11 +5,7 @@
         <input type="password" class = "wmi_input" v-model = "signUpDto.password" style="top: 433px; padding-left: 3%;" placeholder="비밀번호"/>
         <input type="password" v-model = "checkedPw" style="top: 488px; padding-left: 3%;" placeholder="비밀번호 확인"
                v-bind:class="{'wmi_input': valid, 'input_error': invalid}"/>
-<<<<<<< HEAD
         <p v-if="valid === false" style="position: absolute; top: 525px; font-size: 12px; color: red;">입력된 비밀번호와 다릅니다.</p>
-=======
-        <p v-if="valid === false" style="position: absolute; top: 525px; font-size: 12px; color: red;">비밀번호가 다릅니다.</p>
->>>>>>> 1415bdb98269ef4fc39f53a24598df17b54ec6e1
         <button class = "submit_form" @click = "sendRequest" style="top: 577px;">회원가입</button>
     </div>
 </template>

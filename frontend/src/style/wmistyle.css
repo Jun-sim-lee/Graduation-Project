@@ -196,3 +196,11 @@ body{
     background-size: cover;
     border: none;
 }
+li{
+    list-style-type: none;
+    font-size: 23px;
+    height: 50px;
+    width: 300px;
+    margin-top: 18px;
+    border-bottom: 1px solid #808080;
+}
