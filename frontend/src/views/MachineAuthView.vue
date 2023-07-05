@@ -9,11 +9,26 @@
 </template>
 
 <script setup>
-import { router } from '@/router';
+import {ref} from 'vue'
+import { router } from '@/router'
+import axios from 'axios'
 
+const uniqueRpiCode = ref({"uniqueRpiCode":"rpirpi1"})
 function sendRequest(){
-    alert("요청을 전송합니다.")
-    router.replace('main')
+    axios.post('http://localhost:8080/frontRpiAuth', uniqueRpiCode.value)
+     .then((resp) => {
+        if(resp.data === "Valid"){
+            alert(resp.data + " 이므로 입장합니다.")
+            router.replace('main')
+        }
+        else{
+            alert("유효하지 않은 코드입니다!!")
+            router.replace('')
+        }
+     })
+     .catch((error) => {
+        alert(error)
+     })
 }
 </script>
 
