@@ -6,10 +6,10 @@
         </div>
         <div style="width: 389px; height: 611px; background-color: white;">
             <ul>
-                <li>개인 정보 관리</li>
-                <li>버전 확인</li>
-                <li @click="moveToEmail">이메일 인증</li>
-                <li @click="logout" style="color: red;">로그아웃</li>
+                <li class="resource_list">개인 정보 관리</li>
+                <li class="resource_list">버전 확인</li>
+                <li class="resource_list" @click="moveToEmail">이메일 인증</li>
+                <li class="resource_list" @click="logout" style="color: red;">로그아웃</li>
             </ul>
         </div>
     </div>

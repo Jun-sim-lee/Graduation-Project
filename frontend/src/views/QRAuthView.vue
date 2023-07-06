@@ -7,10 +7,10 @@
                 <div class = "qr">{{ qrDto.ps2 }}</div>
                 <div class = "qr">{{ qrDto.ps3 }}</div>
                 <div class = "qr">{{ qrDto.ps4 }}</div>
-                <input class = "otp" v-model="qrDto.qr1"/>
-                <input class = "otp" v-model="qrDto.qr2"/>
-                <input class = "otp" v-model="qrDto.qr3"/>
-                <input class = "otp" v-model="qrDto.qr4"/>
+                <input class = "otp" maxlength="1" v-model="qrDto.qr1"/>
+                <input class = "otp" maxlength="1" v-model="qrDto.qr2"/>
+                <input class = "otp" maxlength="1" v-model="qrDto.qr3"/>
+                <input class = "otp" maxlength="1" v-model="qrDto.qr4"/>
             </div>
             <button class = "submit_form" @click="sendRequest" style="top: 588px;">확인</button>
         </div>
