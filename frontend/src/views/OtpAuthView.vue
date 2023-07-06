@@ -4,10 +4,10 @@
             <img src="../assets/logo.png" class = "logo">
             <p style = "position: absolute; top: 388px;">인증번호 4자리를 입력해주세요.</p>
             <div class = "otp_wrapper">
-                <input class = "otp" style="margin: 3px;" v-model="otpDto.otpCode1"/>
-                <input class = "otp" style="margin: 3px;" v-model="otpDto.otpCode2"/>
-                <input class = "otp" style="margin: 3px;" v-model="otpDto.otpCode3"/>
-                <input class = "otp" style="margin: 3px;" v-model="otpDto.otpCode4"/>
+                <input class = "otp" maxlength="1" style="margin: 3px;" v-model="otpDto.otpCode1"/>
+                <input class = "otp" maxlength="1" style="margin: 3px;" v-model="otpDto.otpCode2"/>
+                <input class = "otp" maxlength="1" style="margin: 3px;" v-model="otpDto.otpCode3"/>
+                <input class = "otp" maxlength="1" style="margin: 3px;" v-model="otpDto.otpCode4"/>
             </div>
             <button class = "submit_form" style="top: 588px;" @click="sendRequest">확인</button>
         </div>

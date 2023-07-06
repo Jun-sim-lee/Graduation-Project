@@ -4,7 +4,7 @@
         <input v-model="emailDto.email" :class = "{'wmi_input': valid, 'input_error': invalid}" style="top: 377px; padding-left: 3%;" placeholder="부산대학교 이메일"/>
         <p v-if="invalid === true" style="position: absolute; top: 415px; font-size: 12px; color: red;">올바르지 않은 형식의 이메일입니다.</p>
         <button @click="sendRequest" class = "submit_form" style="top: 488px">이메일 인증하기</button>
-        <button @click="toMain" class = "submit_form" style="top: 538px">인증없이 진행하기</button>
+        <button @click="toLogin" class = "submit_form" style="top: 538px">인증없이 진행하기</button>
         <p style = "position: absolute; top: 588px; width: 250px; font-size: 15px; color: #808080;">※ 주의사항!<br>
             <br>
             학교 이메일 인증 없이 진행하실 경우<br>
@@ -53,8 +53,8 @@ function validate(){
     }
 }
 
-function toMain(){
-    router.replace('main')
+function toLogin(){
+    router.replace('login')
 }
 </script>
 

@@ -10,11 +10,11 @@
         </div>
         <div style="width: 389px; height: 611px; position: relative; background-color: white;">
             <ul>
-                <li style="display: flex; flex-direction: row; justify-content: space-between;"
+                <li class = "resource_list" style="display: flex; flex-direction: row; justify-content: space-between;"
                     :key="resource.name" v-for="resource in resourceList">
-                    <img src="../assets/fluke.png" style="width: 25px; height: 25px;">
-                    <span style="font-size: 18px; line-height: 35px;">{{ resource.name }}</span>
-                    <button style="background-color: red; width: 50px; height: 30px;
+                    <img :src="resource.imgsrc" style="width: 25px; height: 25px;">
+                    <span style="font-size: 18px; line-height: 30px;">{{ resource.name }}</span>
+                    <button style="border: none; border-radius: 30px; background-color: red; width: 50px; height: 30px;
                                    font-size: 10px; color: white; ">삭제</button>
                 </li>
             </ul>
@@ -26,10 +26,10 @@
 import {ref} from 'vue';
 import { router } from '@/router';
 const resourceList = ref([
-    {image: "../assets/logo.png", name: "자판기"},
-    {image: "../assets/logo.png", name: "도어락"},
-    {image: "../assets/logo.png", name: "전등"},
-    {image: "../assets/logo.png", name: "모니터"}
+    {imgsrc: require("../assets/vendor_machine.png"), name: "자판기"},
+    {imgsrc: require("../assets/door_lock.png"), name: "도어락"},
+    {imgsrc: require("../assets/lamp.png"), name: "전등"},
+    {imgsrc: require("../assets/monitor.jpg"), name: "모니터"}
 ])
 
 function moveToPrev(){
