@@ -7,5 +7,5 @@ export default {}
 </script>
 
 <style>
-@import "./style/wmistyle.css"
+@import "./style/wmistyle.css";
 </style>
