@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -22,6 +23,11 @@ public class Member {
     UUID id;
     String email;
     String password;
+    String nickName;
+    String rpiCode;
+    String qrCode;
+    boolean isLogin;
+    LocalDateTime createAt;
     @Enumerated(value = EnumType.STRING)
     Authority authority;
     @OneToMany(mappedBy = "member")
@@ -29,10 +35,13 @@ public class Member {
     @OneToMany(mappedBy = "sender")
     List<Ask> myAskList = new ArrayList<>();
 
-    public Member(String email, String password, Authority authority){
+    public Member(String email, String password, String nickName){
         this.email = email;
         this.password = password;
-        this.authority = authority;
+        this.nickName = nickName;
+        this.authority = Authority.None;
+        this.createAt = LocalDateTime.now();
+        this.isLogin = false;
     }
 
 }
