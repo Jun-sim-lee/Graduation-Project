@@ -2,6 +2,8 @@
     <div>
         <div class = "screen">
             <img src="../assets/logo.png" class = "logo">
+            <h1 style="position: absolute; top: 330px; font-size: 20px">QR 인증입니다.</h1>
+            <h1 style="position: absolute; top: 330px; font-size: 20px">각 자리에 해당하는 문자를 입력해 주십시오.</h1>
             <div class = "qr_wrapper">
                 <div class = "qr">{{ qrDto.ps1 }}</div>
                 <div class = "qr">{{ qrDto.ps2 }}</div>
@@ -19,7 +21,7 @@
 
 <script setup>
 import { router } from '@/router';
-import axios from 'axios';
+import axios from 'axios'
 import {ref} from 'vue'
 const qrDto = ref({
     ps1: Math.round(Math.random() * 14 + 1),

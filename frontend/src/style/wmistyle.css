@@ -235,3 +235,10 @@ body{
 
     overflow: hidden;
 }
+
+/* 관리자 페이지 */
+.admin_button{
+    background-color: transparent; 
+    border: none;
+    font-size: 15px;
+}
