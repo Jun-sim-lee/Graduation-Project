@@ -4,7 +4,7 @@
             <button @click="moveToPrev" style="line-height: 40px; color: white; background-color: transparent; 
                                                padding-left: 20px; border: none; font-size: 20px"> &lt; 설정</button>
         </div>
-        <div style="width: 389px; height: 611px; background-color: white;">
+        <div style="width: 389px; height: 660px; background-color: white;">
             <ul>
                 <li class="resource_list">개인 정보 관리</li>
                 <li class="resource_list">버전 확인</li>

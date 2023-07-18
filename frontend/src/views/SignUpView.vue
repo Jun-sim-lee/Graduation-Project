@@ -1,11 +1,14 @@
 <template>
     <div class = "screen">
         <img src="../assets/logo.png" class = "logo">
-        <input class = "wmi_input" v-model = "signUpDto.userId" style="top: 377px; padding-left: 3%;" placeholder="아이디"/>
-        <input type="password" class = "wmi_input" v-model = "signUpDto.password" style="top: 433px; padding-left: 3%;" placeholder="비밀번호"/>
-        <input type="password" v-model = "checkedPw" style="top: 488px; padding-left: 3%;" placeholder="비밀번호 확인"
-               v-bind:class="{'wmi_input': valid, 'input_error': invalid}"/>
-        <p v-if="valid === false" style="position: absolute; top: 525px; font-size: 12px; color: red;">입력된 비밀번호와 다릅니다.</p>
+        <input :class = "{'wmi_input': validEmail, 'input_error': invalidEmail}" v-model = "signUpDto.email" 
+                style="top: 320px; padding-left: 3%;" placeholder="이메일"/>
+        <p v-if="invalidEmail === true" style="position: absolute; top: 355px; font-size: 12px; color: red;">올바르지 않은 형식의 이메일입니다.</p>
+        <input class = "wmi_input" v-model = "signUpDto.nickName" style="top: 388px; padding-left: 3%;" placeholder="닉네임"/>
+        <input type="password" class = "wmi_input" v-model = "signUpDto.password" style="top: 444px; padding-left: 3%;" placeholder="비밀번호"/>
+        <input type="password" v-model = "checkedPw" style="top: 499px; padding-left: 3%;" placeholder="비밀번호 확인"
+               v-bind:class="{'wmi_input': validPw, 'input_error': invalidPw}"/>
+        <p v-if="validPw === false" style="position: absolute; top: 535px; font-size: 12px; color: red;">입력된 비밀번호와 다릅니다.</p>
         <button class = "submit_form" @click = "sendRequest" style="top: 577px;">회원가입</button>
     </div>
 </template>
@@ -15,37 +18,50 @@ import { router } from '@/router';
 import axios from 'axios'
 import {ref} from 'vue'
 
-const valid = ref(true)
-const invalid = ref(false)
+const regex = /^[A-Za-z0-9]+@pusan.ac.kr/
+const validPw = ref(true)
+const invalidPw = ref(false)
+const validEmail = ref(true)
+const invalidEmail = ref(false)
 const checkedPw = ref()
 const signUpDto = ref({
-    userId: "",
+    email: "",
+    nickName: "",
     password: ""
 })
 
-function checkPassword(){
+function checkInformation(){
     if (signUpDto.value.password === checkedPw.value){
-        valid.value = true
-        invalid.value = false
+        validPw.value = true
+        invalidPw.value = false
     }
     else{
-        valid.value = false
-        invalid.value = true
+        validPw.value = false
+        invalidPw.value = true
+    }
+
+    if(regex.test(signUpDto.value.email) === false){
+        validEmail.value = false
+        invalidEmail.value = true
+    }
+    else{
+        validEmail.value = true
+        invalidEmail.value = false
     }
 }
 
 function sendRequest(){
-    checkPassword()
-    if(valid.value === true){
-        axios.post("http://localhost:8080/signup", signUpDto.value)
+    checkInformation()
+    if(validPw.value === true && validEmail.value === true){
+        axios.post("http://13.211.135.69:8080/signUp", signUpDto.value)
             .then((resp) => {
-                if(resp.data === "OK")
+                if(resp.data === "ok")
                     router.replace('emailAuth')
                 else
                     alert("회원가입에 실패하였습니다..")
             })
             .catch((error) => {
-                alert(error)
+                alert(signUpDto.value.userEmail + signUpDto.value.nickname + signUpDto.value.password + " " + error)
             })
     }
 }
