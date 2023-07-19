@@ -9,7 +9,7 @@
 
 <script setup>
 import { router } from '@/router';
-import axios from 'axios'
+//import axios from 'axios'
 import {ref} from 'vue'
 
 const userInfoDto = ref({
@@ -17,6 +17,7 @@ const userInfoDto = ref({
         password: ""
 })
 function sendRequest(){
+    /*
     axios.post("http://localhost:8080/login", userInfoDto.value)
          .then((resp) => {
             if(resp.data === "user")
@@ -31,6 +32,8 @@ function sendRequest(){
          .catch((error) => {
             alert(error);
          })
+         */
+    router.replace('machineAuth')
 }
 </script>
 

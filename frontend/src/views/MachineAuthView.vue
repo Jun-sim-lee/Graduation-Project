@@ -10,14 +10,16 @@
 
 <script setup>
 import { router } from '@/router'
+import axios from 'axios';
+import {ref} from 'vue'
 
+const uniqueRpiCode = ref("")
 function sendRequest(){
-    /*
     axios.post('http://localhost:8080/frontRpiAuth', uniqueRpiCode.value)
      .then((resp) => {
         if(resp.data === "Valid"){
             alert(resp.data + " 이므로 입장합니다.")
-            router.replace('main')
+            router.replace('emailAuth')
         }
         else{
             alert("유효하지 않은 코드입니다!!")
@@ -27,8 +29,6 @@ function sendRequest(){
      .catch((error) => {
         alert(error)
      })
-     */
-    router.replace('main')
 }
 </script>
 
