@@ -1,9 +1,9 @@
 <template>
-    <div class="screen">
+    <div class="screen" @touchend="stopDrag($event)">
         <div class="map_screen">
             <img id="csemap" src="../assets/map_201.jpeg"
                  style="position: absolute; left: 0px; top: 0px;"
-                 @mousedown="startDrag($event)" @mouseup="stopDrag($event)" @click="moveDrag($event)"/>
+                 @touchstart="startDrag($event)" @touchmove="moveDrag($event)"/>
         </div>
     </div>
 </template>
@@ -12,28 +12,35 @@
 import {ref} from 'vue'
 var imgLeft = 0
 var imgTop = 0
+var moveLeft = 0
+var moveTop = 0
+const isClick = ref(false)
 
 function startDrag(event){
-    const csemap = ref(event.target);
-    imgLeft = parseInt(csemap.value.style.left.replace('px', '')) - event.clientX
-    imgTop = parseInt(csemap.value.style.top.replace('px', '')) - event.clientY
+    imgLeft = event.pageX
+    imgTop = event.pageY
+    isClick.value = true
 
     if(event.preventDefault)
         event.preventDefault();
 }
 
 function moveDrag(event){
-    var dmvx = parseInt(event.clientX + imgLeft);
-    var dmvy = parseInt(event.clientY + imgTop);
+    if(isClick.value){
+        moveLeft = event.pageX
+        moveTop = event.pageY
 
-    event.target.style.left = dmvx + "px";
-    event.target.style.top = dmvy + "px";
-    return false
+        event.target.style.left = (parseInt(event.target.style.left.replace('px', '')) - (imgLeft - moveLeft)) + "px";
+        event.target.style.top = (parseInt(event.target.style.top.replace('px', '')) - (imgTop - moveTop)) + "px";
+        return false
+    }
 }
 
-function stopDrag(event){
-    event.target.onmousemove = null
-    event.target.onmouseup = null
+function stopDrag(){
+    isClick.value = false
+
+    imgLeft = moveLeft
+    imgTop = moveTop
 }
 
 </script>
