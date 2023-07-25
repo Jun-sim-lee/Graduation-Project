@@ -15,6 +15,7 @@ import {ref} from 'vue'
 
 const uniqueRpiCode = ref("")
 function sendRequest(){
+    router.replace('main')
     axios.post('http://localhost:8080/frontRpiAuth', uniqueRpiCode.value)
      .then((resp) => {
         if(resp.data === "Valid"){

@@ -1,38 +1,67 @@
 <template>
-    <div class="screen">
+    <div class="screen" @touchend="stopDrag($event)">
+        <button @click="toSelectDestionation" style="position: absolute; z-index: 1; top: 20px; opacity: 50%; color: black;
+                       width: 270px; height: 40px; border-radius: 5px; border: none;">목적지를 선택해주세요!</button>
         <div class="map_screen">
-            <img id="mapimg" src="../assets/map_201.jpeg"/>
+            <img id="csemap" src="../assets/map_201.jpeg"
+                 style="position: absolute; left: 0px; top: 0px;"
+                 @touchstart="startDrag($event)" @touchmove="moveDrag($event)"/>
         </div>
     </div>
 </template>
 
 <script setup>
-document.addEventListener("DOMContentLoaded", function(){
-    var mapImage = document.getElementById("mapimg");
-    var offsetX = 0;
-    var offsetY = 0;
-    var dragging = false;
+import {ref} from 'vue'
+import { router } from '@/router';
 
-    mapImage.addEventListener("mousedown", function(e) {
-        dragging = true;
-        offsetX = e.clientX - mapImage.offsetLeft;
-        offsetY = e.clientY - mapImage.offsetTop;
-    })
+var imgLeft = 0
+var imgTop = 0
+var moveLeft = 0
+var moveTop = 0
+const isClick = ref(false)
 
-    document.addEventListener("mousemove", function(e) {
-        if(dragging){
-            e.preventDefault;
-            var x = e.clientX - offsetX.value;
-            var y = e.clientY - offsetY.value;
-            mapImage.style.left = x + "px";
-            mapImage.style.top = y + "px";
-        }
-    })
+function startDrag(event){
+    imgLeft = event.pageX
+    imgTop = event.pageY
+    isClick.value = true
 
-    document.addEventListener("mouseup", function(){
-        dragging = false;
-    })
-})
+    if(event.preventDefault)
+        event.preventDefault();
+}
+
+function moveDrag(event){
+    if(isClick.value){
+        moveLeft = event.pageX
+        moveTop = event.pageY
+        if(parseInt(event.target.style.left.replace('px', '')) >= -1000 && parseInt(event.target.style.left.replace('px', '')) <= 0)
+            event.target.style.left = (parseInt(event.target.style.left.replace('px', '')) - ((imgLeft - moveLeft))/15) + "px";
+        else if(parseInt(event.target.style.left.replace('px', '')) < -1000)
+            event.target.style.left = -999 + "px";
+        else
+            event.target.style.left = 0+ "px";
+        if(parseInt(event.target.style.top.replace('px', '')) >= -200 && parseInt(event.target.style.top.replace('px', '')) <= 0)
+            event.target.style.top = (parseInt(event.target.style.top.replace('px', '')) - ((imgTop - moveTop))/15) + "px";
+        else if(parseInt(event.target.style.top.replace('px', '')) < -200)
+            event.target.style.top =  -199 + "px";
+        else
+            event.target.style.top = 0 + "px";
+
+        console.log(event.target.style.left + " " + event.target.style.top)
+        return false
+    }
+}
+
+function stopDrag(){
+    isClick.value = false
+
+    imgLeft = moveLeft
+    imgTop = moveTop
+}
+
+function toSelectDestionation(){
+    router.push('destination')
+}
+
 </script>
 
 <style>
