@@ -14,6 +14,7 @@ import OptionView from '../views/OptionView.vue'
 import AdminUserView from '../views/AdminUserView.vue'
 import AdminAskView from '../views/AdminAskView.vue'
 import AdminResourceView from '../views/AdminResourceView'
+import DestinationView from '../views/DestinationListView'
 
 const routes = [
     { path: '/', component: InitView },
@@ -27,6 +28,7 @@ const routes = [
     { path: '/allResource', component: AllResourceView },
     { path: '/myResource', component: MyResourceView },
     { path: '/map', component: MapView },
+    { path: '/destination', component: DestinationView },
     { path: '/option', component: OptionView },
     { path: '/adminUser', component: AdminUserView },
     { path: '/adminAsk', component: AdminAskView },
