@@ -18,7 +18,7 @@
             <p style = "position: absolute; color: white; left: 27px; top: 100px;">모든 리소스 목록입니다.<br>
                 정렬을 통해 권한 별 리소스 확인이 가능합니다.</p>
         </div>
-        <div style="width: 389px; height: 611px; background-color: white;">
+        <div style="width: 389px; height: 611px; background-color: white; overflow: scroll;">
             <ul>
                 <li class = "resource_list" style="display: flex; flex-direction: row; justify-content: space-between;"
                     :key="resource.name" v-for="resource in resourceList">
@@ -39,9 +39,14 @@ import {ref} from 'vue'
 const gearClick = ref(true)
 const resourceList = ref([
     {imgsrc: require("../assets/vendor_machine.png"), name: "자판기"},
-    {imgsrc: require("../assets/door_lock.png"), name: "도어락"},
+    {imgsrc: require("../assets/door_lock.png"), name: "도어락(6208)"},
+    {imgsrc: require("../assets/door_lock.png"), name: "도어락(6210)"},
+    {imgsrc: require("../assets/door_lock.png"), name: "도어락(6212)"},
     {imgsrc: require("../assets/lamp.png"), name: "전등"},
-    {imgsrc: require("../assets/monitor.jpg"), name: "모니터"}
+    {imgsrc: require("../assets/monitor.jpg"), name: "모니터"},
+    {imgsrc: null, name: "스피커"},
+    {imgsrc: null, name: "로봇"},
+    {imgsrc: null, name: "킥보드"},
 ])
 function moveToPrev(){
     router.go(-1)

@@ -133,7 +133,7 @@ body{
     width: 389px;
     height: 361px;
 
-    background: url(../assets/fluke2.png);
+    background: url(../assets/map_201.jpeg);
     background-size: cover;
 }
 .inner_header{
@@ -229,11 +229,17 @@ body{
 
 /* 지도 CSS */
 .map_screen{
-    position: relative;
     width: 389px;
     height: 761px;
 
     overflow: hidden;
+}
+
+.map_div{
+    position: relative; 
+    width: 1400px; 
+    height: 1400px; 
+    background: url('../assets/map_201.jpeg');
 }
 
 /* 관리자 페이지 */
