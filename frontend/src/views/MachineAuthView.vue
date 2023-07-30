@@ -12,10 +12,17 @@
 import { router } from '@/router'
 import axios from 'axios';
 import {ref} from 'vue'
+import { useStore } from 'vuex';
 
+const store = useStore()
 const uniqueRpiCode = ref("")
+const headers = ref({
+    'Content-type': 'application/json; charset=UTF-8',
+    'Authorization': 'Bearer ' + store.state.accessToken
+})
+
 function sendRequest(){
-    router.replace('main')
+    alert(headers.value.Authorization)
     axios.post('http://localhost:8080/frontRpiAuth', uniqueRpiCode.value)
      .then((resp) => {
         if(resp.data === "Valid"){

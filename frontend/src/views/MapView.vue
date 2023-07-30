@@ -1,9 +1,9 @@
 <template>
-    <div class="screen" @mouseup="stopDrag($event)">
+    <div class="screen" @touchend="stopDrag($event)">
         <button @click="toSelectDestionation" style="position: absolute; z-index: 3; top: 20px; opacity: 50%; color: black;
                        width: 270px; height: 40px; border-radius: 5px; border: none;">목적지를 선택해주세요!</button>
         <div class="map_screen">
-            <div @mousedown="startDrag($event)" @mousemove="moveDrag($event)"
+            <div @touchstart="startDrag($event)" @touchmove="moveDrag($event)"
                  class="map_div">
                 <div v-bind:style="{position: 'absolute', zIndex: 2, left: `${coordDto.client_x}px`, top: `${coordDto.client_y}px`, 
                                 backgroundColor: 'red', pointerEvents: 'none',
