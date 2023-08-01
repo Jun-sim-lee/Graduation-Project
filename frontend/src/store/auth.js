@@ -2,15 +2,17 @@ import { createStore } from "vuex"
 
 export default createStore ({
     state : {
-        userId: 'dndlzm123',
-        userName: '김금례',
-        accessToken: 'helloitsaccesstoken',
+        userId: '',
+        userName: '',
+        accessToken: '',
+        authority: '',
         isLoggedIn : false
     },
-    mutations: {
+    actions: {
         login: function(state, payload){
             state.userId = payload.userId
             state.userName = payload.userName
+            state.authority = payload.authority
             state.accessToken = payload.accessToken
             state.isLoggedIn = true
         }
