@@ -3,15 +3,15 @@ import { createStore } from "vuex"
 export default createStore ({
     state : {
         userId: '',
-        userName: '',
+        username: '',
         accessToken: '',
         authority: '',
         isLoggedIn : false
     },
-    actions: {
+    mutations: {
         login: function(state, payload){
             state.userId = payload.userId
-            state.userName = payload.userName
+            state.username = payload.username
             state.authority = payload.authority
             state.accessToken = payload.accessToken
             state.isLoggedIn = true
@@ -22,7 +22,7 @@ export default createStore ({
             return state.userId
         },
         getUserName(state){ 
-            return state.userName
+            return state.username
         },
         getAccessToken(state){
             return state.accessToken
