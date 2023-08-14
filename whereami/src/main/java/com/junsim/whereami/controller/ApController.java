@@ -20,4 +20,9 @@ public class ApController {
         apService.fingerprint(rss);
 
     }
+
+    @PostMapping("/rpiAuth")
+    public void rpiAuth(@RequestBody String uniqueRpiCode){
+        System.out.println("uniqueRpiCode = " + uniqueRpiCode);
+    }
 }
