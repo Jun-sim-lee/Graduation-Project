@@ -21,25 +21,37 @@ const loginDto = ref({
         userId: "",
         password: ""
 })
+const wrongCount = ref(0)
 
 function sendRequest(){
     axios.post("http://localhost:8080/login", loginDto.value)
          .then((resp) => {
             if(resp.status === 200){
-                store.commit("login", resp)
-                localStorage.setItem('user', JSON.stringify(resp.data.accessToken));
+                store.commit("login", resp.data)
+                localStorage.setItem('accessToken', JSON.stringify(resp.data.accessToken));
+                wrongCount.value = 0;
+                localStorage.setItem('wrongCount', wrongCount.value);
             }
-            
-            console.log(store.state.accessToken)
-            
+            else if(resp.data === "존재하지 않는 아이디입니다."){
+                alert("존재하지 않는 아이디입니다!")
+            }
+            else if(resp.data === "비밀번호가 틀렸습니다."){
+                wrongCount.value++;
+                
+                if(localStorage.getItem('wrongCount') === 5){
+                    alert("비밀번호 5회 오입력으로, 로그인 기능이 제한됩니다.");
+                }
+
+                alert("잘못된 비밀번호 입니다.\n잘못된 비밀번호 5회 입력 시 로그인 기능이 제한됩니다."
+                + "(" + wrongCount.value +  "회 틀림)")
+            }
+
             if(resp.data.authority === "user")
                 router.replace('main')
             else if(resp.data.authority === "student")
                 router.replace('otp')
             else if(resp.data.authority === "professor")
                 router.replace('qr')
-            else
-                alert("없는 유저 입니다.")
          })
          .catch((error) => {
             alert(error);
