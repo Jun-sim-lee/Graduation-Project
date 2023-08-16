@@ -9,10 +9,10 @@
                 <div class = "qr">{{ qrDto.ps2 }}</div>
                 <div class = "qr">{{ qrDto.ps3 }}</div>
                 <div class = "qr">{{ qrDto.ps4 }}</div>
-                <input class = "otp" maxlength="1" v-model="qrDto.qr1"/>
-                <input class = "otp" maxlength="1" v-model="qrDto.qr2"/>
-                <input class = "otp" maxlength="1" v-model="qrDto.qr3"/>
-                <input class = "otp" maxlength="1" v-model="qrDto.qr4"/>
+                <input class = "otp" maxlength="1" v-model="qrDto.qr1" @keyup="focusToTwo"/>
+                <input class = "otp" maxlength="1" v-model="qrDto.qr2" @keyup="focusToThree" ref="qrIn2"/>
+                <input class = "otp" maxlength="1" v-model="qrDto.qr3" @keyup="focusToFour" ref="qrIn3"/>
+                <input class = "otp" maxlength="1" v-model="qrDto.qr4" ref="qrIn4"/>
             </div>
             <button class = "submit_form" @click="sendRequest" style="top: 588px;">확인</button>
         </div>
@@ -49,6 +49,23 @@ function sendRequest(){
 }
 
 getRandomNumber(4)
+
+// 여기부터는 입력하면 옆 칸으로 넘어가는 focus 부분
+const qrIn2 = ref(null);
+const qrIn3 = ref(null);
+const qrIn4 = ref(null);
+
+function focusToTwo(){
+    qrIn2.value.focus()
+}
+
+function focusToThree(){
+    qrIn3.value.focus()
+}
+
+function focusToFour(){
+    qrIn4.value.focus()
+}
 </script>
 
 <style>

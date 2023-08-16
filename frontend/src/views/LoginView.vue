@@ -1,4 +1,7 @@
 <template>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
+    </head>
     <div class = "screen">
         <img src="../assets/logo.png" class = "logo">
         <input class = "wmi_input" style = "top: 422px; padding-left: 3%;" placeholder="아이디" v-model="loginDto.userId"/>
@@ -18,25 +21,42 @@ const loginDto = ref({
         userId: "",
         password: ""
 })
+const wrongCount = ref(0)
 
 function sendRequest(){
     axios.post("http://localhost:8080/login", loginDto.value)
          .then((resp) => {
             if(resp.status === 200){
-                store.commit("login", resp)
-                localStorage.setItem('user', JSON.stringify(resp.data.accessToken));
+                store.commit("login", resp.data)
+                localStorage.setItem('accessToken', JSON.stringify(resp.data.accessToken));
+                wrongCount.value = 0;
+                localStorage.setItem('wrongCount', wrongCount.value);
             }
-            
-            console.log(store.state.accessToken)
-            
+            else if(resp.data === "존재하지 않는 아이디"){
+                alert("존재하지 않는 아이디입니다!")
+            }
+            else if(resp.data === "비밀번호 틀림"){
+                wrongCount.value++;
+                
+                if(localStorage.getItem('wrongCount') === 5){
+                    alert("비밀번호 5회 오입력으로, 로그인 기능이 제한됩니다.");
+                    // 여기서 서버에 기능 잠그는 요청 보냄
+                }
+                else{
+                    alert("잘못된 비밀번호 입니다.\n잘못된 비밀번호 5회 입력 시 로그인 기능이 제한됩니다."
+                    + "(" + wrongCount.value +  "회 틀림)")
+                }
+            }
+            else if(resp.data === "기능이 제한된 계정입니다."){
+                alert("기능이 제한된 계정입니다.\n관리자에게 문의 바랍니다.")
+            }
+
             if(resp.data.authority === "user")
                 router.replace('main')
             else if(resp.data.authority === "student")
                 router.replace('otp')
             else if(resp.data.authority === "professor")
                 router.replace('qr')
-            else
-                alert("없는 유저 입니다.")
          })
          .catch((error) => {
             alert(error);
