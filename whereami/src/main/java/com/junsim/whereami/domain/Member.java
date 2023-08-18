@@ -21,6 +21,7 @@ public class Member {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "binary(16)")
     UUID id;
+    
     String email;
     String password;
     String nickName;

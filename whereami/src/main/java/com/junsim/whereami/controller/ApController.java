@@ -17,7 +17,8 @@ public class ApController {
 
     @PostMapping("/ap")
     public void fingerPrint(@RequestBody HashMap<String ,Integer> rss){
-        apService.fingerprint(rss);
+        apService.queueing(rss);
+        apService.fingerprint();
 
     }
 

@@ -3,7 +3,6 @@ package com.junsim.whereami;
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import com.junsim.whereami.service.ApService;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 import java.io.BufferedReader;
@@ -13,8 +12,8 @@ import java.nio.file.Paths;
 
 import static com.junsim.whereami.map.RssMap.radioMap;
 
-@SpringBootApplication
-public class WhereamiApplication {
+@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+public class WhereAmIApplication {
 	@PostConstruct
 	public void initializeMap(){
 		try {
@@ -55,7 +54,7 @@ public class WhereamiApplication {
 		}*/
 	}
 	public static void main(String[] args) {
-		SpringApplication.run(WhereamiApplication.class, args);
+		SpringApplication.run(WhereAmIApplication.class, args);
 	}
 
 
