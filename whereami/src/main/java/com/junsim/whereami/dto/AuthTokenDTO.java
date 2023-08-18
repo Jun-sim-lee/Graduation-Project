@@ -8,7 +8,7 @@ import java.util.Date;
 
 @AllArgsConstructor
 @Getter
-public class AuthTokenDto {
+public class AuthTokenDTO {
     private String grantType; // Bearer
     private String accessToken;
 

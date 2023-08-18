@@ -90,5 +90,7 @@ public class RssMap {
 
 
     public static Integer[][][] radioMap = new Integer[18][16][81];
+    public static int[][] userQueue = new int[81][3];
+    public static int queueCount = 0;
 
 }
