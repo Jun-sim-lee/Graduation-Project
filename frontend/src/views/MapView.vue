@@ -8,11 +8,11 @@
             <button class = "modal_button" style="background-color: red;" @click="closeModal">아니오</button>
         </div>
     </div>
-    <div class="screen" @touchend="stopDrag($event)">
+    <div class="screen" @mouseup="stopDrag($event)">
         <button @click="toSelectDestionation" style="position: absolute; z-index: 3; top: 20px; opacity: 50%; color: black;
                        width: 270px; height: 40px; border-radius: 5px; border: none;">목적지를 선택해주세요!</button>
         <div class="map_screen">
-            <div @touchstart="startDrag($event)" @touchmove="moveDrag($event)"
+            <div @mousedown="startDrag($event)" @mousemove="moveDrag($event)"
                  class="map_div">
                 <div v-bind:style="{position: 'absolute', zIndex: 2, left: `${computedX}px`, top: `${computedY}px`, 
                                 backgroundColor: 'red', pointerEvents: 'none',
@@ -24,10 +24,11 @@
 </template>
 
 <script setup>
-import {ref, computed} from 'vue'
+import {ref, computed, onMounted, onUnmounted} from 'vue'
 import { router } from '@/router';
 import {initializeApp} from "firebase/app"
 import {getMessaging, getToken, onMessage} from "firebase/messaging"
+import axios from 'axios';
 
 // 여기부터 지도 관련 JS
 var imgLeft = 0
@@ -37,8 +38,8 @@ var moveTop = 0
 
 const isClick = ref(false)
 const coordDto = ref({
-    client_x: 15,
-    client_y: 4
+    client_x: 0,
+    client_y: 0
     // 1320에 510이 0, 7과 같다.
     // 1320, 450이 0, 8이니 y축으로는 한 칸에 60 정도
     // 1240, 450이 1, 8이니 x축으로는 한 칸에 80 정도
@@ -102,12 +103,13 @@ const messaging = getMessaging(app);
 const showModal = ref(false);
 const targetResource = ref("");
 const pushMessage = ref("");
+var timer;
 
 getToken(messaging, {vapidKey: 'BNV2fY1k14mbXewu0_IVLr4IsozxZzfAnovQUK4SEqDpoGKGIWE3vQna-qamssoE4Dbl408i3erU5r4Bx8s-T_o'})
     .then((currentToken) => {
         if(currentToken){
-            alert(currentToken);
-            console.log(currentToken);
+            // axios.post("http://localhost:8080/fcmToken", currentToken)
+            // 위와 같이 서버에 유저 토큰을 전송해야 푸시 알림을 받을 수 있다.
         }
         else{
             alert("There's no registration token available")
@@ -123,9 +125,28 @@ onMessage(messaging, (payload) => {
     showModal.value = true;
 })
 
+onMounted(() => {
+    timer = setInterval(getCoordination, 1000);
+})
+
+onUnmounted(() => {
+    clearInterval(timer);
+})
+
+function getCoordination(){
+    axios.get("http://localhost:8080/map")
+        .then((resp) => {
+            coordDto.value.client_x = resp.data.x;
+            coordDto.value.client_y = resp.data.y;
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+}
+
 function closeModalWithRequest(){
     showModal.value = false;
-    // Axios 요청 코드
+    // 예 버튼을 눌렀을 때 Axios 요청 코드
 }
 
 function closeModal(){

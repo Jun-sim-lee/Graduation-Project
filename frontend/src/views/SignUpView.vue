@@ -15,7 +15,7 @@
 
 <script setup>
 import { router } from '@/router';
-//import axios from 'axios'
+import axios from 'axios'
 import {ref} from 'vue'
 
 const regex = /^[A-Za-z0-9]+@pusan.ac.kr/
@@ -53,7 +53,7 @@ function checkInformation(){
 function sendRequest(){
     router.replace('map');
     checkInformation();
-    /*
+    
     if(validPw.value === true && validEmail.value === true){
         axios.post("http://13.211.135.69:8080/signUp", signUpDto.value)
             .then((resp) => {
@@ -66,7 +66,6 @@ function sendRequest(){
                 alert(signUpDto.value.userEmail + signUpDto.value.nickname + signUpDto.value.password + " " + error)
             })
     }
-    */
 }
 </script>
 
