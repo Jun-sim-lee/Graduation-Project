@@ -1,5 +1,7 @@
 package com.junsim.whereami.controller;
 
+import com.junsim.whereami.dto.AuthTokenDTO;
+import com.junsim.whereami.dto.LoginDTO;
 import com.junsim.whereami.dto.SignUpDTO;
 import com.junsim.whereami.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -15,5 +17,11 @@ public class AuthController {
     public String signUp(@RequestBody SignUpDTO signUpDTO){
         authService.signUp(signUpDTO);
         return "ok";
+    }
+
+    @PostMapping("/login")
+    public AuthTokenDTO login(@RequestBody LoginDTO loginDTO){
+        AuthTokenDTO authTokenDTO = authService.login(loginDTO);
+        return authTokenDTO;
     }
 }
