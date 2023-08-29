@@ -25,6 +25,12 @@
 <script setup>
 import {ref} from 'vue';
 import { router } from '@/router';
+//import { useStore } from 'vuex';
+
+//const store = useStore();
+//const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+//const requestURL = inject('requestURL')
+
 const resourceList = ref([
     {imgsrc: require("../assets/vendor_machine.png"), name: "자판기"},
     {imgsrc: require("../assets/door_lock.png"), name: "도어락"},

@@ -11,19 +11,16 @@
 <script setup>
 import { router } from '@/router'
 import axios from 'axios';
-import {ref} from 'vue'
+import {ref, inject} from 'vue'
 import { useStore } from 'vuex';
 
-const store = useStore()
+const store = useStore();
 const uniqueRpiCode = ref("")
-const headers = ref({
-    'Content-type': 'application/json; charset=UTF-8',
-    'Authorization': 'Bearer ' + store.state.accessToken
-})
+const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+const requestURL = inject('requestURL')
 
 function sendRequest(){
-    alert(headers.value.Authorization)
-    axios.post('http://localhost:8080/frontRpiAuth', uniqueRpiCode.value)
+    axios.post(requestURL + 'frontRpiAuth', uniqueRpiCode.value, {headers})
      .then((resp) => {
         if(resp.data === "Valid"){
             alert(resp.data + " 이므로 입장합니다.")

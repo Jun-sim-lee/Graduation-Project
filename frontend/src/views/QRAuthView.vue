@@ -22,13 +22,18 @@
 <script setup>
 import { router } from '@/router';
 import axios from 'axios'
-import {ref} from 'vue'
+import {ref, inject} from 'vue'
+import { useStore } from 'vuex';
 
 const numberSet = new Set()
 const qrDto = ref({
     ps1: 0, ps2: 0, ps3: 0, ps4: 0,
     qr1: "", qr2: "", qr3: "", qr4: ""
 })
+const store = useStore();
+const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+const requestURL = inject('requestURL')
+// 이런 방식으로 전역변수 사용 가능 편하다!
 
 function getRandomNumber(limit){ // 중복되지 않는 난수 생성
     while(limit > numberSet.size){
@@ -41,7 +46,7 @@ function getRandomNumber(limit){ // 중복되지 않는 난수 생성
 }
 
 function sendRequest(){
-    axios.post("http://localhost:8080/qr", qrDto.value)
+    axios.post(requestURL + "qr", qrDto.value, {headers})
          .then((resp) => {
             if(resp === "OK")
                 router.replace('machineAuth')

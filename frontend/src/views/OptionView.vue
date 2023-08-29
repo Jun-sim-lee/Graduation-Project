@@ -17,6 +17,13 @@
 
 <script setup>
 import { router } from '@/router';
+import axios from 'axios';
+import { inject } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+const requestURL = inject('requestURL')
 
 function moveToEmail(){
     router.push('emailAuth')
@@ -25,7 +32,7 @@ function moveToPrev(){
     router.go(-1)
 }
 function logout(){
-    alert("로그아웃을 요청합니다.")
+    axios.get(requestURL + "logout", {headers})
 }
 </script>
 

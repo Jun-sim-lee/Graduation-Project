@@ -16,7 +16,9 @@
 <script setup>
 import { router } from '@/router';
 import axios from 'axios'
-import {ref} from 'vue'
+import {ref, inject} from 'vue'
+
+const requestURL = inject('requestURL')
 
 const regex = /^[A-Za-z0-9]+@pusan.ac.kr/
 const validPw = ref(true)
@@ -55,7 +57,7 @@ function sendRequest(){
     checkInformation();
     
     if(validPw.value === true && validEmail.value === true){
-        axios.post("http://13.211.135.69:8080/signUp", signUpDto.value)
+        axios.post(requestURL + "signUp", signUpDto.value)
             .then((resp) => {
                 if(resp.data === "ok")
                     router.replace('emailAuth')

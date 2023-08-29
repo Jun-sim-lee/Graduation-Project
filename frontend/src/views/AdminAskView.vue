@@ -31,6 +31,11 @@
 <script setup>
 import {ref} from 'vue'
 import {router} from '@/router'
+//import { useStore } from 'vuex';
+
+//const store = useStore();
+//const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+//const requestURL = inject('requestURL')
 
 const askList = ref([
     { name: "강의실" ,username: "심*섭", pos_x: 10, pos_y: 11 },
