@@ -28,16 +28,23 @@
 <script setup>
 import { router } from '@/router';
 import axios from 'axios';
-import {ref} from 'vue'
+import {ref, onMounted, inject} from 'vue'
+import { useStore } from 'vuex';
 const mainPageDto = ref({})
 
-axios.get('http://localhost:8080/main')
+const store = useStore();
+const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+const requestURL = inject('requestURL')
+
+onMounted(() => {
+    axios.get(requestURL + 'main', {headers})
      .then((resp) => {
         mainPageDto.value = resp.data
      })
      .catch((error) => {
         alert(error)
      })
+})
 
 function moveToAll(){
     router.push('allResource')

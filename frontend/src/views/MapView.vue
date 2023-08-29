@@ -24,11 +24,16 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted, onUnmounted} from 'vue'
+import {ref, computed, onMounted, onUnmounted, inject} from 'vue'
 import { router } from '@/router';
 import {initializeApp} from "firebase/app"
 import {getMessaging, getToken, onMessage} from "firebase/messaging"
 import axios from 'axios';
+import { useStore } from 'vuex';
+
+const store = useStore();
+const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+const requestURL = inject('requestURL')
 
 // 여기부터 지도 관련 JS
 var imgLeft = 0
@@ -108,7 +113,7 @@ var timer;
 getToken(messaging, {vapidKey: 'BNV2fY1k14mbXewu0_IVLr4IsozxZzfAnovQUK4SEqDpoGKGIWE3vQna-qamssoE4Dbl408i3erU5r4Bx8s-T_o'})
     .then((currentToken) => {
         if(currentToken){
-            // axios.post("http://localhost:8080/fcmToken", currentToken)
+            // axios.post(requestURL + "fcmToken", currentToken, {headers})
             // 위와 같이 서버에 유저 토큰을 전송해야 푸시 알림을 받을 수 있다.
         }
         else{
@@ -134,7 +139,7 @@ onUnmounted(() => {
 })
 
 function getCoordination(){
-    axios.get("http://localhost:8080/map")
+    axios.get(requestURL + "/map", {headers})
         .then((resp) => {
             coordDto.value.client_x = resp.data.x;
             coordDto.value.client_y = resp.data.y;

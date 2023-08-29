@@ -35,6 +35,11 @@
 <script setup>
 import { router } from '@/router';
 import {ref} from 'vue'
+//import { useStore } from 'vuex';
+
+//const store = useStore();
+//const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+//const requestURL = inject('requestURL')
 
 const gearClick = ref(true)
 const resourceList = ref([

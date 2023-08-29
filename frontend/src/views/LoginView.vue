@@ -13,9 +13,10 @@
 <script setup>
 import { router } from '@/router';
 import axios from 'axios'
-import {ref} from 'vue'
+import {ref, inject} from 'vue'
 import { useStore } from 'vuex';
 
+const requestURL = inject('requestURL')
 const store = useStore();
 const loginDto = ref({
         userId: "",
@@ -24,7 +25,7 @@ const loginDto = ref({
 const wrongCount = ref(0)
 
 function sendRequest(){
-    axios.post("http://localhost:8080/login", loginDto.value)
+    axios.post(requestURL + "login", loginDto.value)
          .then((resp) => {
             if(resp.status === 200){
                 store.commit("login", resp.data)
@@ -41,6 +42,9 @@ function sendRequest(){
                 if(localStorage.getItem('wrongCount') === 5){
                     alert("비밀번호 5회 오입력으로, 로그인 기능이 제한됩니다.");
                     // 여기서 서버에 기능 잠그는 요청 보냄
+                    // 유저 DB 내의 boolean 값을 바꾼다던가?
+                    // axios.get("http://localhost:8080/lockLogin")
+                    // REST API에 따라 get이 맞는가?
                 }
                 else{
                     alert("잘못된 비밀번호 입니다.\n잘못된 비밀번호 5회 입력 시 로그인 기능이 제한됩니다."
@@ -57,6 +61,8 @@ function sendRequest(){
                 router.replace('otp')
             else if(resp.data.authority === "professor")
                 router.replace('qr')
+            else if(resp.data.authority === "admin")
+                router.replace('adminUser')
          })
          .catch((error) => {
             alert(error);
