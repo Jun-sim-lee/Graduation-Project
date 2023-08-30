@@ -7,7 +7,7 @@
         <div style="position: absolute; top: 420px; width: 279px;">
             <input v-model="authKeyDto.authKey" style="background: rgba(211, 211, 211, 0.6); border-radius: 50px; border: none;
                    width: 155px; height:39px; padding-left: 5%; margin-right: 10px;" placeholder="인증번호"/>
-            <button @click="sendAuthKey" class = "submit_form" style="width: 100px;">인증번호 전송</button>
+            <button @click="sendAuthKey" class = "submit_form" style="width: 100px;">인증번호 요청</button>
         </div>
 
         <button @click="sendRequest" class = "submit_form" style="top: 488px">이메일 인증하기</button>
@@ -25,7 +25,12 @@
 <script setup>
 import {router} from '@/router'
 import axios from 'axios';
-import {ref} from 'vue';
+import {ref, inject} from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+const requestURL = inject('requestURL')
 
 const emailDto = ref({
     email: ""
@@ -40,7 +45,11 @@ const invalid = ref(false)
 const authKeyValid = ref(true)
 
 function sendAuthKey(){
-    alert("인증번호를 서버에 요청합니다.")
+    axios.get(requestURL + "email", {headers})
+        .then((resp) => {
+            if(resp.status === 200)
+                alert("인증번호를 서버에 요청합니다.\n이메일을 확인해주세요!")
+        })
 }
 
 function sendRequest(){
@@ -48,7 +57,7 @@ function sendRequest(){
     authKeyValidate()
 
     if(valid.value === true && authKeyValid.value === true)
-        axios.post("http://localhost:8080/emailAuth", emailDto.value)
+        axios.post(requestURL + "emailAuth", emailDto.value, {headers})
              .then((resp) => {
                 console.log(resp)
                 if(resp.data === "OK")

@@ -16,10 +16,10 @@
                     :key="resource.name" v-for="resource in resourceList">
                     <span style="width: 50px; font-size: 12px; line-height: 35px;">{{ resource.name }}</span>
                     <span style="font-size: 12px; line-height: 35px;">({{ resource.pos_x }}, {{resource.pos_y}})</span>
-                    <select style="margin: 6px; height: 20px;">
+                    <select v-model="resource.role" style="margin: 6px; height: 20px;">
                         <option :key="auth" v-for="auth in authList">{{ auth }}</option>
                     </select>
-                    <button style="border: none; border-radius: 30px; background-color: blue; width: 50px; height: 30px;
+                    <button @click="changeAuthority(resource.name)" style="border: none; border-radius: 30px; background-color: blue; width: 50px; height: 30px;
                                    font-size: 10px; color: white; ">변경</button>
                 </li>
             </ul>
@@ -28,13 +28,14 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {ref, onMounted, inject} from 'vue'
 import {router} from '@/router'
-//import { useStore } from 'vuex';
+import { useStore } from 'vuex';
+import axios from 'axios';
 
-//const store = useStore();
-//const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
-//const requestURL = inject('requestURL')
+const store = useStore();
+const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+const requestURL = inject('requestURL')
 
 const resourceList = ref([
     {name: "자판기", pos_x: 3, pos_y: 4, role:"학생"},
@@ -45,6 +46,29 @@ const resourceList = ref([
 const authList = ref([
     "학생", "교수"
 ])
+
+onMounted(() => { // 화면 마운트 시 요청 받아옴
+    requestAskList();
+})
+
+function requestAskList(){
+    axios.get(requestURL + "ask", {headers})
+        .then((resp) => {
+            resourceList.value = resp.data;
+        })
+}
+
+function changeAuthority(target){
+    alert(target)
+    // axios.post(requestURL + "changeAuthority", userInfo,{headers})
+    //    .then((resp) => {})
+    //    .catch((error) => {})
+
+    // 여기서 보낼 유저 정보의 형식은?
+    // 1. 리소스 이름 (findByResourceName)
+    // 2. 리소스가 변경될 권한
+    // 중요!) 현재 권한이랑 다른 경우에만 받아줘야 함.
+}
 
 function moveToUser(){
     router.replace('adminUser')

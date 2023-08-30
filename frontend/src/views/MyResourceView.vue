@@ -14,7 +14,7 @@
                     :key="resource.name" v-for="resource in resourceList">
                     <img :src="resource.imgsrc" style="width: 25px; height: 25px;">
                     <span style="font-size: 18px; line-height: 30px;">{{ resource.name }}</span>
-                    <button style="border: none; border-radius: 30px; background-color: red; width: 50px; height: 30px;
+                    <button @click="requestDeletion" style="border: none; border-radius: 30px; background-color: red; width: 50px; height: 30px;
                                    font-size: 10px; color: white; ">삭제</button>
                 </li>
             </ul>
@@ -23,13 +23,14 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {ref, onMounted, inject} from 'vue';
 import { router } from '@/router';
-//import { useStore } from 'vuex';
+import { useStore } from 'vuex';
+import axios from 'axios';
 
-//const store = useStore();
-//const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
-//const requestURL = inject('requestURL')
+const store = useStore();
+const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+const requestURL = inject('requestURL')
 
 const resourceList = ref([
     {imgsrc: require("../assets/vendor_machine.png"), name: "자판기"},
@@ -37,6 +38,21 @@ const resourceList = ref([
     {imgsrc: require("../assets/lamp.png"), name: "전등"},
     {imgsrc: require("../assets/monitor.jpg"), name: "모니터"}
 ])
+
+onMounted(() => { // 화면 마운트 시 요청 받아옴
+    requestResourceList();
+})
+
+function requestResourceList(){
+    axios.get(requestURL + "resource", {headers})
+        .then((resp) => {
+            resourceList.value = resp.data;
+        })
+}
+
+function requestDeletion(){
+    // 삭제 요청
+}
 
 function moveToPrev(){
     router.go(-1)
