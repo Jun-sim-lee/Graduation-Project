@@ -16,10 +16,10 @@
                     :key="user.name" v-for="user in userList">
                     <span style="font-size: 12px; line-height: 35px;">{{ user.name }}</span>
                     <span style="width: 130px; font-size: 12px; line-height: 35px;">({{ user.email }})</span>
-                    <select style="margin: 6px; height: 20px;">
+                    <select v-model="user.role" style="margin: 6px; height: 20px;">
                         <option :key="auth" v-for="auth in authList">{{ auth }}</option>
                     </select>
-                    <button style="border: none; border-radius: 30px; background-color: blue; width: 50px; height: 30px;
+                    <button @click="changeAuthority(user.name)" style="border: none; border-radius: 30px; background-color: blue; width: 50px; height: 30px;
                                    font-size: 10px; color: white; ">변경</button>
                 </li>
             </ul>
@@ -28,13 +28,14 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {ref, onMounted, inject} from 'vue'
 import {router} from '@/router'
-//import { useStore } from 'vuex';
+import { useStore } from 'vuex';
+import axios from 'axios';
 
-//const store = useStore();
-//const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
-//const requestURL = inject('requestURL')
+const store = useStore();
+const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+const requestURL = inject('requestURL')
 
 const userList = ref([
     {name: "이*경", email: "anfrhrl98@pusan.ac.kr", role:"학생" },
@@ -44,6 +45,30 @@ const userList = ref([
 const authList = ref([
     "학생", "교수"
 ])
+
+onMounted(() => { // 화면 마운트 시 요청 받아옴
+    requestUserList();
+})
+
+function requestUserList(){
+    axios.get(requestURL + "adminUser", {headers})
+        .then((resp) => {
+            userList.value = resp.data;
+        })
+}
+
+function changeAuthority(target){
+    alert(target)
+    // axios.post(requestURL + "changeAuthority", userInfo,{headers})
+    //    .then((resp) => {})
+    //    .catch((error) => {})
+
+    // 여기서 보낼 유저 정보의 형식은?
+    // 1. 유저 이메일
+    // 2. 유저가 변경 되고 싶은 권한
+    // 중요!) 현재 권한이랑 다른 경우에만 받아줘야 함.
+}
+
 function moveToAsk(){
     router.replace('adminAsk')
 }

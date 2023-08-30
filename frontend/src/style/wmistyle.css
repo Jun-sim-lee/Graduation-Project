@@ -210,6 +210,24 @@ body{
     margin-top: 18px;
     border-bottom: 1px solid #808080;
 }
+.resource_button_ask{
+    border: none; 
+    border-radius: 30px; 
+    background-color: blue; 
+    width: 50px; 
+    height: 30px;
+    font-size: 10px; 
+    color: white;
+}
+.resource_button_delete{
+    border: none; 
+    border-radius: 30px; 
+    background-color: red; 
+    width: 50px; 
+    height: 30px;
+    font-size: 10px; 
+    color: white;
+}
 
 /* 정렬 버튼 CSS*/
 .drawer{
