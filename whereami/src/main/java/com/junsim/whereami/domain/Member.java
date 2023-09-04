@@ -29,6 +29,7 @@ public class Member {
     String qrCode;
     boolean isLogin;
     LocalDateTime createAt;
+    Integer wrongCount = 1;
     @Enumerated(value = EnumType.STRING)
     Authority authority;
     @OneToMany(mappedBy = "member")
@@ -43,6 +44,10 @@ public class Member {
         this.authority = Authority.None;
         this.createAt = LocalDateTime.now();
         this.isLogin = false;
+    }
+
+    public void initializeWrongCount(){
+        this.wrongCount = 0;
     }
 
 }

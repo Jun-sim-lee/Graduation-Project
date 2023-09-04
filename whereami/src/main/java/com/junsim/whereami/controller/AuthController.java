@@ -5,6 +5,7 @@ import com.junsim.whereami.dto.LoginDTO;
 import com.junsim.whereami.dto.SignUpDTO;
 import com.junsim.whereami.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,5 +24,10 @@ public class AuthController {
     public AuthTokenDTO login(@RequestBody LoginDTO loginDTO){
         AuthTokenDTO authTokenDTO = authService.login(loginDTO);
         return authTokenDTO;
+    }
+
+    @GetMapping("/test")
+    public void test(){
+        authService.testLogin();
     }
 }
