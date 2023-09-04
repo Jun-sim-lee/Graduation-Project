@@ -1,10 +1,7 @@
 <template>
-    <head>
-        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
-    </head>
     <div class = "screen">
         <img src="../assets/logo.png" class = "logo">
-        <input class = "wmi_input" style = "top: 422px; padding-left: 3%;" placeholder="아이디" v-model="loginDto.userId"/>
+        <input class = "wmi_input" style = "top: 422px; padding-left: 3%;" placeholder="아이디" v-model="loginDto.email"/>
         <input type = "password" class = "wmi_input" style = "top: 477px; padding-left: 3%;" placeholder="비밀번호" v-model="loginDto.password"/>
         <button class = "submit_form" style = "top: 570px" @click="sendRequest">로그인</button>
     </div>
@@ -19,44 +16,20 @@ import { useStore } from 'vuex';
 const requestURL = inject('requestURL')
 const store = useStore();
 const loginDto = ref({
-        userId: "",
+        email: "",
         password: ""
 })
-const wrongCount = ref(0)
 
 function sendRequest(){
     axios.post(requestURL + "login", loginDto.value)
          .then((resp) => {
             if(resp.status === 200){
                 store.commit("login", resp.data)
-                localStorage.setItem('accessToken', JSON.stringify(resp.data.accessToken));
-                wrongCount.value = 0;
-                localStorage.setItem('wrongCount', wrongCount.value);
-            }
-            else if(resp.data === "존재하지 않는 아이디"){
-                alert("존재하지 않는 아이디입니다!")
-            }
-            else if(resp.data === "비밀번호 틀림"){
-                wrongCount.value++;
-                
-                if(localStorage.getItem('wrongCount') === 5){
-                    alert("비밀번호 5회 오입력으로, 로그인 기능이 제한됩니다.");
-                    // 여기서 서버에 기능 잠그는 요청 보냄
-                    // 유저 DB 내의 boolean 값을 바꾼다던가?
-                    // axios.get("http://localhost:8080/lockLogin")
-                    // REST API에 따라 get이 맞는가?
-                }
-                else{
-                    alert("잘못된 비밀번호 입니다.\n잘못된 비밀번호 5회 입력 시 로그인 기능이 제한됩니다."
-                    + "(" + wrongCount.value +  "회 틀림)")
-                }
-            }
-            else if(resp.data === "기능이 제한된 계정입니다."){
-                alert("기능이 제한된 계정입니다.\n관리자에게 문의 바랍니다.")
+                localStorage.setItem('accessToken', resp.data.accessToken);
             }
 
-            if(resp.data.authority === "user")
-                router.replace('main')
+            if(resp.data.authority === "none")
+                router.replace('machineAuth')
             else if(resp.data.authority === "student")
                 router.replace('otp')
             else if(resp.data.authority === "professor")
@@ -65,7 +38,15 @@ function sendRequest(){
                 router.replace('adminUser')
          })
          .catch((error) => {
-            alert(error);
+            if(error.response.data.error.message === "존재하지 않는 이메일입니다."){
+                alert("존재하지 않는 이메일입니다!")
+            }
+            else if(error.response.data.error.message.search('회') != -1){
+                alert(error.response.data.error.message + "\n5회 이상 오입력시 로그인 기능이 제한됩니다.")
+            }
+            else if(error.response.data.error.message === "기능이 제한된 계정입니다."){
+                alert("기능이 제한된 계정입니다.\n관리자에게 문의 바랍니다.")
+            }
          })
 }
 </script>

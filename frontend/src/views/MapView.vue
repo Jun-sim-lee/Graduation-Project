@@ -156,6 +156,7 @@ function closeModalWithRequest(){
 
 function closeModal(){
     showModal.value = false;
+    // 그냥 닫으면 됨
 }
 
 // 목적지 설정 Router

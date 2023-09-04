@@ -1,11 +1,11 @@
 <template>        
     <div class = "screen">
         <img src="../assets/logo.png" class = "logo">
-        <input v-model="emailDto.email" :class = "{'wmi_input': valid, 'input_error': invalid}" style="top: 355px; padding-left: 3%;" placeholder="부산대학교 이메일"/>
+        <input v-model="emailAuthDto.email" :class = "{'wmi_input': valid, 'input_error': invalid}" style="top: 355px; padding-left: 3%;" placeholder="부산대학교 이메일"/>
         <p v-if="invalid === true" style="position: absolute; top: 390px; font-size: 12px; color: red;">올바르지 않은 형식의 이메일입니다.</p>
 
         <div style="position: absolute; top: 420px; width: 279px;">
-            <input v-model="authKeyDto.authKey" style="background: rgba(211, 211, 211, 0.6); border-radius: 50px; border: none;
+            <input v-model="emailAuthDto.authNum" style="background: rgba(211, 211, 211, 0.6); border-radius: 50px; border: none;
                    width: 155px; height:39px; padding-left: 5%; margin-right: 10px;" placeholder="인증번호"/>
             <button @click="sendAuthKey" class = "submit_form" style="width: 100px;">인증번호 요청</button>
         </div>
@@ -32,20 +32,17 @@ const store = useStore();
 const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
 const requestURL = inject('requestURL')
 
-const emailDto = ref({
-    email: ""
+const emailAuthDto = ref({
+    email: "",
+    authNum: ""
 })
-const authKeyDto = ref({
-    authKey: ""
-}
-)
 const regex = /^[A-Za-z0-9]+@pusan.ac.kr/
 const valid = ref(true)
 const invalid = ref(false)
 const authKeyValid = ref(true)
 
 function sendAuthKey(){
-    axios.get(requestURL + "email", {headers})
+    axios.post(requestURL + "sendEmail", emailAuthDto.value.email, {headers})
         .then((resp) => {
             if(resp.status === 200)
                 alert("인증번호를 서버에 요청합니다.\n이메일을 확인해주세요!")
@@ -57,21 +54,20 @@ function sendRequest(){
     authKeyValidate()
 
     if(valid.value === true && authKeyValid.value === true)
-        axios.post(requestURL + "emailAuth", emailDto.value, {headers})
+        axios.post(requestURL + "emailAuth", emailAuthDto.value, {headers})
              .then((resp) => {
                 console.log(resp)
                 if(resp.data === "OK")
                     router.replace('main')
-                else
-                    alert("잘못된 인증번호 입니다!")
              })
              .catch((error) => {
-                alert(error)
+                if(error.response.data.error === "올바르지 않은 인증번호 입니다.")
+                    alert(error.response.data.error)
              })
 }
 
 function validate(){
-    if(regex.test(emailDto.value.email) === false){
+    if(regex.test(emailAuthDto.value.email) === false){
         valid.value = false
         invalid.value = true
     }
@@ -82,9 +78,9 @@ function validate(){
 }
 
 function authKeyValidate(){
-    if(authKeyDto.value.authKey < 6){
+    if(emailAuthDto.value.authNum < 6){
         authKeyValid.value = false
-        alert("올바른 인증번호를 입력 해주세요!")
+        alert("올바른 형식의 인증번호를 입력 해주세요!")
     }
     else
         authKeyValid.value = true
