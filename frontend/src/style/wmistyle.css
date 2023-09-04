@@ -261,6 +261,13 @@ body{
 }
 
 /* 관리자 페이지 */
+.admin_main_button{
+    position: absolute;
+    width: 300px;
+    height: 100px;
+    left: 45px;
+}
+
 .admin_button{
     background-color: transparent; 
     border: none;

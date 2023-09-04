@@ -15,6 +15,8 @@ import AdminUserView from '../views/AdminUserView.vue'
 import AdminAskView from '../views/AdminAskView.vue'
 import AdminResourceView from '../views/AdminResourceView'
 import DestinationView from '../views/DestinationListView'
+import AdminDBView from '../views/AdminDBView'
+import AdminMainView from '../views/AdminMainView'
 
 const routes = [
     { path: '/', component: InitView },
@@ -32,7 +34,9 @@ const routes = [
     { path: '/option', component: OptionView },
     { path: '/adminUser', component: AdminUserView },
     { path: '/adminAsk', component: AdminAskView },
-    { path: '/adminResource', component: AdminResourceView }
+    { path: '/adminResource', component: AdminResourceView },
+    { path: '/adminDB', component: AdminDBView },
+    { path: '/adminMain', component: AdminMainView }
 ]
 
 const router = createRouter({
