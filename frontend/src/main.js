@@ -11,6 +11,6 @@ app.use(store)
 
 const headers = '{"Content-type":"application/json; charset=UTF-8", "Authorization": "Bearer '
 app.provide('headers', headers)
-app.provide('requestURL', "http://localhost:8080/")
+app.provide('requestURL', "http://13.211.135.69:8080/")
 
 app.mount('#app')

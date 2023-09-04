@@ -53,19 +53,16 @@ function checkInformation(){
 }
 
 function sendRequest(){
-    router.replace('map');
     checkInformation();
     
     if(validPw.value === true && validEmail.value === true){
         axios.post(requestURL + "signUp", signUpDto.value)
             .then((resp) => {
                 if(resp.data === "ok")
-                    router.replace('emailAuth')
-                else
-                    alert("회원가입에 실패하였습니다..")
+                    router.replace('login')
             })
             .catch((error) => {
-                alert(signUpDto.value.userEmail + signUpDto.value.nickname + signUpDto.value.password + " " + error)
+                alert(error.response.data.error.message)
             })
     }
 }

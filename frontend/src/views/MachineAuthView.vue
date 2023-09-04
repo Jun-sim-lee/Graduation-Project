@@ -23,7 +23,7 @@ function sendRequest(){
     axios.post(requestURL + 'frontRpiAuth', uniqueRpiCode.value, {headers})
      .then((resp) => {
         if(resp.data === "Valid"){
-            alert(resp.data + " 이므로 입장합니다.")
+            alert(resp.data + " 하므로 입장합니다.")
             router.replace('emailAuth')
         }
         else{
