@@ -21,7 +21,7 @@ public class Member {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "binary(16)")
     UUID id;
-    
+    @Column(unique = true)
     String email;
     String password;
     String nickName;
@@ -29,7 +29,6 @@ public class Member {
     String qrCode;
     boolean isLogin;
     LocalDateTime createAt;
-    Integer wrongCount = 1;
     @Enumerated(value = EnumType.STRING)
     Authority authority;
     @OneToMany(mappedBy = "member")
@@ -46,8 +45,7 @@ public class Member {
         this.isLogin = false;
     }
 
-    public void initializeWrongCount(){
-        this.wrongCount = 0;
+    public void upgrade() {
+        this.authority = Authority.Student;
     }
-
 }

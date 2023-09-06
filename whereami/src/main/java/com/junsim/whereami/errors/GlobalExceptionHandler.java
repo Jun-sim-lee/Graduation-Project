@@ -27,10 +27,5 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> serverError(Exception500 e){
         return new ResponseEntity<>(e.body(), e.status());
     }
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> unknownServerError(Exception e){
-        ApiUtils.ApiResult<?> apiResult = ApiUtils.error(e.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR);
-        return new ResponseEntity<>(apiResult, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+
 }

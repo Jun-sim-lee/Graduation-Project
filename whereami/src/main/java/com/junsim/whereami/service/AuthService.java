@@ -2,15 +2,18 @@ package com.junsim.whereami.service;
 
 import com.junsim.whereami.domain.Member;
 import com.junsim.whereami.dto.AuthTokenDTO;
+import com.junsim.whereami.dto.EmailAuthDTO;
 import com.junsim.whereami.dto.LoginDTO;
 import com.junsim.whereami.dto.SignUpDTO;
 import com.junsim.whereami.errors.exception.Exception400;
 import com.junsim.whereami.errors.exception.Exception404;
 import com.junsim.whereami.jwt.JwtTokenProvider;
 import com.junsim.whereami.repository.MemberRepository;
-import jakarta.persistence.EntityManager;
+import com.junsim.whereami.utility.RedisUtility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Random;
 
 @Slf4j
 @Service
@@ -30,7 +34,8 @@ public class AuthService {
     private final JwtTokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PasswordEncoder passwordEncoder;
-    private final EntityManager em;
+    private final JavaMailSender javaMailSender;
+    private final RedisUtility redisUtility;
 
     public void signUp(SignUpDTO signUpDTO){
         if(memberRepository.findByEmail(signUpDTO.getEmail()).isPresent())
@@ -39,17 +44,18 @@ public class AuthService {
         memberRepository.save(member);
     }
 
-    @Transactional(readOnly = true)
     public AuthTokenDTO login(LoginDTO loginDTO){
         Optional<Member> loginMember = memberRepository.findByEmail(loginDTO.getEmail());
+        String wrongCount = redisUtility.getValues(loginDTO.getEmail());
         if(loginMember.isEmpty())
             throw new Exception404("존재하지 않는 이메일입니다.");
-        if(loginMember.get().getWrongCount() > 5)
+        if(wrongCount != null && wrongCount.length() > 4)
             throw new Exception400("기능이 제한된 계정입니다.");
         if(!passwordEncoder.matches(loginDTO.getPassword(), loginMember.get().getPassword())){
-            throw new Exception400("비밀번호가 틀렸습니다.");
+            checkWrongPassword(loginDTO.getEmail());
+            throw new Exception400("비밀번호가 " + redisUtility.getValues(loginDTO.getEmail()).length() + "회 틀렸습니다.");
         }
-        loginMember.get().initializeWrongCount();
+
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                 = new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(usernamePasswordAuthenticationToken);
@@ -58,9 +64,38 @@ public class AuthService {
         return authTokenDto;
     }
 
-    public void testLogin() {
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+    public void emailAuth(EmailAuthDTO emailAuthDTO) {
 
+        if(redisUtility.getValues(emailAuthDTO.getEmail()).equals(emailAuthDTO.getAuthNum())){
+            memberRepository.findByEmail(
+                    SecurityContextHolder.getContext().getAuthentication().getName()).get().upgrade();
+        }
     }
 
+    public void sendEmail(String email) {
+        Integer authNumber = makeNum();
+        redisUtility.setValues(email, Integer.toString(authNumber), 300);
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(email);
+        simpleMailMessage.setSubject("뭐더라!");
+        simpleMailMessage.setText("인증 번호 입니다.\n"
+                + authNumber +
+                "\n잘 입력해 보세요!");
+        // 이메일 발신
+        javaMailSender.send(simpleMailMessage);
+    }
+
+    public void printAuth(){
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName() + " : " + memberRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).get().getAuthority());
+    }
+
+    public Integer makeNum() {
+        return new Random().nextInt(888888) + 111111;
+    }
+    public void checkWrongPassword(String email) {
+        if(redisUtility.getValues(email) == null)
+            redisUtility.setValues(email, "1");
+        else
+            redisUtility.setValues(email, redisUtility.getValues(email) + "1");
+    }
 }
