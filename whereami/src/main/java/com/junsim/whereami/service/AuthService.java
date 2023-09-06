@@ -1,10 +1,7 @@
 package com.junsim.whereami.service;
 
 import com.junsim.whereami.domain.Member;
-import com.junsim.whereami.dto.AuthTokenDTO;
-import com.junsim.whereami.dto.EmailAuthDTO;
-import com.junsim.whereami.dto.LoginDTO;
-import com.junsim.whereami.dto.SignUpDTO;
+import com.junsim.whereami.dto.*;
 import com.junsim.whereami.errors.exception.Exception400;
 import com.junsim.whereami.errors.exception.Exception404;
 import com.junsim.whereami.jwt.JwtTokenProvider;
@@ -44,7 +41,7 @@ public class AuthService {
         memberRepository.save(member);
     }
 
-    public AuthTokenDTO login(LoginDTO loginDTO){
+    public LoginResponseDTO login(LoginDTO loginDTO){
         Optional<Member> loginMember = memberRepository.findByEmail(loginDTO.getEmail());
         String wrongCount = redisUtility.getValues(loginDTO.getEmail());
         if(loginMember.isEmpty())
@@ -61,19 +58,18 @@ public class AuthService {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(usernamePasswordAuthenticationToken);
         AuthTokenDTO authTokenDto = tokenProvider.generateToken(authentication);
 
-        return authTokenDto;
+        return new LoginResponseDTO(authTokenDto, loginMember.get().getAuthority());
     }
 
     public void emailAuth(EmailAuthDTO emailAuthDTO) {
 
         if(redisUtility.getValues(emailAuthDTO.getEmail()).equals(emailAuthDTO.getAuthNum())){
-            memberRepository.findByEmail(
-                    SecurityContextHolder.getContext().getAuthentication().getName()).get().upgrade();
+            memberRepository.findByEmail(currentMember()).get().upgrade();
         }
     }
 
     public void sendEmail(String email) {
-        Integer authNumber = makeNum();
+        Integer authNumber = makeEmailAuthNum();
         redisUtility.setValues(email, Integer.toString(authNumber), 300);
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(email);
@@ -85,17 +81,47 @@ public class AuthService {
         javaMailSender.send(simpleMailMessage);
     }
 
-    public void printAuth(){
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName() + " : " + memberRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).get().getAuthority());
+    public String sendOTP() {
+        String email = currentMember();
+        String OTP = makeOTPNum();
+        redisUtility.setValues(email, OTP, 60);
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(email);
+        simpleMailMessage.setSubject("시발롬아!");
+        simpleMailMessage.setText("OTP 입니다.\n"
+                + OTP +
+                "\n잘 입력해 보세요!");
+        // 이메일 발신
+        javaMailSender.send(simpleMailMessage);
+        return OTP;
     }
 
-    public Integer makeNum() {
+    public boolean checkOTP(OTPDTO otpdto){
+        return redisUtility.getValues(currentMember()).equals(otpdto.getOtp());
+    }
+
+    public Integer makeEmailAuthNum() {
         return new Random().nextInt(888888) + 111111;
+    }
+
+    public String makeOTPNum() {
+        String OTP = "";
+        Random rd = new Random();
+        String  initNum = Integer.toString(rd.nextInt(88888888) + 11111111);
+        for(int i = 0; i < 4; i++) {
+            Integer temp =rd.nextInt(8);
+            OTP += initNum.charAt(temp);
+        }
+        return OTP;
     }
     public void checkWrongPassword(String email) {
         if(redisUtility.getValues(email) == null)
             redisUtility.setValues(email, "1");
         else
             redisUtility.setValues(email, redisUtility.getValues(email) + "1");
+    }
+
+    public String currentMember() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }

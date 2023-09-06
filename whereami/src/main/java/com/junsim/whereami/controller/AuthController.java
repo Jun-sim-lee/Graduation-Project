@@ -1,6 +1,7 @@
 package com.junsim.whereami.controller;
 
 import com.junsim.whereami.dto.*;
+import com.junsim.whereami.errors.exception.Exception400;
 import com.junsim.whereami.repository.MemberRepository;
 import com.junsim.whereami.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +24,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public AuthTokenDTO login(@RequestBody LoginDTO loginDTO){
-        AuthTokenDTO authTokenDTO = authService.login(loginDTO);
-        return authTokenDTO;
+    public LoginResponseDTO login(@RequestBody LoginDTO loginDTO){
+        LoginResponseDTO loginResponseDTO = authService.login(loginDTO);
+        return loginResponseDTO;
     }
     @PostMapping("/sendEmail")
     public ResponseEntity<?> sendEmail(@RequestBody MailDTO mailDTO) {
@@ -35,14 +36,25 @@ public class AuthController {
         return ResponseEntity.ok(true);
     }
 
+    @GetMapping("/otp")
+    public ResponseEntity<?> sendOTP() {
+        String otp = authService.sendOTP();
+        return ResponseEntity.ok(otp);
+    }
+
+    @PostMapping("/checkOTP")
+    public ResponseEntity<?> checkOTP(@RequestBody OTPDTO otpdto) {
+        if(authService.checkOTP(otpdto))
+            return ResponseEntity.ok(true);
+        else
+            throw new Exception400("OTP가 틀려부러쓰");
+
+    }
+
     @PostMapping("/emailAuth")
     public ResponseEntity<?> emailAuth(@RequestBody EmailAuthDTO emailAuthDTO) {
         authService.emailAuth(emailAuthDTO);
         return ResponseEntity.ok(true);
     }
 
-    @GetMapping("/getAuth")
-    public void getAuth(){
-        authService.printAuth();
-    }
 }
