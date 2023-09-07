@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -29,5 +30,17 @@ public class MemberRepository {
                 .setParameter("email", email)
                 .getResultList()
                 .stream().findAny();
+    }
+
+    public Optional<Member> findByRpi(String rpiCode) {
+        return em.createQuery("select m from Member m where m.rpiCode = :rpiCode", Member.class)
+                .setParameter("rpiCode", rpiCode)
+                .getResultList()
+                .stream().findAny();
+    }
+
+    public List<Member> findAll() {
+        return em.createQuery("select m from Member m", Member.class)
+                .getResultList();
     }
 }

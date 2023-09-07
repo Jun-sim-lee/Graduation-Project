@@ -27,7 +27,7 @@ public class Member {
     String nickName;
     String rpiCode;
     String qrCode;
-    boolean isLogin;
+    boolean rpiStatus;
     LocalDateTime createAt;
     @Enumerated(value = EnumType.STRING)
     Authority authority;
@@ -42,10 +42,34 @@ public class Member {
         this.nickName = nickName;
         this.authority = Authority.None;
         this.createAt = LocalDateTime.now();
-        this.isLogin = false;
+        this.rpiStatus = false;
     }
 
     public void upgrade() {
         this.authority = Authority.Student;
+    }
+    public void setRpiCode(String code) {
+        this.rpiCode = code;
+    }
+    public void rpiOff(){
+        this.rpiStatus = false;
+    }
+    public void rpiOn(){
+        this.rpiStatus = true;
+    }
+    public boolean rpiStatus() {
+        return this.rpiStatus;
+    }
+
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
+    }
+
+    public void upgradeAuth(String auth) {
+        if(auth.equals("Student"))
+            this.authority = Authority.Student;
+        else if (auth.equals("Professor")) {
+            this.authority = Authority.Professor;
+        }
     }
 }

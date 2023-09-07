@@ -9,18 +9,18 @@ import com.junsim.whereami.repository.MemberRepository;
 import com.junsim.whereami.utility.RedisUtility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Random;
+import java.util.stream.Collectors;
+
+import static com.junsim.whereami.utility.SecurityUtility.currentMember;
 
 @Slf4j
 @Service
@@ -31,8 +31,14 @@ public class AuthService {
     private final JwtTokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PasswordEncoder passwordEncoder;
-    private final JavaMailSender javaMailSender;
     private final RedisUtility redisUtility;
+
+    public List<AllMemberDTO> findAllMember() {
+        List<Member> memberList = memberRepository.findAll();
+        return memberList.stream()
+                .map(AllMemberDTO::new)
+                .collect(Collectors.toList());
+    }
 
     public void signUp(SignUpDTO signUpDTO){
         if(memberRepository.findByEmail(signUpDTO.getEmail()).isPresent())
@@ -52,68 +58,35 @@ public class AuthService {
             checkWrongPassword(loginDTO.getEmail());
             throw new Exception400("비밀번호가 " + redisUtility.getValues(loginDTO.getEmail()).length() + "회 틀렸습니다.");
         }
+        redisUtility.deleteValues(loginDTO.getEmail());
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                 = new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(usernamePasswordAuthenticationToken);
         AuthTokenDTO authTokenDto = tokenProvider.generateToken(authentication);
-
-        return new LoginResponseDTO(authTokenDto, loginMember.get().getAuthority());
+        loginMember.get().rpiOff();
+        return new LoginResponseDTO(loginMember.get().getNickName(), authTokenDto, loginMember.get().getAuthority());
     }
 
     public void emailAuth(EmailAuthDTO emailAuthDTO) {
 
         if(redisUtility.getValues(emailAuthDTO.getEmail()).equals(emailAuthDTO.getAuthNum())){
             memberRepository.findByEmail(currentMember()).get().upgrade();
+            redisUtility.deleteValues(emailAuthDTO.getEmail());
         }
+        else
+            throw new Exception400("인증번호가 틀려부러쓰");
     }
 
-    public void sendEmail(String email) {
-        Integer authNumber = makeEmailAuthNum();
-        redisUtility.setValues(email, Integer.toString(authNumber), 300);
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(email);
-        simpleMailMessage.setSubject("뭐더라!");
-        simpleMailMessage.setText("인증 번호 입니다.\n"
-                + authNumber +
-                "\n잘 입력해 보세요!");
-        // 이메일 발신
-        javaMailSender.send(simpleMailMessage);
-    }
-
-    public String sendOTP() {
-        String email = currentMember();
-        String OTP = makeOTPNum();
-        redisUtility.setValues(email, OTP, 60);
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(email);
-        simpleMailMessage.setSubject("시발롬아!");
-        simpleMailMessage.setText("OTP 입니다.\n"
-                + OTP +
-                "\n잘 입력해 보세요!");
-        // 이메일 발신
-        javaMailSender.send(simpleMailMessage);
-        return OTP;
-    }
-
-    public boolean checkOTP(OTPDTO otpdto){
-        return redisUtility.getValues(currentMember()).equals(otpdto.getOtp());
-    }
-
-    public Integer makeEmailAuthNum() {
-        return new Random().nextInt(888888) + 111111;
-    }
-
-    public String makeOTPNum() {
-        String OTP = "";
-        Random rd = new Random();
-        String  initNum = Integer.toString(rd.nextInt(88888888) + 11111111);
-        for(int i = 0; i < 4; i++) {
-            Integer temp =rd.nextInt(8);
-            OTP += initNum.charAt(temp);
+    public boolean checkOTP(OtpDTO otpdto){
+        if(redisUtility.getValues(currentMember()).equals(otpdto.getOtp())){
+            redisUtility.deleteValues(currentMember());
+            return true;
         }
-        return OTP;
+        else
+            return false;
     }
+
     public void checkWrongPassword(String email) {
         if(redisUtility.getValues(email) == null)
             redisUtility.setValues(email, "1");
@@ -121,7 +94,45 @@ public class AuthService {
             redisUtility.setValues(email, redisUtility.getValues(email) + "1");
     }
 
-    public String currentMember() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+    public void setRpiCode(RpiCodeRequestDTO rpiCodeRequestDTO) {
+        Optional<Member> member = memberRepository.findByEmail(rpiCodeRequestDTO.getEmail());
+        member.get().setRpiCode(rpiCodeRequestDTO.getCode());
+    }
+
+    public void checkRpiCode(RpiAuthRequestDTO rpiAuthRequestDTo) {
+        Optional<Member> member = memberRepository.findByRpi(rpiAuthRequestDTo.getCode());
+        if(!member.isPresent())
+            throw new Exception400("없는 Rpi여");
+        else
+            member.get().rpiOn();
+
+    }
+    public boolean checkRpiOn(){
+        return memberRepository.findByEmail(currentMember()).get().rpiStatus();
+    }
+
+    public void setQrCode(QrCodeRequestDTO qrCodeRequestDTO) {
+        Optional<Member> member = memberRepository.findByEmail(qrCodeRequestDTO.getEmail());
+        if(!member.isPresent())
+            throw new Exception400("없는 email입니다.");
+        else
+            member.get().setQrCode(qrCodeRequestDTO.getQrCode());
+    }
+
+    public void checkQrCode(QrCheckRequestDTO qrCheckRequestDTO) {
+        Member member = memberRepository.findByEmail(currentMember()).get();
+        String number = qrCheckRequestDTO.getNumber();
+        for(int i = 0; i < 4; i++) {
+            if(member.getQrCode().charAt(qrCheckRequestDTO.getPosition().get(i) - 1) != number.charAt(i))
+                throw new Exception400("Qr코드가 틀려부러쓰");
+        }
+    }
+
+    public void upgradeAuth(AuthUpgradeRequestDTO authUpgradeRequestDTO) {
+        Optional<Member> member = memberRepository.findByEmail(authUpgradeRequestDTO.getEmail());
+        if(!member.isPresent())
+            throw new Exception400("없는 email입니다.");
+        else
+            member.get().upgradeAuth(authUpgradeRequestDTO.getAuth());
     }
 }

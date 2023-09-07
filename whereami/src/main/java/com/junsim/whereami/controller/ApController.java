@@ -22,8 +22,4 @@ public class ApController {
 
     }
 
-    @PostMapping("/rpiAuth")
-    public void rpiAuth(@RequestBody String uniqueRpiCode){
-        System.out.println("uniqueRpiCode = " + uniqueRpiCode);
-    }
 }
