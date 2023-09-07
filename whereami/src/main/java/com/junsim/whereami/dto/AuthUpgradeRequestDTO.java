@@ -3,7 +3,7 @@ package com.junsim.whereami.dto;
 import lombok.Getter;
 
 @Getter
-public class LoginDTO {
+public class AuthUpgradeRequestDTO {
     String email;
-    String password;
+    String auth;
 }
