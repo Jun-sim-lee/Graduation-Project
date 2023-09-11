@@ -30,11 +30,10 @@
 <script setup>
 import {ref, onMounted, inject} from 'vue'
 import {router} from '@/router'
-import { useStore } from 'vuex';
 import axios from 'axios';
 
-const store = useStore();
-const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+const accessToken = localStorage.getItem('accessToken')
+const headers = JSON.parse(inject('headers') + accessToken + '"}');
 const requestURL = inject('requestURL')
 
 const resourceList = ref([

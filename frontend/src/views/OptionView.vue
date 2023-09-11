@@ -19,10 +19,9 @@
 import { router } from '@/router';
 import axios from 'axios';
 import { inject } from 'vue';
-import { useStore } from 'vuex';
 
-const store = useStore();
-const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+const accessToken = localStorage.getItem('accessToken')
+const headers = JSON.parse(inject('headers') + accessToken + '"}');
 const requestURL = inject('requestURL')
 
 function moveToEmail(){

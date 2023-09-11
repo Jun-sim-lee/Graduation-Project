@@ -20,12 +20,13 @@
         </div>
         <div style="width: 389px; height: 611px; background-color: white; overflow: scroll;">
             <ul>
-                <template :key="resource.name" v-for="resource in listForShow">
+                <template :key="resource.deviceName" v-for="resource in listForShow">
                     <li class = "resource_list" style="display: flex; flex-direction: row; justify-content: space-between;">
-                        <img :src="resource.imgsrc" style="width: 25px; height: 25px;">
-                        <span style="font-size: 18px; line-height: 35px;">{{ resource.name }}</span>
-                        <button v-if="resource.authority === '교수'" class="resource_button_ask" @click="requestPermission(resource.name)">요청</button>
-                        <button v-if="resource.authority === '학생'" class="resource_button_delete" @click="requestDeletion(resource.name)">삭제</button>
+                        <img v-if="!resource.on" src="../assets/redglow.png" style="width: 25px; height: 25px;">
+                        <img v-if="resource.on" src="../assets/greenglow.png" style="width: 25px; height: 25px;">
+                        <span style="font-size: 18px; line-height: 35px;">{{ resource.deviceName }}</span>
+                        <button v-if="resource.auth == 'Student'" class="resource_button_ask" @click="requestAdd(resource.id)">추가</button>
+                        <button v-if="resource.auth == 'Professor'" class="resource_button_ask" @click="requestPermission(resource.id)">요청</button>
                     </li>
                 </template>
             </ul>
@@ -36,44 +37,35 @@
 <script setup>
 import { router } from '@/router';
 import {ref, onMounted, inject} from 'vue'
-import { useStore } from 'vuex';
 import axios from 'axios';
 
-const store = useStore();
-const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+const accessToken = localStorage.getItem('accessToken')
+const headers = JSON.parse(inject('headers') + accessToken + '"}');
 const requestURL = inject('requestURL')
 
 const gearClick = ref(true)
 const listForShow = ref([])
 const sortedMyResourceList = ref([])
 const sortedForbiddenResourceList = ref([])
-const resourceList = ref([
-    {imgsrc: require("../assets/vendor_machine.png"), name: "자판기", authority: "학생"},
-    {imgsrc: require("../assets/door_lock.png"), name: "도어락(6208)", authority: "학생"},
-    {imgsrc: require("../assets/door_lock.png"), name: "도어락(6210)", authority: "교수"},
-    {imgsrc: require("../assets/door_lock.png"), name: "도어락(6212)", authority: "교수"},
-    {imgsrc: require("../assets/lamp.png"), name: "전등", authority: "학생"},
-    {imgsrc: require("../assets/monitor.jpg"), name: "모니터", authority: "교수"},
-    {imgsrc: null, name: "스피커", authority: "학생"},
-    {imgsrc: null, name: "로봇", authority: "교수"},
-    {imgsrc: null, name: "킥보드", authority: "학생"},
-])
-
 const isNotSorted = ref({color: 'red'});
 const isSortedMine = ref();
 const isSortedForbidden = ref();
+
+const resourceList = ref([])
+const addRequestDto = ref({
+    resourceId: 0
+})
 
 onMounted(() => { // 화면 마운트 시 요청 받아옴
     requestResourceList();
 })
 
 function requestResourceList(){ // 기본적으로 전체 정렬
-    axios.get(requestURL + "resource", {headers})
+    axios.get(requestURL + "resources", {headers})
         .then((resp) => {
             resourceList.value = resp.data;
+            listForShow.value = resourceList.value;
         })
-
-    listForShow.value = resourceList.value
 }
 
 // 여기서 부터 정렬 메서드
@@ -90,7 +82,7 @@ function sortMine(){
     isSortedForbidden.value = {color: "black"};
 
     resourceList.value.forEach(object => {
-        if(object['authority'] === "학생")
+        if(object['auth'] === "Student")
             sortedMyResourceList.value.push(object)
         // 추후에 권한을 현재 로그인 한 사람 권한으로 바꿔야함
         // 방식은 store.state.authority를 통해서!
@@ -105,7 +97,7 @@ function sortForbidden(){
     isSortedForbidden.value = {color: "red"};
 
     resourceList.value.forEach(object => {
-        if(object['authority'] === "교수")
+        if(object['auth'] === "Professor")
             sortedForbiddenResourceList.value.push(object)
     });
     
@@ -123,28 +115,38 @@ function moveToPrev(){
 }
 
 // 여기서부터는 요청 메서드
+function requestAdd(target){
+    addRequestDto.value.resourceId = target // 리소스 아이디 받아옴
+    axios.post(requestURL + "askResource", addRequestDto.value, {headers})
+         .then((resp) => {
+            if(resp.status === 200)
+                alert("리소스 추가 요청이 전송 되었습니다.")
+         })
+         .catch((error) => {
+            alert(error)
+         })
+
+    // 해당 요청에 들어갈 값은
+    // 버튼을 눌렀을 때 해당 리소스 이름
+}
+
+
 function requestPermission(target){
-    alert(target)
-    // 권한 밖의 리소스 사용 요청
-    // axios.post(requestURL + "permit", data, {headers})
-    //      .then((resp) => {})
-    //      .catch((error) => {})
+    addRequestDto.value.resourceId = target // 리소스 아이디 받아옴
+    // 권한 밖의 요청
+    axios.post(requestURL + "askResource", addRequestDto.value, {headers})
+         .then((resp) => {
+            if(resp.status === 200)
+                alert("리소스 추가 요청이 완료되었습니다.")
+         })
+         .catch((error) => {
+            alert(error)
+         })
 
     // 해당 요청에 들어갈 값은
     // 버튼을 눌렀을 때 해당 리소스 이름
 }
 
-function requestDeletion(target){
-    alert(target)
-    // 권한 내의 리소스 삭제 요청
-    // axios.post(requestURL + "delete", data, {headers})
-    //      .then((resp) => {})
-    //      .catch((error) => {})
-
-    // 해당 요청에 들어갈 값은
-    // 버튼을 눌렀을 때 해당 리소스 이름
-    // 어차피 유저정보는 헤더 값에 넘어감
-}
 </script>
 
 <style>

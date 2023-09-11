@@ -22,11 +22,10 @@
 <script setup>
 import { router } from '@/router';
 import {ref, inject, onMounted} from 'vue'
-import { useStore } from 'vuex';
 import axios from 'axios';
 
-const store = useStore();
-const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+const accessToken = localStorage.getItem('accessToken')
+const headers = JSON.parse(inject('headers') + accessToken + '"}');
 const requestURL = inject('requestURL')
 
 const destinationList = ref([

@@ -62,7 +62,7 @@ function sendRequest(){
                     router.replace('login')
             })
             .catch((error) => {
-                alert(error.response.data.error.message)
+                alert(error)
             })
     }
 }

@@ -1,8 +1,8 @@
 import { createStore } from "vuex"
+import createPersistedState from 'vuex-persistedstate'
 
 export default createStore ({
     state : {
-        userId: '',
         username: '',
         accessToken: '',
         authority: '',
@@ -10,17 +10,13 @@ export default createStore ({
     },
     mutations: {
         login: function(state, payload){
-            state.userId = payload.userId
             state.username = payload.username
             state.authority = payload.authority
-            state.accessToken = payload.accessToken
+            state.accessToken = payload.authTokenDTO.accessToken // 이부분도 고쳐야함 다시!!
             state.isLoggedIn = true
         }
     },
     getters: {
-        getUserId(state){
-            return state.userId
-        },
         getUserName(state){ 
             return state.username
         },
@@ -30,5 +26,10 @@ export default createStore ({
         getIsLoggedIn(state){
             return state.isLoggedIn
         }
-    }
+    },
+    plugins: [
+        createPersistedState({})
+        // 원하는 페이지에서만 저장하도록 수정해볼 것
+    ]
 })
+

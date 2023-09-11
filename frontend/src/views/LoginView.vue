@@ -24,20 +24,25 @@ function sendRequest(){
     axios.post(requestURL + "login", loginDto.value)
          .then((resp) => {
             if(resp.status === 200){
-                store.commit("login", resp.data)
-                localStorage.setItem('accessToken', resp.data.accessToken);
+                localStorage.clear();
+                
+                store.commit("login", resp.data);
+                localStorage.setItem('accessToken', resp.data.authTokenDTO.accessToken) // 이부분 고쳐야함 다시!! 
+                console.log(store.state)
+                router.replace('main')
             }
 
-            if(resp.data.authority === "none")
+            if(resp.data.authority === "None")
                 router.replace('machineAuth')
-            else if(resp.data.authority === "student")
+            else if(resp.data.authority === "Student")
                 router.replace('otp')
-            else if(resp.data.authority === "professor")
+            else if(resp.data.authority === "Professor")
                 router.replace('qr')
-            else if(resp.data.authority === "admin")
-                router.replace('adminUser')
+            else if(resp.data.authority === "Admin")
+                router.replace('adminMain')
          })
          .catch((error) => {
+            console.log(error)
             if(error.response.data.error.message === "존재하지 않는 이메일입니다."){
                 alert("존재하지 않는 이메일입니다!")
             }
