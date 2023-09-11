@@ -3,7 +3,7 @@
         <div class = "inner_screen">
             <div class = "inner_header">
                 <img class = "profile" src="../assets/logo.png" alt="Profile"/>
-                <p style="color: white;">{{mainPageDto.username}}님 반갑습니다!</p>
+                <p style="color: white;">{{mainPageUsername}}님 반갑습니다!</p>
                 <div style = "width: 120px;"></div>
                 <button class = "gear" @click="moveToOption"></button>
             </div>
@@ -27,23 +27,14 @@
 
 <script setup>
 import { router } from '@/router';
-import axios from 'axios';
-import {ref, onMounted, inject} from 'vue'
+import {ref, onMounted} from 'vue'
 import { useStore } from 'vuex';
-const mainPageDto = ref({})
 
+const mainPageUsername = ref({})
 const store = useStore();
-const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
-const requestURL = inject('requestURL')
 
 onMounted(() => {
-    axios.get(requestURL + 'main', {headers})
-     .then((resp) => {
-        mainPageDto.value = resp.data
-     })
-     .catch((error) => {
-        alert(error)
-     })
+    mainPageUsername.value = store.state.username
 })
 
 function moveToAll(){

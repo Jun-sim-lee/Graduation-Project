@@ -257,7 +257,8 @@ body{
     position: relative; 
     width: 1400px; 
     height: 1400px; 
-    background: url('../assets/map_201.jpeg');
+    background: url('../assets/radiomap.jpeg');
+    background-repeat: no-repeat;
 }
 
 /* 관리자 페이지 */

@@ -13,13 +13,13 @@
             </div>
             <ul>
                 <li class = "resource_list" style="display: flex; flex-direction: row; justify-content: space-between;"
-                    :key="user.name" v-for="user in userList">
-                    <span style="font-size: 12px; line-height: 35px;">{{ user.name }}</span>
+                    :key="user.nickName" v-for="user in userList">
+                    <span style="font-size: 12px; line-height: 35px;">{{ user.nickName }}</span>
                     <span style="width: 130px; font-size: 12px; line-height: 35px;">({{ user.email }})</span>
-                    <select v-model="user.role" style="margin: 6px; height: 20px;">
+                    <select v-model="user.authority" style="margin: 6px; height: 20px;">
                         <option :key="auth" v-for="auth in authList">{{ auth }}</option>
                     </select>
-                    <button @click="changeAuthority(user.name)" style="border: none; border-radius: 30px; background-color: blue; width: 50px; height: 30px;
+                    <button @click="changeAuthority(user.email, user.authority)" style="border: none; border-radius: 30px; background-color: blue; width: 50px; height: 30px;
                                    font-size: 10px; color: white; ">변경</button>
                 </li>
             </ul>
@@ -30,38 +30,56 @@
 <script setup>
 import {ref, onMounted, inject} from 'vue'
 import {router} from '@/router'
-import { useStore } from 'vuex';
 import axios from 'axios';
 
-const store = useStore();
-const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+const accessToken = localStorage.getItem('accessToken')
+const headers = JSON.parse(inject('headers') + accessToken + '"}');
 const requestURL = inject('requestURL')
 
-const userList = ref([
-    {name: "이*경", email: "anfrhrl98@pusan.ac.kr", role:"학생" },
-    {name: "이*희", email: "abc980823@pusan.ac.kr", role:"교수"},
-    {name: "심*섭", email: "dndlzm123@pusan.ac.kr", role:"학생"}
-])
+const userList = ref([])
 const authList = ref([
-    "학생", "교수"
+    "일반", "학생", "교수"
 ])
+const userInfoDto = ref({
+    email: "",
+    auth: ""
+})
 
 onMounted(() => { // 화면 마운트 시 요청 받아옴
     requestUserList();
 })
 
 function requestUserList(){
-    axios.get(requestURL + "adminUser", {headers})
+    axios.get(requestURL + "members", {headers})
         .then((resp) => {
             userList.value = resp.data;
+            convertAuthority();
         })
 }
 
-function changeAuthority(target){
-    alert(target)
-    // axios.post(requestURL + "changeAuthority", userInfo,{headers})
-    //    .then((resp) => {})
-    //    .catch((error) => {})
+function convertAuthority(){
+    userList.value.forEach(element => {
+        if(element.authority === 'None')
+            element.authority = '일반'
+        if(element.authority === 'Student')
+            element.authority = '학생'
+        if(element.authority === 'Professor')
+            element.authority = '교수'
+    });
+}
+
+function changeAuthority(targetEmail, targetRole){
+    userInfoDto.value.email = targetEmail;
+    userInfoDto.value.auth = targetRole;
+
+    axios.post(requestURL + "upgradeAuth", userInfoDto.value, {headers})
+       .then((resp) => {
+            if(resp.status === 200)
+                alert("권한 수정이 완료 되었습니다.")
+       })
+       .catch((error) => {
+            alert(error)
+       })
 
     // 여기서 보낼 유저 정보의 형식은?
     // 1. 유저 이메일

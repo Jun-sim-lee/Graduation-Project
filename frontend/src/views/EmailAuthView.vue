@@ -26,10 +26,9 @@
 import {router} from '@/router'
 import axios from 'axios';
 import {ref, inject} from 'vue';
-import { useStore } from 'vuex';
 
-const store = useStore();
-const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+const accessToken = localStorage.getItem('accessToken')
+const headers = JSON.parse(inject('headers') + accessToken + '"}');
 const requestURL = inject('requestURL')
 
 const emailAuthDto = ref({
@@ -46,7 +45,7 @@ function sendAuthKey(){
         .then((resp) => {
             if(resp.status === 200)
                 alert("인증번호를 서버에 요청합니다.\n이메일을 확인해주세요!")
-        })
+    })
 }
 
 function sendRequest(){
@@ -56,13 +55,12 @@ function sendRequest(){
     if(valid.value === true && authKeyValid.value === true)
         axios.post(requestURL + "emailAuth", emailAuthDto.value, {headers})
              .then((resp) => {
-                console.log(resp)
-                if(resp.data === "OK")
+                if(resp.status === 200)
                     router.replace('main')
              })
              .catch((error) => {
-                if(error.response.data.error === "올바르지 않은 인증번호 입니다.")
-                    alert(error.response.data.error)
+                if(error.response.data.error.message === "인증번호가 틀려부러쓰")
+                    alert(error.response.data.error.message)
              })
 }
 

@@ -11,10 +11,11 @@
         <div style="width: 389px; height: 611px; position: relative; background-color: white;">
             <ul>
                 <li class = "resource_list" style="display: flex; flex-direction: row; justify-content: space-between;"
-                    :key="resource.name" v-for="resource in resourceList">
-                    <img :src="resource.imgsrc" style="width: 25px; height: 25px;">
-                    <span style="font-size: 18px; line-height: 30px;">{{ resource.name }}</span>
-                    <button @click="requestDeletion" style="border: none; border-radius: 30px; background-color: red; width: 50px; height: 30px;
+                    :key="resource.deviceName" v-for="resource in resourceList">
+                    <img v-if="!resource.on" src="../assets/redglow.png" style="width: 25px; height: 25px;">
+                    <img v-if="resource.on" src="../assets/greenglow.png" style="width: 25px; height: 25px;">
+                    <span style="font-size: 18px; line-height: 30px;">{{ resource.deviceName }}</span>
+                    <button @click="requestDeletion(resource.id)" style="border: none; border-radius: 30px; background-color: red; width: 50px; height: 30px;
                                    font-size: 10px; color: white; ">삭제</button>
                 </li>
             </ul>
@@ -25,33 +26,31 @@
 <script setup>
 import {ref, onMounted, inject} from 'vue';
 import { router } from '@/router';
-import { useStore } from 'vuex';
 import axios from 'axios';
 
-const store = useStore();
-const headers = JSON.parse(inject('headers') + store.state.accessToken + '"}');
+const accessToken = localStorage.getItem('accessToken')
+const headers = JSON.parse(inject('headers') + accessToken + '"}');
 const requestURL = inject('requestURL')
 
-const resourceList = ref([
-    {imgsrc: require("../assets/vendor_machine.png"), name: "자판기"},
-    {imgsrc: require("../assets/door_lock.png"), name: "도어락"},
-    {imgsrc: require("../assets/lamp.png"), name: "전등"},
-    {imgsrc: require("../assets/monitor.jpg"), name: "모니터"}
-])
+const resourceList = ref([])
 
 onMounted(() => { // 화면 마운트 시 요청 받아옴
     requestResourceList();
 })
 
 function requestResourceList(){
-    axios.get(requestURL + "resource", {headers})
+    axios.get(requestURL + "myResource", {headers})
         .then((resp) => {
             resourceList.value = resp.data;
         })
 }
 
-function requestDeletion(){
-    // 삭제 요청
+function requestDeletion(targetId){
+    axios.delete(requestURL + "deleteMyResource/" + targetId, {headers})
+        .then((resp) => {
+            if(resp.status === 200)
+                alert("리소스 삭제가 완료 되었습니다.")
+        })
 }
 
 function moveToPrev(){
