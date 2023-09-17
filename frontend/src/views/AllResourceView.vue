@@ -22,8 +22,8 @@
             <ul>
                 <template :key="resource.deviceName" v-for="resource in listForShow">
                     <li class = "resource_list" style="display: flex; flex-direction: row; justify-content: space-between;">
-                        <img v-if="!resource.on" src="../assets/redglow.png" style="width: 25px; height: 25px;">
-                        <img v-if="resource.on" src="../assets/greenglow.png" style="width: 25px; height: 25px;">
+                        <img v-if="resource.isOn==''" src="../assets/redglow.png" style="width: 25px; height: 25px;">
+                        <img v-if="resource.isOn!=''" src="../assets/greenglow.png" style="width: 25px; height: 25px;">
                         <span style="font-size: 18px; line-height: 35px;">{{ resource.deviceName }}</span>
                         <button v-if="resource.auth == 'Student'" class="resource_button_ask" @click="requestAdd(resource.id)">추가</button>
                         <button v-if="resource.auth == 'Professor'" class="resource_button_ask" @click="requestPermission(resource.id)">요청</button>
@@ -117,10 +117,10 @@ function moveToPrev(){
 // 여기서부터는 요청 메서드
 function requestAdd(target){
     addRequestDto.value.resourceId = target // 리소스 아이디 받아옴
-    axios.post(requestURL + "askResource", addRequestDto.value, {headers})
+    axios.post(requestURL + "addResource", addRequestDto.value, {headers})
          .then((resp) => {
             if(resp.status === 200)
-                alert("리소스 추가 요청이 전송 되었습니다.")
+                alert("리소스가 추가 되었습니다.")
          })
          .catch((error) => {
             alert(error)

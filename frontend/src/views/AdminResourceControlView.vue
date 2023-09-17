@@ -8,7 +8,12 @@
                          position: absolute; top: 20px; left: 20px;">
                 <p class = "admin_button">신규 리소스 등록</p>
                 <input type="text" placeholder="리소스 이름" v-model="resourceDto.deviceName"><br>
-                <input type="text" placeholder="사용 가능 권한" v-model="resourceDto.auth"><br>
+                <select v-model="resourceDto.auth" style="width: 147px; height: 21.5px;">
+                    <option value="" selected disabled hidden>사용 가능 권한</option>
+                    <option value="일반">일반</option>
+                    <option value="학생">학생</option>
+                    <option value="교수">교수</option>
+                </select><br>
                 <input type="text" placeholder="x 좌표" v-model="resourceDto.x" style="width: 65px;">
                 <input type="text" placeholder="y 좌표" v-model="resourceDto.y" style="width: 65px;"> <button @click="registerResource">등록</button>
             </div>

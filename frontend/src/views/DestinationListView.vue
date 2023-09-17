@@ -12,7 +12,7 @@
             <ul>
                 <li class = "resource_list" style = "text-align: center;" 
                     :key="destination.name" v-for="destination in destinationList">
-                    <span style="font-size: 18px; line-height: 30px;">{{ destination.name }}</span>
+                    <span @click="requestShortcut(destination.coord_x, destination.coord_y)" style="font-size: 18px; line-height: 30px;">{{ destination.name }}</span>
                 </li>
             </ul>
         </div>
@@ -21,30 +21,22 @@
 
 <script setup>
 import { router } from '@/router';
-import {ref, inject, onMounted} from 'vue'
-import axios from 'axios';
-
-const accessToken = localStorage.getItem('accessToken')
-const headers = JSON.parse(inject('headers') + accessToken + '"}');
-const requestURL = inject('requestURL')
+import {ref} from 'vue'
 
 const destinationList = ref([
-    {name: "6208", coord_x: 8, coord_y: 10},
-    {name: "남자화장실", coord_x: 4, coord_y: 8},
-    {name: "여자화장실", coord_x: 8, coord_y: 8},
-    {name: "계단", coord_x: 10, coord_y: 10}
+    {name: "6208", coord_x: 10, coord_y: 11},
+    {name: "남자화장실", coord_x: 3, coord_y: 11},
+    {name: "여자화장실", coord_x: 17, coord_y: 4},
+    {name: "계단", coord_x: 15, coord_y: 4}
 ])
 
-function requestDestinationList(){
-    axios.get(requestURL + "resource", {headers})
-        .then((resp) => {
-            destinationList.value = resp.data;
-        })
+function requestShortcut(targetX, targetY){
+    localStorage.setItem("x", targetX)
+    localStorage.setItem("y", targetY)
+    localStorage.setItem("isDest", true)
+    
+    router.go(-1)
 }
-
-onMounted(() => {
-    requestDestinationList();
-})
 
 function moveToPrev(){
     router.go(-1)
