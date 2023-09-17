@@ -1,7 +1,7 @@
 Device layer의 코드 저장소입니다.
 ### 개발 환경
 ```
-- Raspberry pi 4 - 4GB model B
+- Raspberry pi 3B+ (변경)
 - Python 3.9.2
 ```
 ### 파일 구조
