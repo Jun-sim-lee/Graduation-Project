@@ -12,8 +12,8 @@
             <ul>
                 <li class = "resource_list" style="display: flex; flex-direction: row; justify-content: space-between;"
                     :key="resource.deviceName" v-for="resource in resourceList">
-                    <img v-if="!resource.on" src="../assets/redglow.png" style="width: 25px; height: 25px;">
-                    <img v-if="resource.on" src="../assets/greenglow.png" style="width: 25px; height: 25px;">
+                    <img v-if="resource.isOn==''" src="../assets/redglow.png" style="width: 25px; height: 25px;">
+                    <img v-if="resource.isOn!=''" src="../assets/greenglow.png" style="width: 25px; height: 25px;">
                     <span style="font-size: 18px; line-height: 30px;">{{ resource.deviceName }}</span>
                     <button @click="requestDeletion(resource.id)" style="border: none; border-radius: 30px; background-color: red; width: 50px; height: 30px;
                                    font-size: 10px; color: white; ">삭제</button>

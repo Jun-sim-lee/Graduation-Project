@@ -6,7 +6,7 @@
         </div>
         <div style="width: 389px; height: 660px; background-color: white;">
             <ul>
-                <li class="resource_list">개인 정보 관리</li>
+                <li class="resource_list" @click="moveToPI">개인 정보 관리</li>
                 <li class="resource_list">버전 확인</li>
                 <li class="resource_list" @click="moveToEmail">이메일 인증</li>
                 <li class="resource_list" @click="logout" style="color: red;">로그아웃</li>
@@ -17,13 +17,10 @@
 
 <script setup>
 import { router } from '@/router';
-import axios from 'axios';
-import { inject } from 'vue';
 
-const accessToken = localStorage.getItem('accessToken')
-const headers = JSON.parse(inject('headers') + accessToken + '"}');
-const requestURL = inject('requestURL')
-
+function moveToPI(){
+    router.push('picontrol')
+}
 function moveToEmail(){
     router.push('emailAuth')
 }
@@ -31,7 +28,8 @@ function moveToPrev(){
     router.go(-1)
 }
 function logout(){
-    axios.get(requestURL + "logout", {headers})
+    localStorage.clear()
+    router.replace('/')
 }
 </script>
 

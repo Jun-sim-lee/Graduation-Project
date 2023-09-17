@@ -18,6 +18,7 @@ import DestinationView from '../views/DestinationListView'
 import AdminDBView from '../views/AdminDBView'
 import AdminMainView from '../views/AdminMainView'
 import AdminResourceControlView from '../views/AdminResourceControlView'
+import PersonalInformationView from '../views/PersonalInformationView'
 
 const routes = [
     { path: '/', component: InitView },
@@ -30,7 +31,7 @@ const routes = [
     { path: '/machineAuth', component: MachineAuthView },
     { path: '/allResource', component: AllResourceView },
     { path: '/myResource', component: MyResourceView },
-    { path: '/map', component: MapView },
+    { path: '/map', name: 'map', component: MapView },
     { path: '/destination', component: DestinationView },
     { path: '/option', component: OptionView },
     { path: '/adminUser', component: AdminUserView },
@@ -38,7 +39,8 @@ const routes = [
     { path: '/adminResource', component: AdminResourceView },
     { path: '/adminDB', component: AdminDBView },
     { path: '/adminMain', component: AdminMainView },
-    { path: '/adminResourceControl', component: AdminResourceControlView }
+    { path: '/adminResourceControl', component: AdminResourceControlView },
+    { path: '/picontrol', component: PersonalInformationView }
 ]
 
 const router = createRouter({

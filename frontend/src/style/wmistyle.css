@@ -161,30 +161,55 @@ body{
     justify-content: flex-end;
 
     background: url(../assets/map_icon.png);
-    border-radius: 50px;
+    border-radius: 40px;
     padding: 20px;
     font-size: 20px;
     font-weight: bold;
-    border: none;
+    border: 1px outset black;
 }
-.small_btn{
+.small_btn1{
     position: absolute;
     width: 160px;
     height: 160px;
     top: 250px;
+    left: 24px;
     
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
-    
-    background: url(../assets/fluke.png);
-    background-size: cover;
-    border-radius: 50px;
-    text-align: center;
+
     padding: 20px;
     font-size: 17px;
     font-weight: bold;
-    border: none;
+    background-size: cover;
+    background-image: url('../assets/resources.png');
+    /*background-image: linear-gradient(to bottom, #537FE7 30%, white 30%);*/
+    border-radius: 40px;
+    cursor: pointer;
+    outline: none;
+    border: 1px outset black
+}
+.small_btn2{
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    top: 250px;
+    left: 201px;
+    
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+
+    padding: 20px;
+    font-size: 17px;
+    font-weight: bold;
+    background-size: cover;
+    background-image: url('../assets/personal.png');
+    /*background-image: linear-gradient(to bottom, #537FE7 30%, white 30%);*/
+    border-radius: 40px;
+    cursor: pointer;
+    outline: none;
+    border: 1px outset black
 }
 .gear{
     width: 24px; 
@@ -248,17 +273,45 @@ body{
 /* 지도 CSS */
 .map_screen{
     width: 389px;
-    height: 761px;
+    height: 695px;
 
     overflow: hidden;
 }
-
 .map_div{
     position: relative; 
     width: 1400px; 
     height: 1400px; 
-    background: url('../assets/radiomap.jpeg');
+    background: url('../assets/radiomapfixed.png');
     background-repeat: no-repeat;
+}
+.triangle_button{
+    margin-top: 12px;
+    margin-left: 5px;
+    color: white;
+    z-index: 3;
+    width: 30px;
+    height: 30px;
+    font-size: 40px;
+    cursor: pointer;
+}
+.map_header{
+    display: flex; 
+    flex-wrap: wrap; 
+    flex-direction: row; 
+    justify-content: space-between; 
+    background-color: #537FE7;
+    width: 389px;
+    height: 70px;
+}
+.map_header_button{
+    z-index: 3;
+    color: black;
+    background-color: white;
+    width: 270px; 
+    height: 40px; 
+    border-radius: 5px; 
+    border: none;
+    margin: auto;
 }
 
 /* 관리자 페이지 */
@@ -268,7 +321,6 @@ body{
     height: 100px;
     left: 45px;
 }
-
 .admin_button{
     background-color: transparent; 
     border: none;
@@ -294,7 +346,6 @@ body{
     text-align: center;
     padding: 20px;
 }
-
 .modal_button{
     width: 60px;
     height: 20px;
