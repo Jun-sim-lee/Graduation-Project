@@ -24,25 +24,25 @@ if __name__ == "__main__":
     scan_command = "sudo iwlist wlan0 scan | grep -E 'level|Address' | sed 's/level=//' | awk '{ if ( $1 == \"Cell\" ) { print $5 } if ( $2 == \"Signal\" ) { print $3 } }'"
 
     # 서버에 연결 시도
-    url = "http://43.202.141.142:8080/sendTest"
+    url = "http://localhost:8080/sendTest"
     headers = {'Content-Type': 'application/json; charset=utf-8'}
-    transmit_counter = 0
+    transmit_counter = 1
     try:
-        while transmit_counter <= 5:
-            curr_out_filename = out_filename + '#' + str(transmit_counter) + '.txt'
-            curr_scan_command = scan_command + ' > ' + curr_out_filename
-            os.system(curr_scan_command)
+        while transmit_counter <= 3:
+            curr_out_filename = 'hello' + str(transmit_counter) + '.txt'
+            # curr_scan_command = scan_command + ' > ' + curr_out_filename
+            # os.system(curr_scan_command)
 
             # 생성된 txt 파일을 token화 해서 REST api 호출을 통해 서버로 전송
             # 서버로 전송된 String은 서버의 Controller에서 역직렬화되어 Map으로 받아진다.
             request_data = file_tokenize.txt_to_msg(curr_out_filename, -70)
             # 이 부분에서 전송이 아닌 계산이 들어가야 한다.
-            request_data = file_tokenize.add_unique_id(unique_id, request_data)
+            request_data = file_tokenize.add_unique_id_old(unique_id, request_data)
             # 또한, add_unique_id 함수를 통해서 JSON 형태로 아이디를 붙여 전송한다.
-            
+            print(request_data)
             requests.post(url=url, data=request_data, headers=headers)
             print(transmit_counter)
-            time.sleep(0.1) # 서버에 보내는 간격이 필요하다.
+            time.sleep(1) # 서버에 보내는 간격이 필요하다.
             transmit_counter += 1
     except:
         print("Cannot connect to server!!")
