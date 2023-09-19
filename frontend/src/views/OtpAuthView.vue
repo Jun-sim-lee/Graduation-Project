@@ -40,9 +40,6 @@ onMounted(() => {
 function requestOtp(){
     alert("로그인하신 이메일로 OTP가 전송되었습니다!")
     axios.get(requestURL + "otp", {headers})
-        .then((resp) => {
-            console.log(resp.data.OTP)
-        })
 }
 
 function sendRequest(){

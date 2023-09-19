@@ -6,7 +6,7 @@ import os
 import time
 import requests # REST API 호출용
 import file_tokenize as tokenize # txt 파일 메시지화
-import load_map_test as load_map
+import load_utility as ut
 from clientQueue import clientQueue
 def authenticate_rpi(unique_id):
     url = "http://43.202.141.142:8080/checkRpi"
@@ -42,14 +42,14 @@ if __name__ == "__main__":
     # 5. 사용자의 위치를 계산하기 위한 사용자용 radio_map
     out_filename = RSS_directory + '/' + 'RSS-realtime'
     scan_command = "sudo iwlist wlan0 scan | grep -E 'level|Address' | sed 's/level=//' | awk '{ if ( $1 == \"Cell\" ) { print $5 } if ( $2 == \"Signal\" ) { print $3 } }'"
-    radio_map = load_map.load_radio_map()
-    ap_list = load_map.load_ap_list(); ap_num = 81
+    radio_map = ut.load_radio_map()
+    ap_list = ut.load_ap_list(); ap_num = 81
     client_rss_store = []
     for _ in range(ap_num): # 사용자의 큐를 만들어 유지한다.
         client_rss_store.append(clientQueue(3))
 
     # 연결할 서버 정보
-    url = "http://localhost:8080/sendTest"
+    url = "http://3.35.229.16:8080/sendTest"
     headers = {'Content-Type': 'application/json; charset=utf-8'}
     transmit_counter = 1
     while transmit_counter <= 3:
@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
             # 생성된 txt 파일을 token화 해서 계산을 진행해야 한다!
             data_for_calculate = tokenize.parse_for_calculate(curr_out_filename, -70)
-            client_rss_store = load_map.create_client_info(data_for_calculate, ap_list, client_rss_store)
+            client_rss_store = ut.create_client_info(data_for_calculate, ap_list, client_rss_store)
             
             client_rss_store_median = []
             for idx in range(ap_num):
@@ -67,14 +67,13 @@ if __name__ == "__main__":
             # 사용자의 개인 큐에서 중간 값만 뽑아내어 계산에 사용하도록 한다.
             
             # 아래의 함수로 계산 로직 실행
-            x, y = load_map.calculate_client_position(radio_map, client_rss_store_median, ap_list)
+            x, y = ut.calculate_client_position(radio_map, client_rss_store_median)
             # 먼저 계산되어 나온 좌표를 POST 방식으로 전송하기 위해 JSON 형식으로 만들자!
             data_for_request = tokenize.coordinate_to_json(x, y)
             # 계산되어 나온 좌표에 unique_id를 덧붙여서 서버에 전송하도록 한다.
             data_for_request = tokenize.add_unique_id(unique_id, data_for_request)
-
-            requests.post(url=url, data=data_for_request, headers=headers)
-            print(transmit_counter)
-            time.sleep(1) # 서버에 보내는 간격이 필요하다.
-
+            print(data_for_request)
+            #requests.post(url=url, data=data_for_request, headers=headers)
+            #print(transmit_counter)
+            #time.sleep(1) # 서버에 보내는 간격이 필요하다.
             transmit_counter += 1

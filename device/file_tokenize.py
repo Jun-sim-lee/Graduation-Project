@@ -3,7 +3,7 @@ import sys
 REST Api 요청을 위해서는, 역질렬화가 필요하다.
 따라서 String을 객체로 변환하는 작업을 해 주어야 한다.
 """
-""" 여기는 이전 버전에서 사용되었던 코드
+""" 여기는 이전 버전에서 사용되었던 코드"""
 def concat_quotes(str):
     return "\"" + str + "\""
 
@@ -38,22 +38,40 @@ def txt_to_msg(filename, threshold):
 
     return msg
 """
-
 def parse_for_calculate(filename, threshold):
     sys.path.append('../')
 
-    msg = ""
+    msg = ""; flag = False
     fp = open(filename, 'r')
     for line in fp.readlines():
         stripped_line = line.rstrip()
         if len(msg) > 0:
-            if(stripped_line[0] == '-'): # 여기서 역치 이하의 값 제거
-                if(int(stripped_line) < threshold):
-                    msg = msg[0: (len(msg) - 18)]
+            if stripped_line[0] == '-': # 여기서 역치 이하의 값 제거
+                if int(stripped_line) <= threshold:
+                    if flag == False:
+                        msg = msg[0: (len(msg) - 17)]
+                    else:
+                        msg = msg[0: (len(msg) - 18)]
                 else:
                     msg = msg + ',' + stripped_line
+                    flag = True
             else:       
                 msg = msg + ',' + stripped_line
+        else:
+            msg = stripped_line
+
+    fp.close()
+    return msg
+"""
+def parse_for_calculate(filename, threshold):
+    sys.path.append('../')
+
+    msg = "";
+    fp = open(filename, 'r')
+    for line in fp.readlines():
+        stripped_line = line.rstrip()
+        if len(msg) > 0:
+            msg = msg + ',' + stripped_line
         else:
             msg = stripped_line
 
@@ -67,4 +85,6 @@ def add_unique_id(unique_id, msg): # 식별자를 추가하는 함수
     msg = '{"uniqueRpiCode":' + '"' + unique_id + '"' + msg + "}"
     return msg
 
-parse_for_calculate('hello1.txt', -70)
+def add_unique_id_old(unique_id, msg): # 식별자를 추가하는 함수
+    msg = '{"uniqueRpiCode":' + '"' + unique_id + '", "rss": ' + msg + '}'
+    return msg

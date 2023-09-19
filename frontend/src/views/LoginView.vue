@@ -28,7 +28,6 @@ function sendRequest(){
                 
                 store.commit("login", resp.data);
                 localStorage.setItem('accessToken', resp.data.authTokenDTO.accessToken) // 이부분 고쳐야함 다시!! 
-                console.log(store.state)
                 router.replace('main')
             }
 

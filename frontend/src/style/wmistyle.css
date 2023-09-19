@@ -172,11 +172,10 @@ body{
     width: 160px;
     height: 160px;
     top: 250px;
-    left: 24px;
     
     display: flex;
     align-items: flex-end;
-    justify-content: flex-end;
+    justify-content: center;
 
     padding: 20px;
     font-size: 17px;
@@ -194,11 +193,10 @@ body{
     width: 160px;
     height: 160px;
     top: 250px;
-    left: 201px;
     
     display: flex;
     align-items: flex-end;
-    justify-content: flex-end;
+    justify-content: center;
 
     padding: 20px;
     font-size: 17px;
@@ -284,6 +282,15 @@ body{
     background: url('../assets/radiomapfixed.png');
     background-repeat: no-repeat;
 }
+.map_header{
+    display: flex; 
+    flex-wrap: wrap; 
+    flex-direction: row; 
+    justify-content: space-between; 
+    background-color: #537FE7;
+    width: 389px;
+    height: 70px;
+}
 .triangle_button{
     margin-top: 12px;
     margin-left: 5px;
@@ -294,19 +301,20 @@ body{
     font-size: 40px;
     cursor: pointer;
 }
-.map_header{
-    display: flex; 
-    flex-wrap: wrap; 
-    flex-direction: row; 
-    justify-content: space-between; 
-    background-color: #537FE7;
-    width: 389px;
-    height: 70px;
-}
 .map_header_button{
     z-index: 3;
     color: black;
     background-color: white;
+    width: 270px; 
+    height: 40px; 
+    border-radius: 5px; 
+    border: none;
+    margin: auto;
+}
+.cancel_button{
+    z-index: 3;
+    color: white;
+    background-color: #FA5858;
     width: 270px; 
     height: 40px; 
     border-radius: 5px; 
