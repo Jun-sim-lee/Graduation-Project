@@ -11,10 +11,9 @@
     <div class="screen" @mouseup="stopDrag($event)">
         <div class="map_header">
             <span class="triangle_button" @click="backToMain"> &lt; </span>
-            <button @click="toSelectDestionation" class="map_header_button">목적지를 선택해주세요!</button>
-            <div style="width: 30px;">
-                <button v-if="isDest" @click="cancelShortcut" style="width: 30px;">취소</button>
-            </div>
+            <button v-if="!isDest" @click="toSelectDestionation" class="map_header_button">목적지를 선택해주세요!</button>
+            <button v-if="isDest" @click="cancelShortcut" class="cancel_button">취소</button>
+            <div style="width: 30px;"></div>
         </div>
         <div class="map_screen">
             <div @mousedown="startDrag($event)" @mousemove="moveDrag($event)" class="map_div">
@@ -134,8 +133,7 @@ var imgLeft = 0
 var imgTop = 0
 var moveLeft = 0
 var moveTop = 0
-var locationTimer;
-var pathTimer;
+var timer;
 
 const isClick = ref(false)
 const coordDto = ref({
@@ -147,49 +145,31 @@ const coordDto = ref({
     // 2, 8 : 800, 310 // 3, 6 : 750, 390
     // 3, 8 : 750, 300 // 3, 5 : 750, 430 // 3, 4 : 750, 470 => 510 => 550 => 590 => 630
 })
-const shortestPath = ref([
-        {x: 0, y: 8},
-        {x: 0, y: 7},
-        {x: 1, y: 7},
-        {x: 2, y: 7},
-        {x: 3, y: 7},
-        {x: 3, y: 6},
-        {x: 3, y: 5},
-        {x: 3, y: 4},
-        {x: 4, y: 4},
-        {x: 5, y: 4},
-        {x: 6, y: 4},
-        {x: 7, y: 4},
-        {x: 8, y: 4},
-        {x: 9, y: 4},
-        {x: 10, y: 4},
-        {x: 11, y: 4},
-        {x: 12, y: 4},
-        {x: 13, y: 4},
-        {x: 14, y: 4},
-        {x: 15, y: 4},
-        {x: 16, y: 4}
+const shortestPath = ref([])
+const allPath = ref([
+    "08", "18", "28", "38", "07", "17", "27", "37", "39", "310", "311", "36", "35", "34",
+    "44", "54", "64", "74", "84", "94", "104", "114", "124", "134", "144", "154", "164", "174",
+    "411", "511", "611", "711", "811", "911", "1011", "1111", "1211", "1311", "1411",
+    "1410", "149", "148", "147", "146", "145"
 ])
 
 const computedX = computed(() => 900 - (coordDto.value.x) * 45);
 const computedY = computed(() => 630 - (coordDto.value.y) * 40);
 
 onMounted(() => {
-    drawShortcut()
-    if(localStorage.getItem("isDest")){
-        isDest.value = true
-        pathTimer = setInterval(getShortcut, 2000);
-    }
-
-    locationTimer = setInterval(getCoordination, 2000);
+    timer = setInterval(getCoordination, 500);
 })
 
 onUnmounted(() => {
-    clearInterval(locationTimer);
-    clearInterval(pathTimer);
+    clearInterval(timer);
 })
 
 function getCoordination(){
+    if(localStorage.getItem("isDest")){
+        isDest.value = true
+        getShortcut()
+    }
+
     axios.get(requestURL + "myLocation", {headers})
         .then((resp) => {
             coordDto.value.x = resp.data.x;
@@ -197,14 +177,18 @@ function getCoordination(){
         })
         .catch((err) => {
             console.log(err)
-        })
+    })
 }
 
 function getShortcut(){
+    eraseShortcut()
+
     axios.get(requestURL + "findPath?x=" + localStorage.getItem("x") + "&y=" + localStorage.getItem("y"), {headers})
             .then((resp) => {
-                console.log(resp)
+                shortestPath.value = resp.data.shortestPath
             })
+
+    drawShortcut()
 }
 
 function cancelShortcut(){
@@ -214,16 +198,25 @@ function cancelShortcut(){
     localStorage.removeItem("x")
     localStorage.removeItem("y")
 
-    shortestPath.value.forEach((x, y) => {
-        document.getElementById(x + y).style.visibility = 'hidden'
-    })
-
+    eraseShortcut()
     router.go(0)
+}
+
+function eraseShortcut(){
+    allPath.value.forEach(element => {
+        document.getElementById(element).style.visibility = 'hidden'
+    })
 }
 
 function drawShortcut(){
     shortestPath.value.forEach(Object => {
-        document.getElementById(Object.x.toString() + Object.y.toString()).style.visibility = 'visible'
+        if(Object.x.toString() == localStorage.getItem("x") && Object.y.toString() == localStorage.getItem("y")){
+            document.getElementById(Object.x.toString() + Object.y.toString()).style.backgroundColor = 'blue'
+            document.getElementById(Object.x.toString() + Object.y.toString()).style.border = '5px solid aliceblue'
+            document.getElementById(Object.x.toString() + Object.y.toString()).style.visibility = 'visible'
+        }
+        else
+            document.getElementById(Object.x.toString() + Object.y.toString()).style.visibility = 'visible'
     })
 }
 

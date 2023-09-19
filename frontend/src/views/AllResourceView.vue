@@ -119,8 +119,10 @@ function requestAdd(target){
     addRequestDto.value.resourceId = target // 리소스 아이디 받아옴
     axios.post(requestURL + "addResource", addRequestDto.value, {headers})
          .then((resp) => {
-            if(resp.status === 200)
+            if(resp.status === 200){
                 alert("리소스가 추가 되었습니다.")
+                router.go(0)
+            }
          })
          .catch((error) => {
             alert(error)
@@ -136,8 +138,10 @@ function requestPermission(target){
     // 권한 밖의 요청
     axios.post(requestURL + "askResource", addRequestDto.value, {headers})
          .then((resp) => {
-            if(resp.status === 200)
+            if(resp.status === 200){
                 alert("리소스 추가 요청이 완료되었습니다.")
+                router.go(0)
+            }
          })
          .catch((error) => {
             alert(error)

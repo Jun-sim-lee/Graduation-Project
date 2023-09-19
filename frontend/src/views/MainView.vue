@@ -14,12 +14,10 @@
         <div style="width: 389px; height: 450px; position: relative; background-color: white;">
             <button class = "big_btn" @click="moveToMap">지도</button>
             <button class = "small_btn1" style = "left: 24px;" @click="moveToAll">
-                전체<br> 
-                리소스
+                전체 리소스
             </button>
             <button class = "small_btn2" style = "left: 201px;" @click="moveToMy">
-                나의<br>
-                리소스
+                나의 리소스
             </button>
         </div>
     </div>
