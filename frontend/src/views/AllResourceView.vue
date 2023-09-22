@@ -1,5 +1,15 @@
 <template>
     <div class = "screen">
+        <div class="modal_black" v-if="showModal">
+            <div class="resource_modal">
+                <button style="position: absolute; left: 1px; top: 5px; border: none; background-color: transparent; 
+                           color: black; font-size: 20px;" @click="closeModal">X</button>
+                <h3>{{ modalResourceInfo.name }}</h3>
+                <img :src="modalResourceInfo.src" style="width: 150px; height: 150px;"/> 
+                <p><span style="color: #537FE7; font-weight: bold;">{{ modalResourceInfo.auth }}</span> 권한 이상의 사용자만 사용 가능합니다.</p>
+                <p v-html="modalResourceInfo.info"></p>
+            </div>
+        </div>
         <div class = "resource_header">
             <div class = "inner_header">
                 <button @click="moveToPrev" style="line-height: 50px; color: white; background-color: transparent; border: none; font-size: 20px"> &lt; 전체 리소스</button>
@@ -24,7 +34,7 @@
                     <li class = "resource_list" style="display: flex; flex-direction: row; justify-content: space-between;">
                         <img v-if="resource.isOn==''" src="../assets/redglow.png" style="width: 25px; height: 25px;">
                         <img v-if="resource.isOn!=''" src="../assets/greenglow.png" style="width: 25px; height: 25px;">
-                        <span style="font-size: 18px; line-height: 35px;">{{ resource.deviceName }}</span>
+                        <span style="font-size: 18px; line-height: 35px;" @click="openModal(resource.deviceName, resource.auth)">{{ resource.deviceName }}</span>
                         <button v-if="resource.auth == 'Student'" class="resource_button_ask" @click="requestAdd(resource.id)">추가</button>
                         <button v-if="resource.auth == 'Professor'" class="resource_button_ask" @click="requestPermission(resource.id)">요청</button>
                     </li>
@@ -44,13 +54,38 @@ const headers = JSON.parse(inject('headers') + accessToken + '"}');
 const requestURL = inject('requestURL')
 
 const gearClick = ref(true)
-const listForShow = ref([])
+const listForShow = ref([
+    {
+    isOn: "",
+    auth: "Student",
+    deviceName: "자판기",
+    id: 1
+    },
+    {
+    isOn: "",
+    auth: "Professor",
+    deviceName: "도어락(6210)",
+    id: 2
+    }
+])
 const sortedMyResourceList = ref([])
 const sortedForbiddenResourceList = ref([])
 const isNotSorted = ref({color: 'red'});
 const isSortedMine = ref();
 const isSortedForbidden = ref();
 
+const modalResourceInfo = ref({
+    name: "",
+    auth: "",
+    src: "",
+    info: ""
+})
+const resourceInfos = new Map([
+    [ "자판기", '제도관 2층에 위치해 있습니다.<br>버튼을 통해 원하는 물건을 뽑을 수 있습니다!' ],
+    [ "도어락(6210)", '제도관 2층에 위치해 있습니다.<br>김XX 교수님의 연구실입니다.' ],
+    [ "선풍기", "제도관 2층에 위치해 있습니다.<br>한여름 더위를 시원하게 날려버리세요!" ]
+])
+const showModal = ref(false)
 const resourceList = ref([])
 const addRequestDto = ref({
     resourceId: 0
@@ -61,11 +96,13 @@ onMounted(() => { // 화면 마운트 시 요청 받아옴
 })
 
 function requestResourceList(){ // 기본적으로 전체 정렬
+    /*
     axios.get(requestURL + "resources", {headers})
         .then((resp) => {
             resourceList.value = resp.data;
             listForShow.value = resourceList.value;
         })
+        */
 }
 
 // 여기서 부터 정렬 메서드
@@ -151,6 +188,21 @@ function requestPermission(target){
     // 버튼을 눌렀을 때 해당 리소스 이름
 }
 
+// 여기서부터는 모달 창 관련 메서드 
+function openModal(targetName, targetAuth){
+    showModal.value = true
+    modalResourceInfo.value.name = targetName
+    if(targetAuth == "Student")
+        modalResourceInfo.value.auth = "학생"
+    else
+        modalResourceInfo.value.auth = "교수"
+    modalResourceInfo.value.src = require("../assets/" + targetName + ".png")
+    modalResourceInfo.value.info = resourceInfos.get(targetName)
+} 
+
+function closeModal(){
+    showModal.value = false
+}
 </script>
 
 <style>

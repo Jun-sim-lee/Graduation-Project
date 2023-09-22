@@ -8,6 +8,16 @@
             <button class = "modal_button" style="background-color: red;" @click="closeModal">아니오</button>
         </div>
     </div>
+    <div class="modal_black" v-if="showEntireMapModal">
+        <div class="entire_map_modal">
+            <div v-bind:style="{position: 'absolute', zIndex: 3, left: `${computedXforEntMap}px`, top: `${computedYforEntMap}px`, 
+                                backgroundColor: 'red', pointerEvents: 'none',
+                                border: '2px solid aliceblue', borderRadius: '100px', width: '5px', height: '5px'}"
+                     id = "client_dot"></div>
+            <button style="position: absolute; left: 2px; top: 5px; border: none; background-color: transparent; 
+                           color: black; font-size: 20px;" @click="closeEntireMap">X</button>
+        </div>
+    </div>
     <div class="screen" @mouseup="stopDrag($event)">
         <div class="map_header">
             <span class="triangle_button" @click="backToMain"> &lt; </span>
@@ -16,101 +26,102 @@
             <div style="width: 30px;"></div>
         </div>
         <div class="map_screen">
+            <button class="entire_map_modal_open" @click="showEntMap">+</button>
             <div @mousedown="startDrag($event)" @mousemove="moveDrag($event)" class="map_div">
                 <div v-bind:style="{position: 'absolute', zIndex: 3, left: `${computedX}px`, top: `${computedY}px`, 
                                 backgroundColor: 'red', pointerEvents: 'none',
                                 border: '5px solid aliceblue', borderRadius: '100%', width: '10px', height: '10px'}"
                      id = "client_dot"></div>
-                <div id="07" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 900px; top: 350px; visibility: hidden;"></div>
+                <div id="07" style="position: absolute; z-index: 3; width: 15px; height: 15px; border-radius: 100%; background-color: black;
+                            left: 900px; top: 350px;" @click="selectDestinationOnMap($event)"></div>
                 <div id="08" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 900px; top: 310px; visibility: hidden;"></div>
+                            left: 900px; top: 310px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="17" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 855px; top: 350px; visibility: hidden;"></div>
+                            left: 855px; top: 350px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="18" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 855px; top: 310px; visibility: hidden;"></div>
+                            left: 855px; top: 310px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="27" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 810px; top: 350px; visibility: hidden;"></div>
+                            left: 810px; top: 350px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="28" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 810px; top: 310px; visibility: hidden;"></div>
+                            left: 810px; top: 310px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="38" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 765px; top: 310px; visibility: hidden;"></div>
+                            left: 765px; top: 310px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="37" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 765px; top: 350px; visibility: hidden;"></div>
+                            left: 765px; top: 350px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="36" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 765px; top: 390px; visibility: hidden;"></div>
+                            left: 765px; top: 390px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="35" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 765px; top: 430px; visibility: hidden;"></div>
+                            left: 765px; top: 430px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="34" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 765px; top: 470px; visibility: hidden;"></div>
+                            left: 765px; top: 470px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="44" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 720px; top: 470px; visibility: hidden;"></div>
+                            left: 720px; top: 470px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="54" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 675px; top: 470px; visibility: hidden;"></div>
+                            left: 675px; top: 470px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="64" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 630px; top: 470px; visibility: hidden;"></div>
+                            left: 630px; top: 470px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="74" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 585px; top: 470px; visibility: hidden;"></div>
+                            left: 585px; top: 470px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="84" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 540px; top: 470px; visibility: hidden;"></div>
+                            left: 540px; top: 470px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="94" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 495px; top: 470px; visibility: hidden;"></div>
+                            left: 495px; top: 470px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="104" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 450px; top: 470px; visibility: hidden;"></div>
+                            left: 450px; top: 470px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="114" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 405px; top: 470px; visibility: hidden;"></div>
+                            left: 405px; top: 470px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="124" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 360px; top: 470px; visibility: hidden;"></div>
+                            left: 360px; top: 470px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="134" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 315px; top: 470px; visibility: hidden;"></div>
+                            left: 315px; top: 470px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="144" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 270px; top: 470px; visibility: hidden;"></div>
+                            left: 270px; top: 470px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="154" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 225px; top: 470px; visibility: hidden;"></div>
+                            left: 225px; top: 470px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="164" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 180px; top: 470px; visibility: hidden;"></div>
+                            left: 180px; top: 470px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="174" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 135px; top: 470px; visibility: hidden;"></div>
+                            left: 135px; top: 470px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="39" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 765px; top: 270px; visibility: hidden;"></div>
+                            left: 765px; top: 270px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="310" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 765px; top: 230px; visibility: hidden;"></div>
+                            left: 765px; top: 230px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="311" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 765px; top: 190px; visibility: hidden;"></div>
+                            left: 765px; top: 190px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="411" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 720px; top: 190px; visibility: hidden;"></div>
+                            left: 720px; top: 190px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="511" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 675px; top: 190px; visibility: hidden;"></div>
+                            left: 675px; top: 190px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="611" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 630px; top: 190px; visibility: hidden;"></div>
+                            left: 630px; top: 190px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="711" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 585px; top: 190px; visibility: hidden;"></div>
+                            left: 585px; top: 190px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="811" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 540px; top: 190px; visibility: hidden;"></div>
+                            left: 540px; top: 190px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="911" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 495px; top: 190px; visibility: hidden;"></div>
+                            left: 495px; top: 190px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="1011" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 450px; top: 190px; visibility: hidden;"></div>
-                <div id="1111" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 405px; top: 190px; visibility: hidden;"></div>
+                            left: 450px; top: 190px; visibility: hidden;" @click="selectDestinationOnMap"></div>
+                <div id="1111" style="position: absolute; z-index: 3; width: 15px; height: 15px; border-radius: 100%; background-color: black;
+                            left: 405px; top: 190px;" @click="selectDestinationOnMap"></div>
                 <div id="1211" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 360px; top: 190px; visibility: hidden;"></div>
+                            left: 360px; top: 190px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="1311" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 315px; top: 190px; visibility: hidden;"></div>
+                            left: 315px; top: 190px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="1411" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 270px; top: 190px; visibility: hidden;"></div>
+                            left: 270px; top: 190px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="1410" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 270px; top: 230px; visibility: hidden;"></div>
+                            left: 270px; top: 230px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="149" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 270px; top: 270px; visibility: hidden;"></div>
-                <div id="148" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 270px; top: 310px; visibility: hidden;"></div>
+                            left: 270px; top: 270px; visibility: hidden;" @click="selectDestinationOnMap"></div>
+                <div id="148" style="position: absolute; z-index: 3; width: 15px; height: 15px; border-radius: 100%; background-color: black;
+                            left: 270px; top: 310px;" @click="selectDestinationOnMap"></div>
                 <div id="147" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 270px; top: 350px; visibility: hidden;"></div>
+                            left: 270px; top: 350px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="146" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 270px; top: 390px; visibility: hidden;"></div>
+                            left: 270px; top: 390px; visibility: hidden;" @click="selectDestinationOnMap"></div>
                 <div id="145" style="position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 100%; background-color: black;
-                            left: 270px; top: 430px; visibility: hidden;"></div>
+                            left: 270px; top: 430px; visibility: hidden;" @click="selectDestinationOnMap"></div>
             </div>
         </div>
     </div>
@@ -135,10 +146,12 @@ var moveLeft = 0
 var moveTop = 0
 var timer;
 
+const showModal = ref(false)
+const showEntireMapModal = ref(false)
 const isClick = ref(false)
 const coordDto = ref({
-    x: 0,
-    y: 7
+    x: 17,
+    y: 4
 
     // 0, 8 : 900, 310 // 0, 7 : 900, 350
     // 1, 8 : 850, 310 // 1, 7 : 850, 350
@@ -155,9 +168,16 @@ const allPath = ref([
 
 const computedX = computed(() => 900 - (coordDto.value.x) * 45);
 const computedY = computed(() => 630 - (coordDto.value.y) * 40);
+const computedXforEntMap = computed(() => 13 + (coordDto.value.y) * 24); // 24씩 움직여보자
+const computedYforEntMap = computed(() => 520 - (coordDto.value.x) * 27); // 27씩 움직이자 (5)
 
+// 0, 8 : 205, 520 // 0, 7 : 181, 520
+// 1, 8 : 205, 493 // 1, 7 : 181, 493
+// 2, 8 : 205, 466 // 3, 6 : 157, 439
+// 3, 8 : 205, 439 // 3, 5 : 133, 439 // 3, 4 : 109, 439 => 85 => 61 => 37 => 13
+// 3, 11 : 277, 439 // 4, 11 : 277, 412
 onMounted(() => {
-    timer = setInterval(getCoordination, 500);
+    timer = setInterval(getCoordination, 1000000);
 })
 
 onUnmounted(() => {
@@ -276,7 +296,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
-const showModal = ref(false);
 const fcmTokenDto = ref({
     token: ""
 })
@@ -307,6 +326,8 @@ onMessage(messaging, (payload) => {
     showModal.value = true;
 })
 
+// 여기부터는 모달 창 관리
+
 function closeModalWithRequest(){
     showModal.value = false;
     axios.post(requestURL + "turnOn/" + resourceId.value, '',{headers})
@@ -319,9 +340,38 @@ function closeModal(){
     showModal.value = false;
 }
 
+function showEntMap(){
+    showEntireMapModal.value = true;
+}
+
+function closeEntireMap(){
+    showEntireMapModal.value = false;
+}
+
 // 목적지 설정 Router
 function toSelectDestionation(){
     router.push('destination')
+}
+
+function selectDestinationOnMap(event){
+    var targetId = event.target.id
+
+    if(targetId.length == 2)
+        console.log(targetId[0] + "," + targetId[1])
+    if(targetId.length == 3){
+        if(targetId[0] == 1){
+            console.log(targetId[0] + targetId[1] + "," + targetId[2])
+        }
+        else{
+            console.log(targetId[0] + "," + targetId[1] + targetId[2])
+        }
+    }
+    if(targetId.length == 4)
+        console.log(targetId[0] + targetId[1] + "," + targetId[2] + targetId[3])
+
+    //localStorage.setItem("x", splittedX)
+    //localStorage.setItem("y", splittedY)
+    //localStorage.setItem("isDest", true)
 }
 </script>
 
