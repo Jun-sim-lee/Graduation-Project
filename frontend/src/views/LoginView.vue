@@ -41,7 +41,6 @@ function sendRequest(){
                 router.replace('adminMain')
          })
          .catch((error) => {
-            console.log(error)
             if(error.response.data.error.message === "존재하지 않는 이메일입니다."){
                 alert("존재하지 않는 이메일입니다!")
             }

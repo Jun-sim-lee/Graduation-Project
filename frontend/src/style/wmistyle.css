@@ -32,7 +32,7 @@
         position: relative;
         width: 100%;
         max-width: 767px;
-        height: 770px;
+        height: 800px;
         background-color: #F5F5F5;
         display: flex;
         flex-direction: column;
@@ -45,12 +45,6 @@
 body{
     margin: 0;
 }
-.logo{
-    position: absolute;
-    width: 214px;
-    height: 108px;
-    top: 172px;
-}
 .wmi_input{
     position: absolute;
     width: 264px;
@@ -59,6 +53,12 @@ body{
     background: rgba(211, 211, 211, 0.6);
     border-radius: 50px;
     border: none;
+}
+.logo{
+    position: absolute;
+    width: 214px;
+    height: 108px;
+    top: 172px;
 }
 .input_error{
     position: absolute;
@@ -270,6 +270,7 @@ body{
 
 /* 지도 CSS */
 .map_screen{
+    position: relative;
     width: 389px;
     height: 695px;
 
@@ -344,7 +345,6 @@ body{
     z-index: 8;
 }
 .modal_window{
-    width: 90%;
     background-color: white;
     border-radius: 5px;
     margin: 80px auto;
@@ -354,10 +354,83 @@ body{
     text-align: center;
     padding: 20px;
 }
+.resource_modal{
+    position: relative;
+
+    background-color: white;
+    border-radius: 5px;
+    margin: 110px auto;
+    padding: 30px;
+    width: 300px;
+    height: 350px;
+    z-index: 10;
+    text-align: center;
+}
+.entire_map_modal{
+    position: relative;
+
+    background-color: white;
+    border-radius: 5px;
+    margin: 110px auto;
+    width: 389px;
+    height: 548px;
+    z-index: 10;
+    text-align: center;
+    
+    background-image: url(../assets/entire_map_201.jpeg);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.entire_map_modal_open{
+    position: absolute; 
+    bottom: 30px; 
+    right: 15px; 
+    
+    width: 50px; 
+    height: 50px;
+    border-radius: 50%;
+    background-color: #537FE7; 
+    border: 0.5px solid white; 
+    color: white; 
+    z-index: 7;
+    font-size: 20px;
+}
 .modal_button{
     width: 60px;
     height: 20px;
     border-radius: 10px;
     border: none;
     color: white;
+}
+
+/* 개인 정보 관리 옵션 페이지 */
+.option_btn{
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+
+    padding: 20px;
+    font-size: 17px;
+    font-weight: bold;
+    border-radius: 40px;
+    background-color: white;
+    cursor: pointer;
+    outline: none;
+    border: 1px outset black
+}
+.option_modal_window{
+    position: relative;
+
+    background-color: white;
+    border-radius: 5px;
+    margin: 80px auto;
+    width: 300px;
+    height: 240px;
+    z-index: 10;
+    padding: 20px;
 }

@@ -2,7 +2,7 @@
     <div class = "screen">
         <div class = "inner_screen">
             <div class = "inner_header">
-                <img class = "profile" src="../assets/logo.png" alt="Profile"/>
+                <img class = "profile" src="../assets/personal.png" alt="Profile"/>
                 <p style="color: white;">{{mainPageUsername}}님 반갑습니다!</p>
                 <div style = "width: 120px;"></div>
                 <button class = "gear" @click="moveToOption"></button>
