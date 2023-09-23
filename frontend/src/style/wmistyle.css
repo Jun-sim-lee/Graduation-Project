@@ -292,6 +292,15 @@ body{
     width: 389px;
     height: 70px;
 }
+.path_dot{
+    position: absolute; 
+    z-index: 3; 
+    width: 10px; 
+    height: 10px; 
+    border-radius: 50%; 
+    background-color: transparent;
+    border: 20px solid transparent;
+}
 .triangle_button{
     margin-top: 12px;
     margin-left: 5px;
