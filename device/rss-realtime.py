@@ -43,22 +43,23 @@ if __name__ == "__main__":
     out_filename = RSS_directory + '/' + 'RSS-realtime'
     scan_command = "sudo iwlist wlan0 scan | grep -E 'level|Address' | sed 's/level=//' | awk '{ if ( $1 == \"Cell\" ) { print $5 } if ( $2 == \"Signal\" ) { print $3 } }'"
     radio_map = ut.load_radio_map()
-    ap_list = ut.load_ap_list(); ap_num = 81
+    ap_list = ut.load_ap_list(); ap_num = 134
     client_rss_store = []
     for _ in range(ap_num): # 사용자의 큐를 만들어 유지한다.
         client_rss_store.append(clientQueue(3))
 
     # 연결할 서버 정보
-    url = "http://3.35.229.16:8080/sendTest"
+    url = "http://43.202.141.142:8080/ap"
     headers = {'Content-Type': 'application/json; charset=utf-8'}
     transmit_counter = 1
     while transmit_counter <= 3:
+            #curr_out_filename = out_filename + '#' + str(transmit_counter) + '.txt'
             curr_out_filename = 'hello' + str(transmit_counter) + '.txt'
             #curr_scan_command = scan_command + ' > ' + curr_out_filename
             #os.system(curr_scan_command)
 
             # 생성된 txt 파일을 token화 해서 계산을 진행해야 한다!
-            data_for_calculate = tokenize.parse_for_calculate(curr_out_filename, -70)
+            data_for_calculate = tokenize.parse_for_calculate(curr_out_filename)
             client_rss_store = ut.create_client_info(data_for_calculate, ap_list, client_rss_store)
             
             client_rss_store_median = []
