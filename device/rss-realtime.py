@@ -44,6 +44,7 @@ if __name__ == "__main__":
     scan_command = "sudo iwlist wlan0 scan | grep -E 'level|Address' | sed 's/level=//' | awk '{ if ( $1 == \"Cell\" ) { print $5 } if ( $2 == \"Signal\" ) { print $3 } }'"
     radio_map = ut.load_radio_map()
     ap_list = ut.load_ap_list(); ap_num = 134
+    
     client_rss_store = []
     for _ in range(ap_num): # 사용자의 큐를 만들어 유지한다.
         client_rss_store.append(clientQueue(3))
@@ -53,8 +54,8 @@ if __name__ == "__main__":
     headers = {'Content-Type': 'application/json; charset=utf-8'}
     transmit_counter = 1
     while transmit_counter <= 3:
-            #curr_out_filename = out_filename + '#' + str(transmit_counter) + '.txt'
-            curr_out_filename = 'hello' + str(transmit_counter) + '.txt'
+            curr_out_filename = out_filename + '#' + str(transmit_counter) + '.txt'
+            #curr_out_filename = 'hello' + str(transmit_counter) + '.txt'
             #curr_scan_command = scan_command + ' > ' + curr_out_filename
             #os.system(curr_scan_command)
 
@@ -69,12 +70,13 @@ if __name__ == "__main__":
             
             # 아래의 함수로 계산 로직 실행
             x, y = ut.calculate_client_position(radio_map, client_rss_store_median)
+            print("(" + x + ", " + y + ")")
             # 먼저 계산되어 나온 좌표를 POST 방식으로 전송하기 위해 JSON 형식으로 만들자!
             data_for_request = tokenize.coordinate_to_json(x, y)
             # 계산되어 나온 좌표에 unique_id를 덧붙여서 서버에 전송하도록 한다.
             data_for_request = tokenize.add_unique_id(unique_id, data_for_request)
-            print(data_for_request)
+            
             #requests.post(url=url, data=data_for_request, headers=headers)
-            #print(transmit_counter)
+            print('Measure count : ' + transmit_counter)
             #time.sleep(1) # 서버에 보내는 간격이 필요하다.
             transmit_counter += 1

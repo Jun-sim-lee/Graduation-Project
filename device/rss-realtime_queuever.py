@@ -5,7 +5,8 @@ import sys
 import os
 import time
 import requests # REST API 호출용
-import file_tokenize as tk # txt 파일 메시지화
+import file_tokenize_queuever as tk # txt 파일 메시지화
+import load_utility as ut
 
 def authenticate_rpi():
     url = "http://13.211.135.69:8080/rpiAuth"
@@ -32,18 +33,19 @@ def measure_rss_three_times(mac_dict):
     scan_command = "sudo iwlist wlan0 scan | grep -E 'level|Address' | sed 's/level=//' | awk '{ if ( $1 == \"Cell\" ) { print $5 } if ( $2 == \"Signal\" ) { print $3 } }'"
 
     while measure_count <= 3:
+        #curr_out_filename = 'hello' + str(measure_count) + '.txt'
         curr_out_filename = out_filename + '#' + str(measure_count) + '.txt' # 측정 시 출력할 파일 이름
-        curr_scan_command = scan_command + ' > ' + curr_out_filename # 스캔 명령어
-        os.system(curr_scan_command)
+        #curr_scan_command = scan_command + ' > ' + curr_out_filename # 스캔 명령어
+        #os.system(curr_scan_command)
         print("Measure ", measure_count, "th RSS")
 
-        tk.file_to_dictionary(curr_out_filename, -70, mac_dict)
+        tk.file_to_dictionary(curr_out_filename,  mac_dict)
         # 해당 파일을 3회 dictionary에 집어넣는다.
         measure_count += 1
-        time.sleep(0.5)
+        time.sleep(0.1)
 
     for key, val in mac_dict.items(): # dictionary에서 연산 진행
-        mac_dict[key] = (val // 3) # 우선 평균으로 계산해보자
+        mac_dict[key] = (val[0] // val[1]) # 우선 평균으로 계산해보자
 
 if __name__ == "__main__":
     #authenticate_rpi() # 기기 인증 함수
@@ -58,14 +60,19 @@ if __name__ == "__main__":
     headers = {'Content-Type': 'application/json; charset=utf-8'}
     transmit_counter = 0
 
-    try: # Message로 변환해서 서버로 보내는 과정
-        while transmit_counter < 5:
-            mac_dict = {}
-            measure_rss_three_times(mac_dict) # 3회 측정
-            data = tk.dict_to_json(mac_dict) # 서버로 보낼 json 데이터
+    radio_map = ut.load_radio_map()
+    ap_list = ut.load_ap_list()
+    client_rss_store = [0 for _ in range(134)]
+    
+    while transmit_counter < 5:
+        mac_dict = {}
+        measure_rss_three_times(mac_dict) # 3회 측정
+        
+        for key, val in mac_dict.items(): # dictionary에서 꺼내오자
+            try:
+                client_rss_store[ap_list[key]] = val
+            except:
+                pass
 
-            requests.post(url=url, data=data, headers=headers)
-            time.sleep(1) # 서버에 보내는 간격이 필요하다.
-            transmit_counter += 1
-    except:
-        print("Cannot connect to server!!")
+        print(ut.calculate_client_position(radio_map, client_rss_store))
+        transmit_counter += 1
