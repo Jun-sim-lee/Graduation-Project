@@ -2,16 +2,16 @@
     <div class = "screen">
         <div style="width: 389px; height: 50px; background-color: #537FE7;">
             <button @click="moveToPrev" style="line-height: 40px; color: white; background-color: transparent; 
-                                               padding-left: 20px; border: none; font-size: 20px"> &lt; 개인 정보 변경</button>
+                                               padding-left: 20px; border: none; font-size: 20px; font-family: 'SUITE-Regular';"> &lt; 개인 정보 변경</button>
         </div>
         <div style="width: 389px; height: 660px; background-color: white; position: relative;">
-            <img src="../assets/personal.png" style="position: absolute; left: 75px;">
-            <input class = "wmi_input" style = "top: 190px; left: 50px; padding-left: 3%;" placeholder="닉네임" v-model="userInfoDto.nickName"/>
-            <input type="password" class = "wmi_input" style = "top: 240px; left: 50px; padding-left: 3%;" placeholder="새 비밀번호" v-model="userInfoDto.password"/>
-            <input type="password" v-model = "checkedPw" style="top: 290px; left: 50px; padding-left: 3%;" placeholder="비밀번호 확인"
+            <img src="../assets/personal.png" style="position: absolute; left: 85px;">
+            <input class = "wmi_input" style = "top: 190px; left: 60px; padding-left: 3%;" placeholder="닉네임" v-model="userInfoDto.nickName"/>
+            <input type="password" class = "wmi_input" style = "top: 240px; left: 60px; padding-left: 3%;" placeholder="새 비밀번호" v-model="userInfoDto.password"/>
+            <input type="password" v-model = "checkedPw" style="top: 290px; left: 60px; padding-left: 3%;" placeholder="비밀번호 확인"
                v-bind:class="{'wmi_input': validPw, 'input_error': invalidPw}"/>
             <p v-if="validPw === false" style="position: absolute; top: 325px; left: 120px; font-size: 12px; color: red;">입력된 비밀번호와 다릅니다.</p>
-            <button class = "submit_form" style = "top: 380px; left: 55px;" @click="changePassword">비밀번호 변경</button>
+            <button class = "submit_form" style = "top: 380px; left: 67px;" @click="changePassword">비밀번호 변경</button>
         </div>
     </div>
 </template>

@@ -1,3 +1,10 @@
+/* 폰트 */
+@font-face {
+    font-family: 'SUITE-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
 /* 미디어 쿼리 */
 @media all and (min-width:1024px) { 
     .screen{
@@ -161,10 +168,12 @@ body{
     justify-content: flex-end;
 
     background: url(../assets/map_icon.png);
+    background-size: cover;
     border-radius: 40px;
     padding: 20px;
     font-size: 20px;
     font-weight: bold;
+    color: #000000;
     border: 1px outset black;
 }
 .small_btn1{
@@ -180,9 +189,9 @@ body{
     padding: 20px;
     font-size: 17px;
     font-weight: bold;
+    color: #000000;
     background-size: cover;
     background-image: url('../assets/resources.png');
-    /*background-image: linear-gradient(to bottom, #537FE7 30%, white 30%);*/
     border-radius: 40px;
     cursor: pointer;
     outline: none;
@@ -201,9 +210,9 @@ body{
     padding: 20px;
     font-size: 17px;
     font-weight: bold;
+    color: #000000;
     background-size: cover;
-    background-image: url('../assets/personal.png');
-    /*background-image: linear-gradient(to bottom, #537FE7 30%, white 30%);*/
+    background-image: url('../assets/myresource.png');
     border-radius: 40px;
     cursor: pointer;
     outline: none;
@@ -232,6 +241,7 @@ body{
     width: 300px;
     margin-top: 18px;
     border-bottom: 1px solid #808080;
+    font-family: 'SUITE-Regular';
 }
 .resource_button_ask{
     border: none; 
@@ -309,6 +319,7 @@ body{
     width: 30px;
     height: 30px;
     font-size: 40px;
+    font-family: 'SUITE-Regular';
     cursor: pointer;
 }
 .map_header_button{
@@ -398,9 +409,9 @@ body{
     width: 50px; 
     height: 50px;
     border-radius: 50%;
-    background-color: #537FE7; 
-    border: 0.5px solid white; 
-    color: white; 
+    background-image: url(../assets/whole_map_icon.png);
+    background-size: cover;
+    border: inset 1px white;
     z-index: 7;
     font-size: 20px;
 }

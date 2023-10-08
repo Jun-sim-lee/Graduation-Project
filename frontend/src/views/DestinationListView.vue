@@ -4,8 +4,8 @@
             <div class = "inner_header">
                 <button @click="moveToPrev" style="line-height: 50px; color: white; background-color: transparent; border: none; font-size: 20px"> &lt; 목적지 설정</button>
             </div>
-            <p style = "position: absolute; color: white; left: 27px; top: 40px; font-size: 30px; font-weight: bold; font-family: serif;">Where to go?</p>
-            <p style = "position: absolute; color: white; left: 27px; top: 100px;">지정할 수 있는 목적지 목록입니다.<br>
+            <p style = "position: absolute; color: white; left: 27px; top: 40px; font-size: 30px; font-weight: bold; font-family: 'SUITE-Regular'">Where to go?</p>
+            <p style = "position: absolute; color: white; left: 27px; top: 100px; font-family: 'SUITE-Regular';">지정할 수 있는 목적지 목록입니다.<br>
                 선택된 목적지까지 최단경로를 안내합니다.</p>
         </div>
         <div style="width: 389px; height: 611px; position: relative; background-color: white; overflow: scroll;">

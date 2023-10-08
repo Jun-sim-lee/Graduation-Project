@@ -23,19 +23,19 @@
                                 border: '2px solid aliceblue', borderRadius: '100px', width: '5px', height: '5px'}"
                      id = "client_dot"></div>
             <button style="position: absolute; left: 2px; top: 5px; border: none; background-color: transparent; 
-                           color: black; font-size: 20px;" @click="closeEntireMap">X</button>
+                           color: black; font-size: 20px; font-family: 'SUITE-Regular';" @click="closeEntireMap">X</button>
         </div>
     </div>
-    <div class="screen" @touchend="stopDrag($event)">
+    <div class="screen" @mouseup="stopDrag($event)">
         <div class="map_header">
-            <span class="triangle_button" @click="backToMain"> &lt; </span>
+            <span class="triangle_button" @click="backToMain" style="font-family: 'SUITE-Regular';"> &lt; </span>
             <button v-if="!isDest" @click="toSelectDestionation" class="map_header_button">목적지를 선택해주세요!</button>
             <button v-if="isDest" @click="cancelShortcut" class="cancel_button">취소</button>
             <div style="width: 30px;"></div>
         </div>
         <div class="map_screen">
-            <button class="entire_map_modal_open" @click="showEntMap">+</button>
-            <div @touchstart="startDrag($event)" @touchmove="moveDrag($event)" class="map_div">
+            <button class="entire_map_modal_open" @click="showEntMap"></button>
+            <div @mousedown="startDrag($event)" @mousemove="moveDrag($event)" class="map_div">
                 <div v-bind:style="{position: 'absolute', zIndex: 3, left: `${computedX}px`, top: `${computedY}px`, 
                                 backgroundColor: 'red', pointerEvents: 'none',
                                 border: '5px solid aliceblue', borderRadius: '100%', width: '10px', height: '10px'}"
@@ -122,17 +122,7 @@ const coordDto = ref({
     // 2, 8 : 800, 310 // 3, 6 : 750, 390
     // 3, 8 : 750, 300 // 3, 5 : 750, 430 // 3, 4 : 750, 470 => 510 => 550 => 590 => 630
 })
-const shortestPath = ref([
-    {x: 0, y: 7},
-    {x: 1, y: 7},
-    {x: 2, y: 7},
-    {x: 3, y: 7},
-    {x: 3, y: 6},
-    {x: 3, y: 5},
-    {x: 3, y: 4},
-    {x: 4, y: 4},
-    {x: 5, y: 4}
-])
+const shortestPath = ref([])
 const allPath = ref([
     "08", "18", "28", "38", "07", "17", "27", "37", "39", "310", "311", "36", "35", "34",
     "44", "54", "64", "74", "84", "94", "104", "114", "124", "134", "144", "154", "164", "174",
@@ -178,12 +168,11 @@ function getCoordination(){
 
 function getShortcut(){
     eraseShortcut()
-    /*
+
     axios.get(requestURL + "findPath?x=" + localStorage.getItem("x") + "&y=" + localStorage.getItem("y"), {headers})
             .then((resp) => {
                 shortestPath.value = resp.data.shortestPath
             })
-            */
 
     drawShortcut()
 }
@@ -236,7 +225,7 @@ function moveDrag(event){
     if(event.target.id != ""){
         return true
     }
-
+    
     if(isClick.value){
         moveLeft = event.pageX
         moveTop = event.pageY
@@ -308,7 +297,7 @@ getToken(messaging, {vapidKey: 'BNV2fY1k14mbXewu0_IVLr4IsozxZzfAnovQUK4SEqDpoGKG
 onMessage(messaging, (payload) => {
     targetResource.value = payload.notification.title;
     resourceId.value = payload.notification.body;
-
+    
     showModal.value = true;
 })
 
@@ -318,7 +307,8 @@ function closeModalWithRequest(){
     showModal.value = false;
     axios.post(requestURL + "turnOn/" + resourceId.value, '',{headers})
         .catch((error) => {
-            alert(error)
+            if(error.response.data.error.message === "이미 사용 중")
+                alert("이미 사용중인 리소스입니다.")
         })
 }
 

@@ -19,7 +19,7 @@ const store = useStore();
 const accessToken = localStorage.getItem('accessToken')
 const headers = JSON.parse(inject('headers') + accessToken + '"}');
 const requestURL = inject('requestURL')
-const rpiImage = ref(require("../assets/rpiauth1.png"))
+const rpiImage = ref(require("../assets/rpiauth1.drawio.png"))
 const imageCount = ref(0)
 var timer;
 
@@ -55,7 +55,7 @@ function sendRequest(){
 
 function changeImage(){
     imageCount.value++
-    rpiImage.value = require("../assets/rpiauth" + ((imageCount.value)%4 + 1) + ".png")   
+    rpiImage.value = require("../assets/rpiauth" + ((imageCount.value)%4 + 1) + ".drawio.png")   
 }
 </script>
 

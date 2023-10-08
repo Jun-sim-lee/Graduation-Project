@@ -46,7 +46,7 @@ const uniqueDto = ref({
 })
 
 function unlock(){
-    axios.post(requestUrl + "reset", resetRequestDto.value)
+    axios.post(requestUrl + "admin/reset", resetRequestDto.value)
         .then((resp) => {
             if(resp.status === 200)
                 alert("로그인 기능 제한이 해제되었습니다.")
@@ -54,7 +54,7 @@ function unlock(){
 }
 
 function registQR(){
-    axios.post(requestUrl + "setQr", profDto.value, {headers})
+    axios.post(requestUrl + "admin/setQr", profDto.value, {headers})
         .then((resp) => {
             if(resp.status === 200)
                 alert("교수용 QR 등록이 완료되었습니다.")
@@ -62,7 +62,7 @@ function registQR(){
 }
 
 function registUniqueCode(){
-    axios.post(requestUrl + "setRpi", uniqueDto.value, {headers})
+    axios.post(requestUrl + "admin/setRpi", uniqueDto.value, {headers})
         .then((resp) => {
             if(resp.status === 200)
                 alert("등록이 완료되었습니다.")

@@ -1,7 +1,7 @@
 <template>
     <div class="modal_black" v-if="showModal">
         <div class="option_modal_window">
-            <p @click="closeModal">X</p>
+            <p style="font-family: 'SUITE-Regular';" @click="closeModal">X</p>
             <p style="text-align: center;">현재 사용중인 비밀번호를 입력해 주십시오.</p>
             <input type="password" class = "wmi_input" style = "position: absolute; top: 120px; left: 35px; padding-left: 3%;" placeholder="현재 비밀번호" v-model="passwordDto.password"/>
             <button class = "submit_form" style = "top: 180px; left: 40px;" @click="closeModalWithRequest">입력</button>
@@ -10,7 +10,7 @@
     <div class = "screen">
         <div style="width: 389px; height: 50px; background-color: #537FE7;">
             <button @click="moveToPrev" style="line-height: 40px; color: white; background-color: transparent; 
-                                               padding-left: 20px; border: none; font-size: 20px"> &lt; 설정</button>
+                                               padding-left: 20px; border: none; font-size: 20px; font-family: 'SUITE-Regular';"> &lt; 설정</button>
         </div>
         <div style="width: 389px; height: 660px; background-color: white;">
             <ul>
