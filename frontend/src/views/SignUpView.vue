@@ -5,7 +5,7 @@
                 style="top: 320px; padding-left: 3%;" placeholder="이메일"/>
         <p v-if="invalidEmail === true" style="position: absolute; top: 355px; font-size: 12px; color: red;">올바르지 않은 형식의 이메일입니다.</p>
         <input class = "wmi_input" v-model = "signUpDto.nickName" style="top: 388px; padding-left: 3%;" placeholder="닉네임"/>
-        <input type="password" class = "wmi_input" v-model = "signUpDto.password" style="top: 444px; padding-left: 3%;" placeholder="비밀번호"/>
+        <input type="password" class = "wmi_input" v-model = "signUpDto.password" style="top: 444px; padding-left: 3%;" placeholder="비밀번호는 8자리 이상이어야 합니다."/>
         <input type="password" v-model = "checkedPw" style="top: 499px; padding-left: 3%;" placeholder="비밀번호 확인"
                v-bind:class="{'wmi_input': validPw, 'input_error': invalidPw}"/>
         <p v-if="validPw === false" style="position: absolute; top: 535px; font-size: 12px; color: red;">입력된 비밀번호와 다릅니다.</p>

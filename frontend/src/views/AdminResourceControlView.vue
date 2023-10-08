@@ -36,7 +36,7 @@ const resourceDto = ref({
 })
 
 function registerResource(){
-    axios.post(requestURL + "registerResource", resourceDto.value, {headers})
+    axios.post(requestURL + "admin/registerResource", resourceDto.value, {headers})
         .then((resp) => {
             if(resp.status === 200)
                 alert("등록이 완료되었습니다.")

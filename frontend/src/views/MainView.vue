@@ -2,13 +2,13 @@
     <div class = "screen">
         <div class = "inner_screen">
             <div class = "inner_header">
-                <img class = "profile" src="../assets/personal.png" alt="Profile"/>
-                <p style="color: white;">{{mainPageUsername}}님 반갑습니다!</p>
+                <img class = "profile" src="../assets/profile_image.png" alt="Profile"/>
+                <p style="color: white; font-family: 'SUITE-Regular';">심진섭님 반갑습니다!</p>
                 <div style = "width: 120px;"></div>
                 <button class = "gear" @click="moveToOption"></button>
             </div>
-            <p style = "position: absolute; color: white; left: 27px; top: 130px; font-size: 30px; font-weight: bold; font-family: serif;">Where am I ?</p>
-            <p style = "position: absolute; color: white; left: 27px; top: 181px;">주변 기기를 당신의 마음대로 편하게 제어하세요<br>
+            <p style = "position: absolute; color: white; left: 27px; top: 130px; font-size: 30px; font-weight: bold; font-family: 'SUITE-Regular';">Where am I ?</p>
+            <p style = "position: absolute; color: white; left: 27px; top: 181px; font-family: 'SUITE-Regular';">주변 기기를 당신의 마음대로 편하게 제어하세요<br>
                 시간은 걱정마세요, 빠른 길로 안내합니다.</p>
         </div>
         <div style="width: 389px; height: 450px; position: relative; background-color: white;">

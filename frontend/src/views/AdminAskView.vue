@@ -37,7 +37,8 @@ const accessToken = localStorage.getItem('accessToken')
 const headers = JSON.parse(inject('headers') + accessToken + '"}');
 const requestURL = inject('requestURL')
 
-const askList = ref([])
+const askList = ref([
+])
 const permissionRequestDto = ref({
     email: "",
     deviceId: 0,
@@ -49,14 +50,14 @@ onMounted(() => { // 화면 마운트 시 요청 받아옴
 })
 
 function requestAskList(){
-    axios.get(requestURL + "askList", {headers})
+    axios.get(requestURL + "admin/askList", {headers})
         .then((resp) => {
             askList.value = resp.data;
         })
 }
 
 function requestRejection(targetId){
-    axios.delete(requestURL + "rejectAsk/" + targetId, {headers})
+    axios.delete(requestURL + "admin/rejectAsk/" + targetId, {headers})
         .then((resp) => {
             if(resp.status === 200)
                 alert("요청이 반려 되었습니다.")
@@ -75,7 +76,7 @@ function requestPermission(targetId, targetEmail, askId){
     permissionRequestDto.value.email = targetEmail
     permissionRequestDto.value.askId = askId
 
-    axios.post(requestURL + "acceptAsk", permissionRequestDto.value, {headers})
+    axios.post(requestURL + "admin/acceptAsk", permissionRequestDto.value, {headers})
         .then((resp) => {
             if(resp.status === 200)
                 alert("요청이 수락되었습니다.")

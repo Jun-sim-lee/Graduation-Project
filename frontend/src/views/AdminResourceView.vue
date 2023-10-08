@@ -14,7 +14,7 @@
             <ul>
                 <li class = "resource_list" style="display: flex; flex-direction: row; justify-content: space-between;"
                     :key="resource.id" v-for="resource in resourceList">
-                    <span style="width: 50px; font-size: 12px; line-height: 35px;">{{ resource.deviceName }}</span>
+                    <span style="width: 80px; font-size: 12px; line-height: 35px;">{{ resource.deviceName }}</span>
                     <span style="font-size: 12px; line-height: 35px;">({{ resource.location.x }}, {{resource.location.y}})</span>
                     <select v-model="resource.auth" style="margin: 6px; height: 20px;">
                         <option :key="auth" v-for="auth in authList">{{ auth }}</option>
@@ -36,7 +36,7 @@ const accessToken = localStorage.getItem('accessToken')
 const headers = JSON.parse(inject('headers') + accessToken + '"}');
 const requestURL = inject('requestURL')
 
-const resourceList = ref([                                                                                                                
+const resourceList = ref([                                                                           
 ])
 const authList = ref([
     "학생", "교수"
@@ -73,7 +73,7 @@ function changeAuthority(targetId, targetAuth){
     changeAuthorityDto.value.id = targetId;
     changeAuthorityDto.value.auth = targetAuth;
 
-    axios.post(requestURL + "changeResource", changeAuthorityDto.value ,{headers})
+    axios.post(requestURL + "admin/changeResource", changeAuthorityDto.value ,{headers})
         .then((resp) => {
             if(resp.status === 200)
                 alert("리소스 권한 변경이 완료되었습니다.")

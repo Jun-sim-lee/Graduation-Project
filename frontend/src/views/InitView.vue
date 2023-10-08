@@ -6,7 +6,7 @@
             <router-link to="/login" class = "wmi_input" style = "text-align: center; text-decoration: none; 
                                                                   color: black; line-height: 40px; top: 422px">
                 로그인</router-link>
-            <router-link to="/map" class = "wmi_input" style = "text-align: center; text-decoration: none; 
+            <router-link to="/signup" class = "wmi_input" style = "text-align: center; text-decoration: none; 
                                                                   color: black; line-height: 40px; top: 477px">
                 회원가입</router-link>
         </div>

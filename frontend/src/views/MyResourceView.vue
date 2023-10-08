@@ -3,7 +3,7 @@
         <div class="modal_black" v-if="showModal">
             <div class="resource_modal">
                 <button style="position: absolute; left: 2px; top: 5px; border: none; background-color: transparent; 
-                           color: black; font-size: 20px;" @click="closeModal">X</button>
+                           color: black; font-size: 20px; font-family: 'SUITE-Regular';" @click="closeModal">X</button>
                 <h3>{{ modalResourceInfo.name }}</h3>
                 <img :src="modalResourceInfo.src" style="width: 150px; height: 150px;"/> 
                 <p>{{ modalResourceInfo.auth }} 권한 이상의 사용자만 사용 가능합니다.</p>
@@ -12,18 +12,18 @@
         </div>
         <div class = "resource_header">
             <div class = "inner_header">
-                <button @click="moveToPrev" style="line-height: 50px; color: white; background-color: transparent; border: none; font-size: 20px"> &lt; 나의 리소스</button>
+                <button @click="moveToPrev" style="line-height: 50px; color: white; background-color: transparent; border: none; font-size: 20px; font-family: 'SUITE-Regular';"> &lt; 나의 리소스</button>
             </div>
-            <p style = "position: absolute; color: white; left: 27px; top: 40px; font-size: 30px; font-weight: bold; font-family: serif;">My Resource</p>
-            <p style = "position: absolute; color: white; left: 27px; top: 100px;">직접 추가한 리소스 목록입니다.<br>
+            <p style = "position: absolute; color: white; left: 27px; top: 40px; font-size: 30px; font-weight: bold; font-family: 'SUITE-Regular';">My Resource</p>
+            <p style = "position: absolute; color: white; left: 27px; top: 100px; font-family: 'SUITE-Regular';">직접 추가한 리소스 목록입니다.<br>
                 근처에 도달하면 자원을 자유롭게 제어할 수 있습니다.</p>
         </div>
         <div style="width: 389px; height: 611px; position: relative; background-color: white; overflow: scroll;">
             <ul>
                 <li class = "resource_list" style="display: flex; flex-direction: row; justify-content: space-between;"
                     :key="resource.deviceName" v-for="resource in resourceList">
-                    <img v-if="resource.isOn==''" src="../assets/redglow.png" style="width: 25px; height: 25px;">
-                    <img v-if="resource.isOn!=''" src="../assets/greenglow.png" style="width: 25px; height: 25px;">
+                    <img v-if="resource.isOn==''" src="../assets/greenglow.png" style="width: 25px; height: 25px;">
+                    <img v-if="resource.isOn!=''" src="../assets/redglow.png" style="width: 25px; height: 25px;">
                     <span style="font-size: 18px; line-height: 30px;" @click="openModal(resource.deviceName, resource.auth)">{{ resource.deviceName }}</span>
                     <button @click="requestDeletion(resource.id)" style="border: none; border-radius: 30px; background-color: red; width: 50px; height: 30px;
                                    font-size: 10px; color: white; ">삭제</button>
@@ -43,18 +43,6 @@ const headers = JSON.parse(inject('headers') + accessToken + '"}');
 const requestURL = inject('requestURL')
 
 const resourceList = ref([
-    {
-    isOn: "",
-    auth: "Student",
-    deviceName: "자판기",
-    id: 1
-    },
-    {
-    isOn: "",
-    auth: "Professor",
-    deviceName: "도어락(6210)",
-    id: 2
-    }
 ])
 const modalResourceInfo = ref({
     name: "",

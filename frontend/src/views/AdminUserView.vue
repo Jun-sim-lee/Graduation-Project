@@ -38,7 +38,7 @@ const requestURL = inject('requestURL')
 
 const userList = ref([])
 const authList = ref([
-    "일반", "학생", "교수"
+    "일반", "학생", "교수", "관리자"
 ])
 const userInfoDto = ref({
     email: "",
@@ -50,7 +50,7 @@ onMounted(() => { // 화면 마운트 시 요청 받아옴
 })
 
 function requestUserList(){
-    axios.get(requestURL + "members", {headers})
+    axios.get(requestURL + "admin/members", {headers})
         .then((resp) => {
             userList.value = resp.data;
             convertAuthority();
@@ -65,6 +65,8 @@ function convertAuthority(){
             element.authority = '학생'
         if(element.authority === 'Professor')
             element.authority = '교수'
+        if(element.authority === 'Admin')
+            element.authority = '관리자'
     });
 }
 
@@ -72,7 +74,7 @@ function changeAuthority(targetEmail, targetRole){
     userInfoDto.value.email = targetEmail;
     userInfoDto.value.auth = targetRole;
 
-    axios.post(requestURL + "upgradeAuth", userInfoDto.value, {headers})
+    axios.post(requestURL + "admin/upgradeAuth", userInfoDto.value, {headers})
        .then((resp) => {
             if(resp.status === 200)
                 alert("권한 수정이 완료 되었습니다.")
