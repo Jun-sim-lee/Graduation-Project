@@ -35,6 +35,8 @@ public class Member {
     List<MemberResourceInterSection> myResource = new ArrayList<>();
     @OneToMany(mappedBy = "sender")
     List<Ask> myAskList = new ArrayList<>();
+    String token;
+    Location location;
 
     public Member(String email, String password, String nickName){
         this.email = email;
@@ -43,6 +45,8 @@ public class Member {
         this.authority = Authority.None;
         this.createAt = LocalDateTime.now();
         this.rpiStatus = false;
+        this.location = new Location(3,8);
+
     }
 
     public void upgrade() {
@@ -66,10 +70,26 @@ public class Member {
     }
 
     public void upgradeAuth(String auth) {
-        if(auth.equals("Student"))
+        if(auth.equals("학생"))
             this.authority = Authority.Student;
-        else if (auth.equals("Professor")) {
+        else if (auth.equals("교수")) {
             this.authority = Authority.Professor;
         }
+    }
+    public void addResource(MemberResourceInterSection resource) {
+        this.myResource.add(resource);
+    }
+    public void addAsk(Ask ask) {
+        this.getMyAskList().add(ask);
+    }
+    public void setToken(String token) {
+        this.token = token;
+    }
+    public void changeInfo(String nickName, String password) {
+        this.nickName = nickName;
+        this.password = password;
+    }
+    public void changeLocation(Location location) {
+        this.location = location;
     }
 }

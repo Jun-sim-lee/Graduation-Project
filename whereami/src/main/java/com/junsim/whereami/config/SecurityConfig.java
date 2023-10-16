@@ -34,6 +34,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 
         http.authorizeHttpRequests()
+                .requestMatchers("/admin/*").hasAuthority("Admin")
                 .anyRequest().permitAll()
                 .and()
                 // 서버에 인증정보를 저장하지 않기에 csrf를 사용하지 않는다.

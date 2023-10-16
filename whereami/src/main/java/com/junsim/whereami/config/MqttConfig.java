@@ -23,11 +23,12 @@ public class MqttConfig {
         DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
         MqttConnectOptions options = new MqttConnectOptions();
 
-        options.setServerURIs(new String[] {"tcp://13.211.135.69:1883"});
+        options.setServerURIs(new String[] {"tcp://3.35.229.16:1883"});
         options.setUserName("admin");
         options.setPassword("1234".toCharArray());
         options.setCleanSession(true);
 
+        factory.setConnectionOptions(options);
         return factory;
     }
 
@@ -45,7 +46,6 @@ public class MqttConfig {
         adapter.setConverter(new DefaultPahoMessageConverter());
         adapter.setQos(2);
         adapter.setOutputChannel(mqttInputChannel());
-
         return adapter;
     }
 
