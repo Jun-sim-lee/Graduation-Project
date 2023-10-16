@@ -4,10 +4,8 @@ import com.junsim.whereami.dto.*;
 import com.junsim.whereami.errors.exception.Exception400;
 import com.junsim.whereami.service.AuthService;
 import com.junsim.whereami.service.MailService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +24,7 @@ public class AuthController {
     public List<AllMemberDTO> findAllMember(){
         return authService.findAllMember();
     }
+
     @PostMapping("/signUp")
     public String signUp(@RequestBody SignUpDTO signUpDTO){
         authService.signUp(signUpDTO);
@@ -78,19 +77,19 @@ public class AuthController {
         return authService.checkRpiOn();
     }
 
-    @PostMapping("/setRpi")
+    @PostMapping("/admin/setRpi")
     public ResponseEntity<?> setRpiCode(@RequestBody RpiCodeRequestDTO rpiCodeRequestDTO) {
         authService.setRpiCode(rpiCodeRequestDTO);
         return ResponseEntity.ok(true);
     }
 
-    @PostMapping("/setQr")
+    @PostMapping("/admin/setQr")
     public ResponseEntity<?> setQrCode(@RequestBody QrCodeRequestDTO qrCodeRequestDTO) {
         authService.setQrCode(qrCodeRequestDTO);
         return ResponseEntity.ok(true);
     }
 
-    @PostMapping("/upgradeAuth")
+    @PostMapping("/admin/upgradeAuth")
     public ResponseEntity<?> upgradeAuth(@RequestBody AuthUpgradeRequestDTO authUpgradeRequestDTO) {
         authService.upgradeAuth(authUpgradeRequestDTO);
         return ResponseEntity.ok(true);
@@ -104,4 +103,27 @@ public class AuthController {
         authService.checkQrCode(qrCheckRequestDTO);
         return ResponseEntity.ok(true);
     }
+
+    @PostMapping("/admin/reset")
+    public ResponseEntity<?> resetWrongCount(@RequestBody ResetWrongCountDTO resetWrongCountDTO) {
+        authService.resetWrongCount(resetWrongCountDTO);
+        return ResponseEntity.ok(true);
+    }
+    @PostMapping("/setToken")
+    public ResponseEntity<?> setFCMToken(@RequestBody FCMTokenDTO fcmTokenDTO) {
+        authService.setToken(fcmTokenDTO);
+        return ResponseEntity.ok(true);
+    }
+    @PostMapping("/changeInfo")
+    public ResponseEntity<?> changeInfo(@RequestBody ChangePasswordRequestDTO changePasswordRequestDTO) {
+        authService.changePassword(changePasswordRequestDTO);
+        return ResponseEntity.ok(true);
+    }
+
+    @PostMapping("/checkPassword")
+    public ResponseEntity<?> checkPassword(@RequestBody CheckPasswordDTO checkPasswordDTO) {
+        authService.checkPassword(checkPasswordDTO);
+        return ResponseEntity.ok(true);
+    }
+
 }

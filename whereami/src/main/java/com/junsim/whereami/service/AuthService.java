@@ -40,6 +40,13 @@ public class AuthService {
                 .collect(Collectors.toList());
     }
 
+    public void changePassword(ChangePasswordRequestDTO changePasswordRequestDTO) {
+        Member member = memberRepository.findByEmail(currentMember()).get();
+        member.changeInfo(changePasswordRequestDTO.getNickName(),
+                passwordEncoder.encode(changePasswordRequestDTO.getPassword()));
+
+    }
+
     public void signUp(SignUpDTO signUpDTO){
         if(memberRepository.findByEmail(signUpDTO.getEmail()).isPresent())
             throw new Exception400("이미 존재하는 이메일입니다.");
@@ -130,9 +137,34 @@ public class AuthService {
 
     public void upgradeAuth(AuthUpgradeRequestDTO authUpgradeRequestDTO) {
         Optional<Member> member = memberRepository.findByEmail(authUpgradeRequestDTO.getEmail());
-        if(!member.isPresent())
+        if(member.isEmpty())
             throw new Exception400("없는 email입니다.");
         else
             member.get().upgradeAuth(authUpgradeRequestDTO.getAuth());
+    }
+
+    public void resetWrongCount(ResetWrongCountDTO resetWrongCountDTO) {
+        if(redisUtility.getValues(resetWrongCountDTO.getEmail()) == null)
+            throw new Exception400("없는 email입니다.");
+        redisUtility.deleteValues(resetWrongCountDTO.getEmail());
+    }
+
+
+    public void setToken(FCMTokenDTO fcmTokenDTO) {
+        Optional<Member> member = memberRepository.findByEmail(currentMember());
+        if(member.isEmpty())
+            throw new Exception400("없는 email입니다.");
+        else
+            member.get().setToken(fcmTokenDTO.getToken());
+    }
+
+    public void checkPassword(CheckPasswordDTO checkPasswordDTO) {
+        Optional<Member> member = memberRepository.findByEmail(currentMember());
+        if(member.isPresent()){
+            if(!passwordEncoder.matches(checkPasswordDTO.getPassword(), member.get().getPassword()))
+                throw new Exception400("비밀번호가 틀려부러쓰");
+        }
+        else
+            throw new Exception400("없는 사람이여");
     }
 }

@@ -28,7 +28,7 @@ public class MailService {
         redisUtility.setValues(email, Integer.toString(authNumber), 300);
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(email);
-        simpleMailMessage.setSubject("뭐더라!");
+        simpleMailMessage.setSubject("부산대 인증 메일입니다!");
         simpleMailMessage.setText("인증 번호 입니다.\n"
                 + authNumber +
                 "\n잘 입력해 보세요!");
@@ -42,7 +42,7 @@ public class MailService {
         redisUtility.setValues(email, OTP, 60);
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(email);
-        simpleMailMessage.setSubject("시발롬아!");
+        simpleMailMessage.setSubject("Wmi OTP입니다!");
         simpleMailMessage.setText("OTP 입니다.\n"
                 + OTP +
                 "\n잘 입력해 보세요!");

@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class MemberResourceInterSection {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
