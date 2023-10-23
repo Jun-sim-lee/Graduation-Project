@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.junsim.whereami.config.MqttGateway;
 import com.junsim.whereami.domain.*;
 import com.junsim.whereami.dto.*;
+import com.junsim.whereami.errors.exception.Exception400;
 import com.junsim.whereami.repository.AskRepository;
 import com.junsim.whereami.repository.IntersectionRepository;
 import com.junsim.whereami.repository.MemberRepository;
@@ -156,6 +157,8 @@ public class ResourceService {
 
     public void useResource(Long id, HttpServletRequest request) {
         Resource resource = resourceRepository.findById(id).get();
+        if(resource.getIsOn().length() != 0)
+            throw new Exception400("이미 사용중인 리소스입니다.");
         log.info(request.getHeader("Authorization"));
         mqttGateway.sendToMqtt("work!", "rpi/" + id);
         resource.turnOn(currentMember());
