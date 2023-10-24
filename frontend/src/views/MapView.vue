@@ -26,16 +26,16 @@
                            color: black; font-size: 20px; font-family: 'SUITE-Regular';" @click="closeEntireMap">X</button>
         </div>
     </div>
-    <div class="screen" @mouseup="stopDrag($event)">
+    <div class="screen" @touchend="stopDrag($event)">
         <div class="map_header">
             <span class="triangle_button" @click="backToMain" style="font-family: 'SUITE-Regular';"> &lt; </span>
-            <button v-if="!isDest" @click="toSelectDestionation" class="map_header_button">목적지를 선택해주세요!</button>
+            <button v-if="!isDest" @click="toSelectDestination" class="map_header_button">목적지를 선택해주세요!</button>
             <button v-if="isDest" @click="cancelShortcut" class="cancel_button">취소</button>
             <div style="width: 30px;"></div>
         </div>
         <div class="map_screen">
             <button class="entire_map_modal_open" @click="showEntMap"></button>
-            <div @mousedown="startDrag($event)" @mousemove="moveDrag($event)" class="map_div">
+            <div @touchstart="startDrag($event)" @touchmove="moveDrag($event)" class="map_div">
                 <div v-bind:style="{position: 'absolute', zIndex: 3, left: `${computedX}px`, top: `${computedY}px`, 
                                 backgroundColor: 'red', pointerEvents: 'none',
                                 border: '5px solid aliceblue', borderRadius: '100%', width: '10px', height: '10px'}"
@@ -164,6 +164,10 @@ function getCoordination(){
         .catch((err) => {
             console.log(err)
     })
+
+    if(localStorage.getItem("x") == coordDto.value.x && localStorage.getItem("y") == coordDto.value.y)
+        cancelShortcut()
+    // 목적지에 도달하면 자동으로 종료
 }
 
 function getShortcut(){
@@ -306,9 +310,10 @@ onMessage(messaging, (payload) => {
 function closeModalWithRequest(){
     showModal.value = false;
     axios.post(requestURL + "turnOn/" + resourceId.value, '',{headers})
+        .then()
         .catch((error) => {
-            if(error.response.data.error.message === "이미 사용 중")
-                alert("이미 사용중인 리소스입니다.")
+            if(error.response.data.error.message === "이미 사용중인 리소스입니다.")
+                alert("이미 사용 중인 리소스입니다.")
         })
 }
 
@@ -325,7 +330,7 @@ function closeEntireMap(){
 }
 
 // 목적지 설정 Router
-function toSelectDestionation(){
+function toSelectDestination(){
     router.push('destination')
 }
 

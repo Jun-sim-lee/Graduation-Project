@@ -12,6 +12,6 @@ app.use(store)
 const headers = '{"Content-type":"application/json; charset=UTF-8", "Authorization": "Bearer '
 app.provide('headers', headers)
 // 43.202.141.142
-app.provide('requestURL', "http://43.202.141.142:8080/")
+app.provide('requestURL', "https://api.wmipnu.store/")
 
 app.mount('#app')

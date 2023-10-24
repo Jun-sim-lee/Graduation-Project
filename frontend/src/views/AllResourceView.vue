@@ -36,7 +36,7 @@
                         <img v-if="resource.isOn!=''" src="../assets/redglow.png" style="width: 25px; height: 25px;">
                         <span style="font-size: 18px; line-height: 35px;" @click="openModal(resource.deviceName, resource.auth)">{{ resource.deviceName }}</span>
                         <button v-if="resource.auth == 'Student'" class="resource_button_ask" @click="requestAdd(resource.id)">추가</button>
-                        <button v-if="resource.auth == 'Professor'" class="resource_button_ask" @click="requestPermission(resource.id)">요청</button>
+                        <button v-if="resource.auth == 'Professor'" class="resource_button_ask" style="background-color: #3ADF00;" @click="requestPermission(resource.id)">요청</button>
                     </li>
                 </template>
             </ul>

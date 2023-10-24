@@ -3,7 +3,7 @@
         <div class = "inner_screen">
             <div class = "inner_header">
                 <img class = "profile" src="../assets/profile_image.png" alt="Profile"/>
-                <p style="color: white; font-family: 'SUITE-Regular';">심진섭님 반갑습니다!</p>
+                <p style="color: white; font-family: 'SUITE-Regular';">{{ mainPageUsername }}님 반갑습니다!</p>
                 <div style = "width: 120px;"></div>
                 <button class = "gear" @click="moveToOption"></button>
             </div>

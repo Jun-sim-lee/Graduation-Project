@@ -61,6 +61,7 @@ function requestRejection(targetId){
         .then((resp) => {
             if(resp.status === 200)
                 alert("요청이 반려 되었습니다.")
+            router.go(0)
         })
         .catch((error) => {
             alert(error)
@@ -80,6 +81,7 @@ function requestPermission(targetId, targetEmail, askId){
         .then((resp) => {
             if(resp.status === 200)
                 alert("요청이 수락되었습니다.")
+            router.go(0)
         })
         .catch((error) => {
             alert(error)

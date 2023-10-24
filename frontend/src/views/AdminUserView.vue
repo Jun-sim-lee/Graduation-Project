@@ -50,7 +50,7 @@ onMounted(() => { // 화면 마운트 시 요청 받아옴
 })
 
 function requestUserList(){
-    axios.get(requestURL + "admin/members", {headers})
+    axios.get(requestURL + "members", {headers})
         .then((resp) => {
             userList.value = resp.data;
             convertAuthority();

@@ -62,7 +62,9 @@ function sendRequest(){
                     router.replace('login')
             })
             .catch((error) => {
-                alert(error)
+                if(error.response.data.error.message === "이미 존재하는 이메일입니다."){
+                    alert("이미 존재하는 이메일입니다!")
+                }
             })
     }
 }
