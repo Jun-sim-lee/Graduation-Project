@@ -62,6 +62,10 @@ public class ResourceService {
     public void addResource(AddResourceRequestDTO addResourceRequestDTO) {
         Member member = memberRepository.findByEmail(currentMember()).get();
         Resource resource = resourceRepository.findById(addResourceRequestDTO.getResourceId()).get();
+        for (MemberResourceInterSection r: member.getMyResource()) {
+            if(r.getResource().getId().equals(addResourceRequestDTO.getResourceId()))
+                throw new Exception400("이미 추가된 리소스입니다.");
+        }
         MemberResourceInterSection memberResourceInterSection = new MemberResourceInterSection(member, resource);
         intersectionRepository.save(memberResourceInterSection);
         member.addResource(memberResourceInterSection);
@@ -71,6 +75,10 @@ public class ResourceService {
     public void askResource(AskResourceRequestDTO askResourceRequestDTO) {
         Optional<Member> member = memberRepository.findByEmail(currentMember());
         Optional<Resource> resource = resourceRepository.findById(askResourceRequestDTO.getResourceId());
+        for (MemberResourceInterSection r: member.get().getMyResource()) {
+            if(r.getResource().getId().equals(askResourceRequestDTO.getResourceId()))
+                throw new Exception400("이미 추가된 리소스입니다.");
+        }
         Ask ask = new Ask(member.get(), resource.get());
         askRepository.save(ask);
         member.get().addAsk(ask);
